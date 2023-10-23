@@ -77,4 +77,8 @@ public class Hunter implements IHunterStrategy {
 
     private static class PlayException extends RuntimeException { }
 
+    public Cell getCelule(ICoordinate iCoordinate) {
+        return this.maze[iCoordinate.getRow()][iCoordinate.getCol()];
+    }
+
 }

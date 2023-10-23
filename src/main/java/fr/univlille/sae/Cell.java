@@ -3,16 +3,30 @@ package fr.univlille.sae;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Cell {
     protected ICoordinate coord;
     protected CellInfo info;
     protected int turn;
+    private static final Map<Character, CellInfo> charToInfo = new HashMap<>() {{
+        put('W', CellInfo.WALL);
+        put('E', CellInfo.EMPTY);
+        put('H', CellInfo.HUNTER);
+        put('M', CellInfo.MONSTER);
+        put('X', CellInfo.EXIT);
+    }};
 
     public Cell(ICoordinate coord, CellInfo info, int turn)
     {
         this.coord = coord;
         this.info = info;
         this.turn = turn;
+    }
+
+    public Cell(ICoordinate coord, char car) {
+        this(coord, charToInfo.get(car));
     }
 
     public Cell(ICoordinate coord, CellInfo info) {

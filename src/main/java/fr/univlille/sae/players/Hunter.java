@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.Cell;
+import fr.univlille.sae.Coordinate;
 
 /**
  * Hunter class - A hunter is a human player that can shoot on a cell.
@@ -47,6 +48,10 @@ public class Hunter implements IHunterStrategy {
     @Override
     public void initialize(int rows, int cols) {
         this.maze = new Cell[rows][cols];
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++)
+                this.maze[i][j] = new Cell(new Coordinate(i, j), ICellEvent.CellInfo.EMPTY);
+        }
     }
 
     /**

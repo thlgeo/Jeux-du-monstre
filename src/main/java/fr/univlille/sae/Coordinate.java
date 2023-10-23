@@ -1,4 +1,4 @@
-package main.java.fr.univlille.sae;
+package fr.univlille.sae;
 
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 

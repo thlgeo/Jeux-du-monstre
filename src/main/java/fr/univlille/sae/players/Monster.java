@@ -13,12 +13,14 @@ public class Monster implements IMonsterStrategy {
     protected boolean[][] maze;
     protected String name;
     protected Cell[][] discoveredMaze;
+    protected ICoordinate coordinateMonster;
 
     public Monster(String name, boolean[][] maze)
     {
         this.name = name;
         this.maze = maze;
         this.discoveredMaze = Maze.getMaze();
+        coordinateMonster = Maze.getCoordMonster();
     }
 
     public Monster()
@@ -45,6 +47,24 @@ public class Monster implements IMonsterStrategy {
 
     public boolean canMove(ICoordinate coord)
     {
-        return maze[coord.getRow()][coord.getCol()];
+        if((coord.getCol() == coordinateMonster.getCol()+1 || coord.getCol() == coordinateMonster.getCol()-1) && (coord.getRow() == coordinateMonster.getRow()+1 || coord.getRow() == coordinateMonster.getRow()-1))
+        {
+            return maze[coord.getRow()][coord.getCol()] && !coord.equals(coordinateMonster);
+        }
+        return false;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDiscoveredMaze(Cell[][] discoveredMaze) {
+        this.discoveredMaze = discoveredMaze;
+    }
+
+    public void setCoordinateMonster(ICoordinate coordinateMonster) {
+        this.coordinateMonster = coordinateMonster;
+    }
+
+    
 }

@@ -19,7 +19,8 @@ public class Hunter implements IHunterStrategy {
 
     protected int nbRows;
     protected int nbCols;
-    protected final String NAME;
+
+    protected String name;
     protected Cell[][] maze;
     private static final int DEFAULT_NB_ROWS = 10;
     private static final int DEFAULT_NB_COLS = 10;
@@ -28,12 +29,20 @@ public class Hunter implements IHunterStrategy {
     public Hunter(String name, int nbRows, int nbCols) {
         this.nbCols = nbCols;
         this.nbRows = nbRows;
-        this.NAME = name;
+        this.name = name;
         this.initialize(this.nbRows, this.nbCols);
     }
 
     public Hunter(String name) {
         this(name, DEFAULT_NB_ROWS, DEFAULT_NB_COLS);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Hunter() {

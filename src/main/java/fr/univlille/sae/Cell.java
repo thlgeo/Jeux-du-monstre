@@ -10,7 +10,7 @@ public class Cell {
     protected ICoordinate coord;
     protected CellInfo info;
     protected int turn;
-    private static final Map<Character, CellInfo> charToInfo = new HashMap<>() {{
+    public static final Map<Character, CellInfo> charToInfo = new HashMap<>() {{
         put('W', CellInfo.WALL);
         put('E', CellInfo.EMPTY);
         put('H', CellInfo.HUNTER);

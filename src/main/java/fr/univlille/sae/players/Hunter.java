@@ -5,6 +5,15 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.Cell;
 
+/**
+ * Hunter class - A hunter is a human player that can shoot on a cell.
+ * @see IHunterStrategy
+ * @see ICellEvent
+ * @see ICoordinate
+ * @see Cell
+ * @author Valentin THUILLIER
+ * @version 1.0.0
+ */
 public class Hunter implements IHunterStrategy {
 
     protected int nbRows;
@@ -30,19 +39,35 @@ public class Hunter implements IHunterStrategy {
         this(DEFAULT_NAME);
     }
 
+    /**
+     * Initialize the maze with the number of rows and columns.
+     * @param rows  (int)   Number of rows
+     * @param cols  (int)   Number of columns
+     */
     @Override
     public void initialize(int rows, int cols) {
         this.maze = new Cell[rows][cols];
     }
 
+    /**
+     * Play is not available for a hunter.
+     * @throws PlayException    Play is not available for a hunter.
+     */
     @Override
     public ICoordinate play() {
         throw new PlayException();
     }
 
+    /**
+     * Update the maze with the cell event.
+     * @param iCellEvent    (ICellEvent)    Cell event
+     */
     @Override
     public void update(ICellEvent iCellEvent) {
-
+        ICoordinate coord = iCellEvent.getCoord();
+        Cell updateCell = this.maze[coord.getRow()][coord.getCol()];
+        updateCell.setInfo(iCellEvent.getState());
+        updateCell.setTurn(iCellEvent.getTurn());
     }
 
     private static class PlayException extends RuntimeException { }

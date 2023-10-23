@@ -1,13 +1,22 @@
 package fr.univlille.sae;
 
-public class Cell {
-    protected Coordinate coord;
-    protected CellInfo info;
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
-    public Cell(Coordinate coord, CellInfo info)
+public class Cell {
+    protected ICoordinate coord;
+    protected CellInfo info;
+    protected int turn;
+
+    public Cell(ICoordinate coord, CellInfo info, int turn)
     {
         this.coord = coord;
         this.info = info;
+        this.turn = turn;
+    }
+
+    public Cell(ICoordinate coord, CellInfo info) {
+        this(coord, info, -1);
     }
 
     public Cell()
@@ -29,11 +38,15 @@ public class Cell {
         return info;
     }
 
-    public Coordinate getCoord() {
+    public ICoordinate getCoord() {
         return coord;
     }
 
     public void setInfo(CellInfo info) {
         this.info = info;
     }
+
+    public int getTurn() { return turn; }
+
+    public void setTurn(int turn) { this.turn = turn; }
 }

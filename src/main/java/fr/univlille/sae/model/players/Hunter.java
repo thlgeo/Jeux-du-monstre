@@ -1,10 +1,10 @@
-package fr.univlille.sae.players;
+package fr.univlille.sae.model.players;
 
 import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
-import fr.univlille.sae.Cell;
-import fr.univlille.sae.Coordinate;
+import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.Coordinate;
 
 /**
  * Hunter class - A hunter is a human player that can shoot on a cell.

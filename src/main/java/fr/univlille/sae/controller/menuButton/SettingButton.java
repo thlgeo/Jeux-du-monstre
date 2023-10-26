@@ -1,6 +1,7 @@
 package fr.univlille.sae.controller.menuButton;
 
 import fr.univlille.sae.Main;
+import fr.univlille.sae.view.ParameterView;
 import javafx.scene.control.Button;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public class SettingButton extends Button {
 
     public void setAction(){
         setOnAction(event -> {
-            System.out.println("Paramètres mis à jour");
+            new ParameterView();
         });
     }
 }

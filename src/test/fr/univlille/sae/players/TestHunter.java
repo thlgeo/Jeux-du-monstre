@@ -2,9 +2,10 @@ package fr.univlille.sae.players;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
-import fr.univlille.sae.Cell;
-import fr.univlille.sae.Coordinate;
-import fr.univlille.sae.cellule.CellEvent;
+import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.Coordinate;
+import fr.univlille.sae.model.cellule.CellEvent;
+import fr.univlille.sae.model.players.Hunter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

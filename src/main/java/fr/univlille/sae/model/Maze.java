@@ -1,4 +1,4 @@
-package fr.univlille.sae;
+package fr.univlille.sae.model;
 
 import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
@@ -10,7 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import fr.univlille.sae.Cell;
+import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.Coordinate;
 
 public class Maze {
 
@@ -101,6 +102,10 @@ public class Maze {
         return true;
     }
 
+    public static ICoordinate getCoordMonster(){
+        //TODO
+        return null;
+    }
     /*
     public void entrerNom(String newNameMonster, String newNameHunter) {
         Hunter hunter = (Hunter) this.getHunter();

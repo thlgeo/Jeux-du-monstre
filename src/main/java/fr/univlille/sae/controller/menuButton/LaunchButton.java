@@ -1,12 +1,14 @@
 package fr.univlille.sae.controller.menuButton;
 
 import fr.univlille.sae.Main;
+import fr.univlille.sae.view.HunterView;
+import fr.univlille.sae.view.MainView;
+import fr.univlille.sae.view.MonsterView;
 import javafx.scene.control.Button;
 
 import java.io.File;
 
 public class LaunchButton extends Button {
-
     public LaunchButton(){
         super("Jouer");
         setAction();
@@ -16,7 +18,8 @@ public class LaunchButton extends Button {
 
     public void setAction(){
         setOnAction(event -> {
-            System.out.println("Jouer");
+            new MonsterView();
+            new HunterView();
         });
     }
 }

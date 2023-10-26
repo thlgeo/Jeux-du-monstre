@@ -1,13 +1,11 @@
-package fr.univlille.sae.players;
-
-import java.util.List;
+package fr.univlille.sae.model.players;
 
 import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import fr.univlille.sae.Cell;
-import fr.univlille.sae.Coordinate;
+import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.Coordinate;
+import fr.univlille.sae.model.Maze;
 
 public class Monster implements IMonsterStrategy {
     protected boolean[][] maze;

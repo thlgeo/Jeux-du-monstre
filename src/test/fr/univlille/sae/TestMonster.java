@@ -3,10 +3,11 @@ package fr.univlille.sae;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import fr.univlille.sae.model.Coordinate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import fr.univlille.sae.players.Monster;
+import fr.univlille.sae.model.players.Monster;
 
 public class TestMonster {
     Monster monstre;

@@ -6,5 +6,6 @@ public class NameController extends TextField {
     public final boolean monster;
     public NameController(boolean monster){
         this.monster = monster;
+        setMinWidth(200);
     }
 }

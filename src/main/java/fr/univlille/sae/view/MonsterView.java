@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -14,8 +15,8 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class MonsterView extends Stage {
+    public static final int WIDTH = 750;
     public static final int HEIGHT = 500;
-    public static final int WIDTH = 300;
 
     public MonsterView(){
         setTitle("S3.02_G1_Monstre");
@@ -33,7 +34,7 @@ public class MonsterView extends Stage {
         MazeController mc = new MazeController();
         root.getChildren().addAll(titre, mc, tour);
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, HEIGHT, WIDTH));
+        setScene(new Scene(root, WIDTH, HEIGHT));
     }
 
 }

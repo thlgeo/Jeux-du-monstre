@@ -17,8 +17,8 @@ import java.io.File;
 
 public class MainView extends Stage {
 
-    public static final int HEIGHT = 500;
-    public static final int WIDTH = 300;
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 300;
 
     public MainView(){
         setTitle("S3.02_G1_ChasseAuMonstre");
@@ -38,6 +38,6 @@ public class MainView extends Stage {
         VBox.setMargin(launchButton, new Insets(10, 0, 10, 0));
         root.getChildren().addAll(title, settingButton, launchButton);
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, HEIGHT, WIDTH));
+        setScene(new Scene(root, WIDTH, HEIGHT));
     }
 }

@@ -1,13 +1,11 @@
-package fr.univlille.sae;
+package fr.univlille.sae.model.players;
+
+import fr.univlille.sae.model.Coordinate;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import fr.univlille.sae.model.Coordinate;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
-
-import fr.univlille.sae.model.players.Monster;
 
 public class TestMonster {
     Monster monstre;

@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class HunterView extends Stage {
+    public static final int WIDTH = 750;
     public static final int HEIGHT = 500;
-    public static final int WIDTH = 300;
 
     public HunterView(){
         setTitle("S3.02_G1_Chasseur");
@@ -33,6 +33,6 @@ public class HunterView extends Stage {
         MazeController mc = new MazeController();
         root.getChildren().addAll(titre, mc, tour);
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, HEIGHT, WIDTH));
+        setScene(new Scene(root, WIDTH, HEIGHT));
     }
 }

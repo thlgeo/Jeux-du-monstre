@@ -90,4 +90,10 @@ public class Hunter implements IHunterStrategy {
         return this.maze[iCoordinate.getRow()][iCoordinate.getCol()];
     }
 
+    public boolean canShoot(ICoordinate coord) {
+        int col = coord.getCol();
+        int row = coord.getRow();
+        return (col >= 0 && col < nbCols) && (row >= 0 && row < nbRows);
+    }
+
 }

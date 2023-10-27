@@ -128,8 +128,8 @@ public class Maze {
 
     }
 
-    public void tireChasseur() {
-
+    public void tireChasseur(ICoordinate coord) {
+        
     }
 
     public ICoordinate getCoordMonster(int turn) throws MonsterNotFoundException {

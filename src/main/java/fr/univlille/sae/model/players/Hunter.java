@@ -65,12 +65,10 @@ public class Hunter implements IHunterStrategy {
 
     /**
      * Play is not available for a hunter.
-     * @throws PlayException    Play is not available for a hunter.
+     * @throws UnsupportedOperationException    Play is not available for a hunter.
      */
     @Override
-    public ICoordinate play() {
-        throw new PlayException();
-    }
+    public ICoordinate play() { throw new UnsupportedOperationException(); }
 
     /**
      * Update the maze with the cell event.
@@ -84,7 +82,6 @@ public class Hunter implements IHunterStrategy {
         updateCell.setTurn(iCellEvent.getTurn());
     }
 
-    private static class PlayException extends RuntimeException { }
 
     public Cell getCelule(ICoordinate iCoordinate) {
         return this.maze[iCoordinate.getRow()][iCoordinate.getCol()];

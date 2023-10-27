@@ -41,21 +41,23 @@ public class Maze {
     }
 
     private void initializeMaze(String filePath) {
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty(FS)+"res"+System.getProperty(FS)+"mazes"+System.getProperty(FS)+filePath));
+            reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty(FS)+"res"+System.getProperty(FS)+"mazes"+System.getProperty(FS)+filePath));
             for(int rowId = 0 ; rowId < this.getNbRows(); rowId++) {
                 String currentLine = reader.readLine();
                 for (int colId = 0 ; colId < currentLine.length() ; colId++) {
                     maze[rowId][colId] = new Cell(new Coordinate(rowId, colId), Cell.charToInfo.get(currentLine.charAt(colId)));
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try { reader.close(); }
+            catch(Exception e) {
+                //Do Nothing
+            }
         }
-
-
     }
 
     public Cell[][] getMaze() {
@@ -113,6 +115,7 @@ public class Maze {
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
         monster.update(event);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
+        return; // notifyObserver
     }
 
     public void victory(boolean isMonster) {

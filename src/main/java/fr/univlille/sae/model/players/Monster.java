@@ -5,6 +5,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
+import fr.univlille.sae.model.Maze;
 
 public class Monster implements IMonsterStrategy {
     private static final int DEPLACEMENT = 1;
@@ -13,17 +14,27 @@ public class Monster implements IMonsterStrategy {
     protected Cell[][] discoveredMaze;
     protected ICoordinate coordinateMonster;
 
-    public Monster(String name, boolean[][] maze, Cell[][] discorveredMaze)
+    public Monster(String name, Cell[][] discorveredMaze)
     {
         this.name = name;
-        this.maze = maze;
         this.discoveredMaze = discorveredMaze;
+        this.maze = convert();
         coordinateMonster = null;
     }
 
-    public Monster()
+    public boolean[][] convert() {
+        boolean[][] mazeB = new boolean[discoveredMaze.length][discoveredMaze[0].length];
+        for(int i = 0; i < discoveredMaze.length; i++) {
+            for(int j = 0; j < discoveredMaze[0].length; j++) {
+                mazeB[i][j] = discoveredMaze[i][j].getInfo().equals(ICellEvent.CellInfo.EMPTY) || discoveredMaze[i][j].getInfo().equals(ICellEvent.CellInfo.EXIT);
+            }
+        }
+        return mazeB;
+    }
+
+    private Monster()
     {
-        this(null, null, null);
+        this(null, null);
     }
 
     @Override
@@ -39,7 +50,7 @@ public class Monster implements IMonsterStrategy {
 
     @Override
     public void initialize(boolean[][] maze) {
-        this.maze = maze;    
+        this.maze = maze;
     }
 
     public boolean canMove(ICoordinate coord)

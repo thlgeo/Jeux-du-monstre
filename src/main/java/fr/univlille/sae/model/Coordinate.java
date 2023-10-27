@@ -2,6 +2,12 @@ package fr.univlille.sae.model;
 
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
+/**
+ * Coordinate class - A coordinate is a position in the maze.
+ * @see ICoordinate
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0.0
+ */
 public class Coordinate implements ICoordinate {
     protected int row;
     protected int col;
@@ -47,9 +53,7 @@ public class Coordinate implements ICoordinate {
         Coordinate other = (Coordinate) obj;
         if (row != other.row)
             return false;
-        if (col != other.col)
-            return false;
-        return true;
+        return col == other.col;
     }
 
     

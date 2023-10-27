@@ -1,9 +1,8 @@
 package fr.univlille.sae.model.players;
 
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
-import fr.univlille.sae.model.Maze;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,22 +11,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestMonster {
     Monster monstre;
-    boolean[][] maze;
+    Cell[][] maze;
 
     @BeforeEach
     public void initialize()
     {
-        maze = new boolean[5][5];
+        maze = new Cell[5][5];
         for(int i=0;i<maze.length;i++)
         {
             for(int j=0;j<maze[i].length;j++)
             {
-                maze[i][j] = true;
+                maze[i][j] = new Cell(new Coordinate(i, j), CellInfo.EMPTY);
             }
         }
-        maze[0][0] = false;
-        maze[1][1] = false;
-        monstre = new Monster("monstre", new Cell[5][5]);
+        maze[0][0].setInfo(CellInfo.WALL);
+        maze[1][1].setInfo(CellInfo.WALL);;
+        monstre = new Monster("monstre", maze);
         monstre.setCoordinateMonster(new Coordinate(1,0));
     }
 

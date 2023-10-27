@@ -12,7 +12,7 @@ import fr.univlille.sae.model.Coordinate;
  * @see ICellEvent
  * @see ICoordinate
  * @see Cell
- * @author Valentin THUILLIER
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0
  */
 public class Hunter implements IHunterStrategy {
@@ -83,6 +83,11 @@ public class Hunter implements IHunterStrategy {
     }
 
 
+    /**
+     * Get the cell at the given coordinate.
+     * @param iCoordinate   (ICoordinate)   Coordinate
+     * @return  (Cell)  Cell at the given coordinate
+     */
     public Cell getCelule(ICoordinate iCoordinate) {
         return this.maze[iCoordinate.getRow()][iCoordinate.getCol()];
     }

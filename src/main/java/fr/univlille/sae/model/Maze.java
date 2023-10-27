@@ -43,8 +43,9 @@ public class Maze {
     }
 
     private void initializeMaze(String filePath) {
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty(FS)+"res"+System.getProperty(FS)+"mazes"+System.getProperty(FS)+filePath));
+            reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty(FS)+"res"+System.getProperty(FS)+"mazes"+System.getProperty(FS)+filePath));
             int mazeRow = Integer.parseInt(reader.readLine());
             int mazeCol = Integer.parseInt(reader.readLine());
             if (mazeRow > getNbRows() && mazeCol > getNbRows()) {
@@ -58,9 +59,12 @@ public class Maze {
             }
         } catch (UnsupportedMazeException | IOException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try { reader.close(); }
+            catch(Exception e) {
+                //Do Nothing
+            }
         }
-
-
     }
 
     public Cell[][] getMaze() {
@@ -118,6 +122,7 @@ public class Maze {
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
         monster.update(event);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
+        return; // notifyObserver
     }
 
     public void victory(boolean isMonster) {

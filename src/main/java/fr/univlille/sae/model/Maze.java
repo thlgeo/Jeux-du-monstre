@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -123,8 +124,15 @@ public class Maze {
 
     }
 
-    public void tireChasseur(ICoordinate coord) {
-        
+    public void tireChasseur(ICoordinate coord) throws MonsterNotFoundException {
+        if(coord.equals(getCoordMonster(turn)))
+        {
+            return; // TODO: victoire hunter
+        }
+        monster.update(new CellEvent(turn, CellInfo.HUNTER, coord));
+        hunter.update(new CellEvent(turn, getCell(coord).getInfo(), coord));
+        turn++;
+        return; // TODO: notify
     }
 
     public ICoordinate getCoordMonster(int turn) throws MonsterNotFoundException {

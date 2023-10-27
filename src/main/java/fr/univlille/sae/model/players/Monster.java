@@ -8,6 +8,7 @@ import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.Maze;
 
 public class Monster implements IMonsterStrategy {
+    private static final int DEPLACEMENT = 1;
     protected boolean[][] maze;
     protected String name;
     protected Cell[][] discoveredMaze;
@@ -45,8 +46,9 @@ public class Monster implements IMonsterStrategy {
 
     public boolean canMove(ICoordinate coord)
     {
-        if((coord.getCol() == coordinateMonster.getCol()+1 || coord.getCol() == coordinateMonster.getCol()-1) && (coord.getRow() == coordinateMonster.getRow()+1 || coord.getRow() == coordinateMonster.getRow()-1))
+        if((coord.getCol() <= coordinateMonster.getCol()+DEPLACEMENT && coord.getCol() >= coordinateMonster.getCol()-DEPLACEMENT) && (coord.getRow() <= coordinateMonster.getRow()+DEPLACEMENT && coord.getRow() >= coordinateMonster.getRow()-DEPLACEMENT))
         {
+            // System.out.println(coord.getCol());
             return maze[coord.getRow()][coord.getCol()] && !coord.equals(coordinateMonster);
         }
         return false;

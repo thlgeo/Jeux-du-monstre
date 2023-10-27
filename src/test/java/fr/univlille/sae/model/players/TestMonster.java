@@ -27,12 +27,12 @@ public class TestMonster {
         }
         maze[0][0] = false;
         maze[1][1] = false;
-        monstre = new Monster("monstre", maze, new Cell[5][5]);
+        monstre = new Monster("monstre", new Cell[5][5]);
         monstre.setCoordinateMonster(new Coordinate(1,0));
     }
 
     @Test 
-    public void testCanMove()
+    public void testCanMove() //TODO
     {
         assertTrue(monstre.canMove(new Coordinate(2, 0))); // se déplace vers le bas sur une case vide
         assertTrue(monstre.canMove(new Coordinate(2,1))); // se déplace en diagonal

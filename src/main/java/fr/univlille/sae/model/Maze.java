@@ -10,13 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.cellule.CellEvent;
 import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
 import fr.univlille.sae.model.players.Monster;
 import fr.univlille.sae.model.players.Hunter;
-import fr.univlille.sae.model.players.Monster;
 
 public class Maze {
 
@@ -24,26 +21,23 @@ public class Maze {
     protected int nbRows;
     protected int nbCols;
     protected boolean isHunterTurn;
-    protected IHunterStrategy hunter;
-    protected IMonsterStrategy monster;
-    public static Cell[][] maze;
+    protected Hunter hunter;
+    protected Monster monster;
+    public Cell[][] maze;
 
     protected static final String FS = "file.seperator";
 
     public static int DEFAULT_DIMENSION = 10;
 
-    public Maze(int turn, int nbRows, int nbCols, boolean isHunterTurn, IHunterStrategy hunter, IMonsterStrategy monster, String filepath) {
+    public Maze(int turn, int nbRows, int nbCols, String filepath) {
         this.turn = turn;
         this.nbRows = nbRows;
         this.nbCols = nbCols;
-        this.isHunterTurn = isHunterTurn;
-        this.hunter = hunter;
-        this.monster = monster;
         initializeMaze(filepath);
     }
 
     public Maze() {
-        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, false, new Hunter(), new Monster(), "");
+        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, "");
     }
 
     private void initializeMaze(String filePath) {
@@ -64,7 +58,7 @@ public class Maze {
 
     }
 
-    public static Cell[][] getMaze() {
+    public Cell[][] getMaze() {
         return maze;
     }
 
@@ -96,7 +90,7 @@ public class Maze {
         return hunter;
     }
 
-    public void setHunter(IHunterStrategy hunter) {
+    public void setHunter(Hunter hunter) {
         this.hunter = hunter;
     }
 
@@ -104,15 +98,12 @@ public class Maze {
         return monster;
     }
 
-    public void setMonster(IMonsterStrategy monster) {
+    public void setMonster(Monster monster) {
         this.monster = monster;
     }
 
     public void deplacementMonstre(ICoordinate newCoord) {
-        if(monster.getClass() != Monster.class) { return; }
-
-        Monster m = (Monster) this.monster;
-        if(!m.canMove(newCoord)) { return;  } //TODO: Notify
+        if(!this.monster.canMove(newCoord)) { return;  } //TODO: Notify
 
         if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
             victory(true);
@@ -161,8 +152,9 @@ public class Maze {
         return;
     }
 
-    public void changerParam() {
-
+    public void changerParam(String hunterName, String monsterName, int nbRows, int nbCols) {
+        this.hunter = new Hunter(hunterName, nbRows, nbCols);
+        this.monster = new Monster(monsterName, this.maze);
     }
 
     public void changerTailleGrille(int newCols, int newRows) {

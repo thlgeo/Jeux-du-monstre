@@ -3,6 +3,7 @@ package fr.univlille.sae.model.players;
 import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.Maze;
@@ -13,6 +14,7 @@ public class Monster implements IMonsterStrategy {
     protected String name;
     protected Cell[][] discoveredMaze;
     protected ICoordinate coordinateMonster;
+    protected ICoordinate lastShotHunter;
 
     public Monster(String name, Cell[][] discorveredMaze)
     {
@@ -20,6 +22,7 @@ public class Monster implements IMonsterStrategy {
         this.discoveredMaze = discorveredMaze;
         this.maze = convert();
         coordinateMonster = null;
+        lastShotHunter = null;
     }
 
     public boolean[][] convert() {
@@ -43,9 +46,14 @@ public class Monster implements IMonsterStrategy {
     }
 
     @Override
-    public void update(ICellEvent arg0) {
-        Coordinate coord = (Coordinate) arg0.getCoord();
-        discoveredMaze[coord.getRow()][coord.getCol()].setInfo(arg0.getState());
+    public void update(ICellEvent cellule) {
+        if(cellule.getState() == CellInfo.HUNTER)
+        {
+            lastShotHunter = cellule.getCoord();
+        }else{
+            Coordinate coord = (Coordinate) cellule.getCoord();
+            discoveredMaze[coord.getRow()][coord.getCol()].setInfo(cellule.getState());
+        }
     }
 
     @Override

@@ -14,6 +14,11 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
+/**
+ * Cette classe est la fenêtre de jeu du monstre
+ * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @Version 1.0
+ */
 public class MonsterView extends Stage {
     public static final int WIDTH = 750;
     public static final int HEIGHT = 500;

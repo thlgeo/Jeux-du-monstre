@@ -13,6 +13,11 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
+/**
+ * Cette classe est la fenêtre où l'utilisateur peut changer les paramètres
+ * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @Version 1.0
+ */
 public class ParameterView extends Stage {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;
@@ -32,15 +37,18 @@ public class ParameterView extends Stage {
         Label nameHunter = new Label("Nom du Chasseur");
         nameHunter.setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 30));
         NameController hunterName = new NameController(false);
-        SizeController size = new SizeController();
-        ValidationController validation = new ValidationController(monsterName, hunterName, size);
+        SizeController height = new SizeController();
+        SizeController width = new SizeController();
+        ValidationController validation = new ValidationController(monsterName, hunterName, height, width);
         Region spacer1 = new Region();
         Region spacer2 = new Region();
         Region spacer3 = new Region();
+        Region spacer4 = new Region();
         spacer1.setMinHeight(10);
         spacer2.setMinHeight(10);
         spacer3.setMinHeight(10);
-        root.getChildren().addAll(nameMonster, monsterName, spacer1, nameHunter, hunterName, spacer2, size, spacer3, validation);
+        spacer4.setMinHeight(10);
+        root.getChildren().addAll(nameMonster, monsterName, spacer1, nameHunter, hunterName, spacer2, height, spacer3, width, spacer4, validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
     }

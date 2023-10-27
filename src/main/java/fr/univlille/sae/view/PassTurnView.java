@@ -5,6 +5,11 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Cette classe est une fenêtre où l'utilisateur peut valider le passage au tour adverse.
+ * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @Version 1.0
+ */
 public class PassTurnView extends Stage {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;

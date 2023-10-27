@@ -5,6 +5,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Classe représentant une cellule de la grille.
@@ -71,4 +72,12 @@ public class Cell {
     public int getTurn() { return turn; }
 
     public void setTurn(int turn) { this.turn = turn; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return Objects.equals(coord, cell.coord) && info == cell.info;
+    }
 }

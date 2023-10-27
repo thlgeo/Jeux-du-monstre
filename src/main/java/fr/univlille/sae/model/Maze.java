@@ -6,10 +6,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import fr.univlille.sae.model.cellule.CellEvent;
 import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
@@ -27,14 +24,15 @@ public class Maze {
     protected Monster monster;
     public Cell[][] maze;
 
-    protected static final String FS = "file.seperator";
+    protected static final String FS = File.separator;
 
-    public static int DEFAULT_DIMENSION = 10;
+    public static final int DEFAULT_DIMENSION = 10;
 
     public Maze(int turn, int nbRows, int nbCols, String filepath) {
         this.turn = turn;
         this.nbRows = nbRows;
         this.nbCols = nbCols;
+        this.maze = new Cell[nbRows][nbCols];
         initializeMaze(filepath);
     }
 
@@ -44,14 +42,15 @@ public class Maze {
 
     private void initializeMaze(String filePath) {
         BufferedReader reader = null;
+        this.maze = new Cell[this.getNbRows()][this.getNbCols()];
         try {
-            reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty(FS)+"res"+System.getProperty(FS)+"mazes"+System.getProperty(FS)+filePath));
+            reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+FS+"res"+FS+"mazes"+FS+filePath));
             int mazeRow = Integer.parseInt(reader.readLine());
             int mazeCol = Integer.parseInt(reader.readLine());
             if (mazeRow > getNbRows() && mazeCol > getNbRows()) {
                 throw new UnsupportedMazeException();
             }
-            for(int rowId = 0 ; rowId < this.getNbRows(); rowId++) {
+            for(int rowId = 0 ; rowId < mazeRow; rowId++) {
                 String currentLine = reader.readLine();
                 for (int colId = 0 ; colId < currentLine.length() ; colId++) {
                     maze[rowId][colId] = new Cell(new Coordinate(rowId, colId), Cell.charToInfo.get(currentLine.charAt(colId)));
@@ -109,6 +108,10 @@ public class Maze {
 
     public void setMonster(Monster monster) {
         this.monster = monster;
+    }
+
+    public Cell getCell(int row, int col) {
+        return maze[row][col];
     }
 
     public void deplacementMonstre(ICoordinate newCoord) {

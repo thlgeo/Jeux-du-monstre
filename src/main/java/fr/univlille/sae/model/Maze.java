@@ -12,6 +12,8 @@ import java.io.IOException;
 
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
+import fr.univlille.sae.model.players.Hunter;
+import fr.univlille.sae.model.players.Monster;
 
 public class Maze {
 
@@ -21,36 +23,45 @@ public class Maze {
     protected boolean isHunterTurn;
     protected IHunterStrategy hunter;
     protected IMonsterStrategy monster;
-    public static Cell[][] maze;
+    public Cell[][] maze;
 
-    public Maze(int turn, int nbRows, int nbCols, boolean isHunterTurn, IHunterStrategy hunter, IMonsterStrategy monster) {
+    protected static final String FS = "file.seperator";
+
+    public static int DEFAULT_DIMENSION = 10;
+
+    public Maze(int turn, int nbRows, int nbCols, boolean isHunterTurn, IHunterStrategy hunter, IMonsterStrategy monster, String filepath) {
         this.turn = turn;
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.isHunterTurn = isHunterTurn;
         this.hunter = hunter;
         this.monster = monster;
-        initializeMaze("firstMaze");
+        initializeMaze(filepath);
+    }
+
+    public Maze() {
+        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, false, new Hunter(), new Monster(), "");
     }
 
     private void initializeMaze(String filePath) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty("file.separator")+"res"+System.getProperty("file.separator")+"mazes"+System.getProperty("file.separator")+filePath));
-            for(int i = 0 ; i < this.getNbRows(); i++) {
-                for(int j = 0 ; j < this.getNbCols(); j++) {
-                    maze[i][j] = new Cell(new Coordinate(i, j),Cell.charToInfo.get(reader.read()));
+            BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty(FS)+"res"+System.getProperty(FS)+"mazes"+System.getProperty(FS)+filePath));
+            for(int rowId = 0 ; rowId < this.getNbRows(); rowId++) {
+                String currentLine = reader.readLine();
+                for (int colId = 0 ; colId < currentLine.length() ; colId++) {
+                    maze[rowId][colId] = new Cell(new Coordinate(rowId, colId), Cell.charToInfo.get(currentLine.charAt(colId)));
                 }
             }
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
 
 
     }
 
-    public static Cell[][] getMaze() {
+    public Cell[][] getMaze() {
         return maze;
     }
 
@@ -119,17 +130,15 @@ public class Maze {
 
     public void lancerJeu() {
         //TODO
-        return;
     }
 
     public void changerParam() {
-
+        //TODO
     }
 
     public void changerTailleGrille(int newCols, int newRows) {
         this.setNbCols(newCols);
         this.setNbRows(newRows);
-        return;
     }
 
     public Cell getCell(ICoordinate coordinate) {

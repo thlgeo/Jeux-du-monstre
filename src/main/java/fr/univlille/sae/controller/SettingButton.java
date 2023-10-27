@@ -6,6 +6,11 @@ import javafx.scene.control.Button;
 
 import java.io.File;
 
+/**
+ * Cette classe correspond au bouton de lancement de la page de paramètres
+ * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @Version 1.0
+ */
 public class SettingButton extends Button {
 
     public SettingButton(){

@@ -4,19 +4,24 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Cette classe correspond GridPane représentant le labyrinthe du jeu
+ * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @Version 1.0
+ */
 public class MazeController extends GridPane {
 
     Button[][] maze;
 
     public MazeController(){
-        maze = new Button[16][16];
+        maze = new Button[8][8];
         setDefaultMaze();
         setAlignment(Pos.CENTER);
     }
 
     public void setDefaultMaze(){
-        for(int i = 0; i < 16; i++){
-            for(int j = 0; j < 16; j++){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
                 CellController cell = new CellController(j, i);
                 cell.setOnAction(e -> System.out.println(cell.getX() + " " + cell.getY()));
                 maze[i][j] = cell;

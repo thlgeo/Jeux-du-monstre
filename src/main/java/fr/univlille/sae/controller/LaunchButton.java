@@ -9,6 +9,11 @@ import javafx.scene.control.Button;
 
 import java.io.File;
 
+/**
+ * Cette classe coorespond au bouton de lancement du jeu
+ * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @Version 1.0
+ */
 public class LaunchButton extends Button {
     public LaunchButton(){
         super("Jouer");

@@ -15,6 +15,13 @@ public class TestMonster {
     public void initialize()
     {
         maze = new boolean[5][5];
+        for(int i=0;i<maze.length;i++)
+        {
+            for(int j=0;j<maze[i].length;j++)
+            {
+                maze[i][j] = true;
+            }
+        }
         maze[0][0] = false;
         maze[1][1] = false;
         monstre = new Monster("monstre", maze);
@@ -24,9 +31,11 @@ public class TestMonster {
     @Test 
     public void testCanMove()
     {
-        assertTrue(monstre.canMove(new Coordinate(2, 0))); // se déplace sur une case vide
+        assertTrue(monstre.canMove(new Coordinate(2, 0))); // se déplace vers le bas sur une case vide
         assertTrue(monstre.canMove(new Coordinate(2,1))); // se déplace en diagonal
         assertFalse(monstre.canMove(new Coordinate(1,0))); // se déplace sur lui même
         assertFalse(monstre.canMove(new Coordinate(0, 0))); // se déplace sur un mur
+        monstre.setCoordinateMonster(new Coordinate(3,3));
+        assertTrue(monstre.canMove(new Coordinate(3,4))); // se déplace à gauche sur une case vide
     }
 }

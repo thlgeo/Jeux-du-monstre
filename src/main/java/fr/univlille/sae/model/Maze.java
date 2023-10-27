@@ -12,6 +12,9 @@ import java.io.IOException;
 
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
+import fr.univlille.sae.model.cellule.CellEvent;
+import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
+import fr.univlille.sae.model.players.Monster;
 import fr.univlille.sae.model.players.Hunter;
 import fr.univlille.sae.model.players.Monster;
 
@@ -106,18 +109,43 @@ public class Maze {
         this.monster = monster;
     }
 
-    public boolean deplacementHunter() {
-        return true;
+    public void deplacementMonstre(ICoordinate newCoord) {
+        if(monster.getClass() != Monster.class) { return; }
+
+        Monster m = (Monster) this.monster;
+        if(!m.canMove(newCoord)) { return;  } //TODO: Notify
+
+        if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
+            victory(true);
+            return;
+        }
+
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
+        monster.update(event);
+        update(newCoord, ICellEvent.CellInfo.MONSTER);
     }
 
-    public boolean tireChasseur() {
-        return true;
+    public void victory(boolean isMonster) {
+
     }
 
-    public static ICoordinate getCoordMonster(){
-        //TODO
-        return null;
+    public void tireChasseur() {
+
     }
+
+    public ICoordinate getCoordMonster(int turn) throws MonsterNotFoundException {
+        for(Cell[] line : maze) {
+            for(Cell cell : line) {
+                if(cell.getInfo() == ICellEvent.CellInfo.MONSTER && cell.getTurn() == turn - 1) return cell.getCoord();
+            }
+        }
+        throw new MonsterNotFoundException();
+    }
+
+    public ICoordinate getCoordMonster() throws MonsterNotFoundException {
+        return getCoordMonster(turn - 1);
+    }
+
     /*
     public void entrerNom(String newNameMonster, String newNameHunter) {
         Hunter hunter = (Hunter) this.getHunter();
@@ -131,22 +159,31 @@ public class Maze {
 
     public void lancerJeu() {
         //TODO
+        return;
     }
 
     public void changerParam() {
-        //TODO
+
     }
 
     public void changerTailleGrille(int newCols, int newRows) {
         this.setNbCols(newCols);
         this.setNbRows(newRows);
+        return;
     }
 
     public Cell getCell(ICoordinate coordinate) {
         return maze[coordinate.getRow()][coordinate.getCol()];
     }
+
     public void update(ICoordinate coordinate, ICellEvent.CellInfo cellInfo) {
         Cell updatedCell = getCell(coordinate);
         updatedCell.setInfo(cellInfo);
+        updatedCell.setTurn(turn);
     }
+
+    public void update(ICellEvent event) {
+        update(event.getCoord(), event.getState());
+    }
+
 }

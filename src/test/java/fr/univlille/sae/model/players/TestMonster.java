@@ -1,6 +1,9 @@
 package fr.univlille.sae.model.players;
 
+import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
+import fr.univlille.sae.model.Maze;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +27,7 @@ public class TestMonster {
         }
         maze[0][0] = false;
         maze[1][1] = false;
-        monstre = new Monster("monstre", maze);
+        monstre = new Monster("monstre", maze, new Cell[5][5]);
         monstre.setCoordinateMonster(new Coordinate(1,0));
     }
 

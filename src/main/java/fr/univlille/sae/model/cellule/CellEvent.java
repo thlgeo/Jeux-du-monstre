@@ -3,6 +3,14 @@ package fr.univlille.sae.model.cellule;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
+/**
+ * CellEvent class - A cell event is a cell with a turn and a state.
+ * @see ICellEvent
+ * @see ICoordinate
+ * @see CellInfo
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0.0
+ */
 public class CellEvent implements ICellEvent {
 
     protected int turn;

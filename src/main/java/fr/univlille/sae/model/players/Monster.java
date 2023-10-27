@@ -8,6 +8,15 @@ import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.Maze;
 
+/**
+ * Monster class - A monster is a human player that can move on a cell.
+ * @see IMonsterStrategy
+ * @see ICellEvent
+ * @see ICoordinate
+ * @see Cell
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0.0
+ */
 public class Monster implements IMonsterStrategy {
     private static final int DEPLACEMENT = 1;
     protected boolean[][] maze;
@@ -25,6 +34,10 @@ public class Monster implements IMonsterStrategy {
         lastShotHunter = null;
     }
 
+    /**
+     * Convert the maze from Cell[][] to boolean[][]. True if the cell is empty or the exit otherwise false.
+     * @return  (boolean[][])   The maze converted
+     */
     public boolean[][] convert() {
         boolean[][] mazeB = new boolean[discoveredMaze.length][discoveredMaze[0].length];
         for(int i = 0; i < discoveredMaze.length; i++) {
@@ -40,11 +53,19 @@ public class Monster implements IMonsterStrategy {
         this(null, null);
     }
 
+    /**
+     * Play is not implemented for the moment.
+     * @throws UnsupportedOperationException    If the method is not implemented
+     */
     @Override
     public ICoordinate play() {
         throw new UnsupportedOperationException("Unimplemented method 'play'");
     }
 
+    /**
+     * Update the maze with the new information.
+     * @param arg0  (ICellEvent)    The new information
+     */
     @Override
     public void update(ICellEvent cellule) {
         if(cellule.getState() == CellInfo.HUNTER)
@@ -56,11 +77,20 @@ public class Monster implements IMonsterStrategy {
         }
     }
 
+    /**
+     * Initialize the maze with the boolean[][].
+     * @param maze  (boolean[][])  The maze
+     */
     @Override
     public void initialize(boolean[][] maze) {
         this.maze = maze;
     }
 
+    /**
+     * Check if the monster can move to the coordinate.
+     * @param coord (ICoordinate)  The coordinate to check
+     * @return  (boolean)   True if the monster can move to the coordinate otherwise false
+     */
     public boolean canMove(ICoordinate coord)
     {
         if((coord.getCol() <= coordinateMonster.getCol()+DEPLACEMENT && coord.getCol() >= coordinateMonster.getCol()-DEPLACEMENT) && (coord.getRow() <= coordinateMonster.getRow()+DEPLACEMENT && coord.getRow() >= coordinateMonster.getRow()-DEPLACEMENT))

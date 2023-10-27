@@ -6,6 +6,14 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe représentant une cellule de la grille.
+ * Une cellule est caractérisée par sa position dans la grille, son type et le tour auquel elle a été découverte.
+ * @see ICoordinate
+ * @see CellInfo
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0.0
+ */
 public class Cell {
     protected ICoordinate coord;
     protected CellInfo info;

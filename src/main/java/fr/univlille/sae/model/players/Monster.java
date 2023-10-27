@@ -5,7 +5,6 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
-import fr.univlille.sae.model.Maze;
 
 public class Monster implements IMonsterStrategy {
     private static final int DEPLACEMENT = 1;
@@ -14,22 +13,21 @@ public class Monster implements IMonsterStrategy {
     protected Cell[][] discoveredMaze;
     protected ICoordinate coordinateMonster;
 
-    public Monster(String name, boolean[][] maze)
+    public Monster(String name, boolean[][] maze, Cell[][] discorveredMaze)
     {
         this.name = name;
         this.maze = maze;
-        this.discoveredMaze = Maze.getMaze();
-        coordinateMonster = Maze.getCoordMonster();
+        this.discoveredMaze = discorveredMaze;
+        coordinateMonster = null;
     }
 
     public Monster()
     {
-        this(null, null);
+        this(null, null, null);
     }
 
     @Override
     public ICoordinate play() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'play'");
     }
 
@@ -40,15 +38,14 @@ public class Monster implements IMonsterStrategy {
     }
 
     @Override
-    public void initialize(boolean[][] arg0) {
-        this.maze = arg0;    
+    public void initialize(boolean[][] maze) {
+        this.maze = maze;    
     }
 
     public boolean canMove(ICoordinate coord)
     {
         if((coord.getCol() <= coordinateMonster.getCol()+DEPLACEMENT && coord.getCol() >= coordinateMonster.getCol()-DEPLACEMENT) && (coord.getRow() <= coordinateMonster.getRow()+DEPLACEMENT && coord.getRow() >= coordinateMonster.getRow()-DEPLACEMENT))
         {
-            // System.out.println(coord.getCol());
             return maze[coord.getRow()][coord.getCol()] && !coord.equals(coordinateMonster);
         }
         return false;
@@ -65,6 +62,4 @@ public class Monster implements IMonsterStrategy {
     public void setCoordinateMonster(ICoordinate coordinateMonster) {
         this.coordinateMonster = coordinateMonster;
     }
-
-    
 }

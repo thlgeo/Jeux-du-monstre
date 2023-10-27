@@ -26,7 +26,7 @@ public class Maze {
     protected boolean isHunterTurn;
     protected IHunterStrategy hunter;
     protected IMonsterStrategy monster;
-    public Cell[][] maze;
+    public static Cell[][] maze;
 
     protected static final String FS = "file.seperator";
 
@@ -64,7 +64,7 @@ public class Maze {
 
     }
 
-    public Cell[][] getMaze() {
+    public static Cell[][] getMaze() {
         return maze;
     }
 

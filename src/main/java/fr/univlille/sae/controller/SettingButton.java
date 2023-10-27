@@ -1,4 +1,4 @@
-package fr.univlille.sae.controller.menuButton;
+package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
 import fr.univlille.sae.view.ParameterView;

@@ -1,14 +1,12 @@
 package fr.univlille.sae.view;
 
 import fr.univlille.sae.Main;
-import fr.univlille.sae.controller.menuButton.LaunchButton;
-import fr.univlille.sae.controller.menuButton.SettingButton;
+import fr.univlille.sae.controller.LaunchButton;
+import fr.univlille.sae.controller.SettingButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 

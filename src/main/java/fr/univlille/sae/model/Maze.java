@@ -40,7 +40,7 @@ public class Maze {
     }
 
     public Maze() {
-        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, false, new Hunter(), new Monster(), "");
+        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, false, new Hunter(), new Monster(), "defaultMaze");
     }
 
     private void initializeMaze(String filePath) {
@@ -48,6 +48,7 @@ public class Maze {
             BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty(FS)+"res"+System.getProperty(FS)+"mazes"+System.getProperty(FS)+filePath));
             for(int rowId = 0 ; rowId < this.getNbRows(); rowId++) {
                 String currentLine = reader.readLine();
+                if (currentLine.length() > this.getNbCols()) { };
                 for (int colId = 0 ; colId < currentLine.length() ; colId++) {
                     maze[rowId][colId] = new Cell(new Coordinate(rowId, colId), Cell.charToInfo.get(currentLine.charAt(colId)));
                 }

@@ -1,7 +1,10 @@
 package fr.univlille.sae.controller;
 
+import fr.univlille.sae.Main;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+
+import java.io.File;
 
 public class ValidationController extends Button {
     NameController nameMonster;
@@ -12,6 +15,7 @@ public class ValidationController extends Button {
         this.nameMonster = nameMonster;
         this.nameHunter = nameHunter;
         this.size = size;
-        setText("Enregistrer les paramètres");
+        setText("Enregistrer les parametres");
+        setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 20));
     }
 }

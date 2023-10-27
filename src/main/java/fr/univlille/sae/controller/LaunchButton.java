@@ -1,9 +1,10 @@
-package fr.univlille.sae.controller.menuButton;
+package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
 import fr.univlille.sae.view.HunterView;
 import fr.univlille.sae.view.MainView;
 import fr.univlille.sae.view.MonsterView;
+import fr.univlille.sae.view.PassTurnView;
 import javafx.scene.control.Button;
 
 import java.io.File;
@@ -20,6 +21,8 @@ public class LaunchButton extends Button {
         setOnAction(event -> {
             new MonsterView();
             new HunterView();
+            new PassTurnView(true);
+            new PassTurnView(false);
         });
     }
 }

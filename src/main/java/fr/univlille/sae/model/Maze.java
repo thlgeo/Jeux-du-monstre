@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import fr.univlille.sae.model.cellule.CellEvent;
 import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
+import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 import fr.univlille.sae.model.players.Monster;
 import fr.univlille.sae.model.players.Hunter;
 
@@ -37,28 +38,31 @@ public class Maze {
     }
 
     public Maze() {
-        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, "");
+        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, "defaultMaze");
     }
 
     private void initializeMaze(String filePath) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+System.getProperty(FS)+"res"+System.getProperty(FS)+"mazes"+System.getProperty(FS)+filePath));
+            int mazeRow = Integer.parseInt(reader.readLine());
+            int mazeCol = Integer.parseInt(reader.readLine());
+            if (mazeRow > getNbRows() && mazeCol > getNbRows()) {
+                throw new UnsupportedMazeException();
+            }
             for(int rowId = 0 ; rowId < this.getNbRows(); rowId++) {
                 String currentLine = reader.readLine();
                 for (int colId = 0 ; colId < currentLine.length() ; colId++) {
                     maze[rowId][colId] = new Cell(new Coordinate(rowId, colId), Cell.charToInfo.get(currentLine.charAt(colId)));
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
+        } catch (UnsupportedMazeException | IOException e) {
             System.out.println(e.getMessage());
         }
 
 
     }
 
-    public static Cell[][] getMaze() {
+    public Cell[][] getMaze() {
         return maze;
     }
 
@@ -90,7 +94,7 @@ public class Maze {
         return hunter;
     }
 
-    public void setHunter(IHunterStrategy hunter) {
+    public void setHunter(Hunter hunter) {
         this.hunter = hunter;
     }
 

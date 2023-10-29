@@ -26,7 +26,7 @@ public class LaunchButton extends Button {
         setOnAction(event -> {
             new MonsterView();
             new HunterView();
-            new PassTurnView(true);
+            new PassTurnView(true); //TODO: Changer le fonctionnements, pour que les boutons de changement soit dans la View des deux autres
             new PassTurnView(false);
         });
     }

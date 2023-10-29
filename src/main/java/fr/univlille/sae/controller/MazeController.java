@@ -14,7 +14,7 @@ public class MazeController extends GridPane {
     Button[][] maze;
 
     public MazeController(){
-        maze = new Button[8][8];
+        maze = new Button[8][8]; //TODO: utiliser les data données par l'utilisateur
         setDefaultMaze();
         setAlignment(Pos.CENTER);
     }
@@ -24,7 +24,7 @@ public class MazeController extends GridPane {
             for(int j = 0; j < 8; j++){
                 CellController cell = new CellController(j, i);
                 cell.setOnAction(e -> System.out.println(cell.getX() + " " + cell.getY()));
-                maze[i][j] = cell;
+                maze[i][j] = cell; //TODO: utiliser une méthode, ce qui permettra de notifier les autres classes
                 add(cell, i, j);
             }
         }

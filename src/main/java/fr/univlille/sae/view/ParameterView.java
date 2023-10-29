@@ -29,7 +29,7 @@ public class ParameterView extends Stage {
         show();
     }
 
-    public void setParameterScene(){
+    public void setParameterScene(){ //TODO: faire ma fonction de sauvegarder des données saisies
         VBox root = new VBox();
         Label nameMonster = new Label("Nom du Monstre");
         nameMonster.setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 30));

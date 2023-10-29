@@ -33,7 +33,7 @@ public class MonsterView extends Stage {
     public void setMonsterScene(){
         VBox root = new VBox();
         Label titre = new Label("Monstre");
-        titre.setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 30));
+        titre.setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 30)); //TODO: cette ligné est utilisé 7 fois, il faudrait la mettre dans une méthode
         Label tour = new Label("Tour du Monstre");
         tour.setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 30));
         MazeController mc = new MazeController();

@@ -14,6 +14,14 @@ import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 import fr.univlille.sae.model.players.Monster;
 import fr.univlille.sae.model.players.Hunter;
 
+/**
+ * Maze class - The main maze is contained in a two-dimensional array of cells called a maze, which allows the game to run..
+ * @see Monster
+ * @see Hunter
+ * @see Cell
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0.0
+ */
 public class Maze {
 
     protected int turn;
@@ -40,6 +48,10 @@ public class Maze {
         this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, "defaultMaze");
     }
 
+    /**
+     * Import a maze from a file specified in parameters.
+     * @param filePath file name
+     */
     private void initializeMaze(String filePath) {
         BufferedReader reader = null;
         this.maze = new Cell[this.getNbRows()][this.getNbCols()];
@@ -114,6 +126,10 @@ public class Maze {
         return maze[row][col];
     }
 
+    /**
+     * Notifies observers if the monster moved, won or cannot move.
+     * @param newCoord coordinate chosen by the player/AI.
+     */
     public void deplacementMonstre(ICoordinate newCoord) {
         if(!this.monster.canMove(newCoord)) { return;  } //TODO: Notify
 
@@ -132,6 +148,11 @@ public class Maze {
 
     }
 
+    /**
+     * Informs observers if the hunter shot the monster (victory). If not, the hunter informs the monster of the coordinates of the shot and the type of cell he shot.
+     * @param coord coordinate chosen by the player/AI.
+     * @throws MonsterNotFoundException
+     */
     public void tireChasseur(ICoordinate coord) throws MonsterNotFoundException {
         if(coord.equals(getCoordMonster(turn)))
         {

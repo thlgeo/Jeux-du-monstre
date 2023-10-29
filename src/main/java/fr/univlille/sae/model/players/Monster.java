@@ -6,7 +6,6 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
-import fr.univlille.sae.model.Maze;
 
 /**
  * Monster class - A monster is a human player that can move on a cell.
@@ -63,7 +62,7 @@ public class Monster implements IMonsterStrategy {
     }
 
     /**
-     * Update the maze with the new information.
+     * Update the discovered maze with the new information.
      * @param arg0  (ICellEvent)    The new information
      */
     @Override

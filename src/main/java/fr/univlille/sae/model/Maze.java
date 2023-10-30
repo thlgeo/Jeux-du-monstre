@@ -15,7 +15,7 @@ import fr.univlille.sae.model.players.Monster;
 import fr.univlille.sae.model.players.Hunter;
 
 /**
- * Maze class - The main maze is contained in a two-dimensional array of cells called a maze, which allows the game to run..
+ * Classe Maze - La classe contient un tableau à deux dimensions de cellules permettant le lancement du jeu et son bon déroulement.
  * @see Monster
  * @see Hunter
  * @see Cell
@@ -49,8 +49,8 @@ public class Maze {
     }
 
     /**
-     * Import a maze from a file specified in parameters.
-     * @param filePath file name
+     * Import un labyrinthe depuis un fichier spécifié en paramètre.
+     * @param filePath Nom du fichier
      */
     private void initializeMaze(String filePath) {
         BufferedReader reader = null;
@@ -127,7 +127,7 @@ public class Maze {
     }
 
     /**
-     * Notifies observers if the monster moved, won or cannot move.
+     * Notifie aux observeurs si le monstre a bougé ou non, ou s'il a gagné.
      * @param newCoord coordinate chosen by the player/AI.
      */
     public void deplacementMonstre(ICoordinate newCoord) {
@@ -149,7 +149,7 @@ public class Maze {
     }
 
     /**
-     * Informs observers if the hunter shot the monster (victory). If not, the hunter informs the monster of the coordinates of the shot and the type of cell he shot.
+     * Notifie aux observers si le chasseur a tiré sur le monstre (victoire), sinon informe le monstre des coordonnées du tir et informe le chasseur du type de la cellule choisie.
      * @param coord coordinate chosen by the player/AI.
      * @throws MonsterNotFoundException
      */

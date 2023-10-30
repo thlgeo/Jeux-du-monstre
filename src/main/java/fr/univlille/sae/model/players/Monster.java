@@ -8,7 +8,7 @@ import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
 
 /**
- * Monster class - A monster is a human player that can move on a cell.
+ * Classe Monster - Un monstre est un joueur humain qui peut se déplacer sur une cellule (si la cellule peut être atteinte).
  * @see IMonsterStrategy
  * @see ICellEvent
  * @see ICoordinate
@@ -34,8 +34,8 @@ public class Monster implements IMonsterStrategy {
     }
 
     /**
-     * Convert the maze from Cell[][] to boolean[][]. True if the cell is empty or the exit otherwise false.
-     * @return  (boolean[][])   The maze converted
+     * Convertie le labyrinthe de type Cell[][] à boolean[][]. Les cellules du nouveau labyrinthe sont égales à true si la cellule est vide ou égale à zéro, sinon false.
+     * @return  (boolean[][])   Le labyrinthe converti
      */
     public boolean[][] convert() {
         boolean[][] mazeB = new boolean[discoveredMaze.length][discoveredMaze[0].length];
@@ -62,8 +62,8 @@ public class Monster implements IMonsterStrategy {
     }
 
     /**
-     * Update the discovered maze with the new information.
-     * @param arg0  (ICellEvent)    The new information
+     * Met à jour le labyrinthe découvert avec l'information reçu.
+     * @param arg0  (ICellEvent)    Information reçu à mettre à jour
      */
     @Override
     public void update(ICellEvent cellule) {
@@ -77,8 +77,8 @@ public class Monster implements IMonsterStrategy {
     }
 
     /**
-     * Initialize the maze with the boolean[][].
-     * @param maze  (boolean[][])  The maze
+     * Initialise le labyrinthe avec un tableau à deux dimensions de booléen.
+     * @param maze  (boolean[][])  Le labyrinthe.
      */
     @Override
     public void initialize(boolean[][] maze) {
@@ -86,9 +86,9 @@ public class Monster implements IMonsterStrategy {
     }
 
     /**
-     * Check if the monster can move to the coordinate.
-     * @param coord (ICoordinate)  The coordinate to check
-     * @return  (boolean)   True if the monster can move to the coordinate otherwise false
+     * Vérifie si le monstre peut se déplacer aux coordonnées indiquées.
+     * @param coord (ICoordinate)  Les coordonnées à verifier
+     * @return  (boolean)   True si le monstre peut s'y déplacer sinon false
      */
     public boolean canMove(ICoordinate coord)
     {

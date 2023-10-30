@@ -3,7 +3,7 @@ package fr.univlille.sae.model;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
 /**
- * Coordinate class - A coordinate is a position in the maze.
+ * Classe Coordinate - Une coordonnée est une position dans le labyrinthe, composée d'un numéro de ligne et de colonne.
  * @see ICoordinate
  * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0

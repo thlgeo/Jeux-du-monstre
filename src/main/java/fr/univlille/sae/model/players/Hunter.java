@@ -7,7 +7,7 @@ import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
 
 /**
- * Hunter class - A hunter is a human player that can shoot on a cell.
+ * Classe Hunter - Un chasseur est un joueur humain qui peut tirer sur une cellule pour en découvrir son type.
  * @see IHunterStrategy
  * @see ICellEvent
  * @see ICoordinate
@@ -50,9 +50,9 @@ public class Hunter implements IHunterStrategy {
     }
 
     /**
-     * Initialize the maze with the number of rows and columns.
-     * @param rows  (int)   Number of rows
-     * @param cols  (int)   Number of columns
+     * Initialise le labyrinthe avec le nombre de lignes et de colonnes spécifiés en paramètre.
+     * @param rows  (int)   Nombre de lignes
+     * @param cols  (int)   Nombre de colonnes
      */
     @Override
     public void initialize(int rows, int cols) {
@@ -71,8 +71,8 @@ public class Hunter implements IHunterStrategy {
     public ICoordinate play() { throw new UnsupportedOperationException(); }
 
     /**
-     * Update the maze with the cell event.
-     * @param iCellEvent    (ICellEvent)    Cell event
+     * Met à jour le labyrinthe avec l'information sur la cellule tirée.
+     * @param iCellEvent    (ICellEvent)    Cellule tiré
      */
     @Override
     public void update(ICellEvent iCellEvent) {
@@ -84,9 +84,9 @@ public class Hunter implements IHunterStrategy {
 
 
     /**
-     * Get the cell at the given coordinate.
-     * @param iCoordinate   (ICoordinate)   Coordinate
-     * @return  (Cell)  Cell at the given coordinate
+     * Récupère la cellule à la coordonnée spécifiée en paramètre.
+     * @param iCoordinate   (ICoordinate)   Coordonnée
+     * @return  (Cell)  Cellule à la coordonnée
      */
     public Cell getCelule(ICoordinate iCoordinate) {
         return this.maze[iCoordinate.getRow()][iCoordinate.getCol()];

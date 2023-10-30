@@ -4,7 +4,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
 /**
- * CellEvent class - A cell event is a cell with a turn and a state.
+ * Classe CellEvent - une CellEvent est une cellule avec un type et un tour.
  * @see ICellEvent
  * @see ICoordinate
  * @see CellInfo

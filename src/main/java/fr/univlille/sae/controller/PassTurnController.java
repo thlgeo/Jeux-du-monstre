@@ -14,6 +14,6 @@ public class PassTurnController extends Button{
     public PassTurnController(String text){
         super("Passer au tour du " + text);
         setMinSize(200, 50);
-        setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 20));
+        setFont(Main.loadFont(Main.ARCADE_FONT, 20));
     }
 }

@@ -21,7 +21,7 @@ public class SizeController extends HBox {
         getChildren().addAll(moins,new Label("  "), size, new Label("  "), plus);
         setAction();
         size.setText("8");
-        size.setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 20));
+        size.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         setAlignment(Pos.CENTER);
     }
 

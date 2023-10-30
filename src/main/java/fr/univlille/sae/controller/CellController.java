@@ -1,6 +1,7 @@
 package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
+import fr.univlille.sae.model.Maze;
 import javafx.scene.control.Button;
 
 import java.io.File;
@@ -13,8 +14,10 @@ import java.io.File;
 public class CellController extends Button {
     private int x;
     private int y;
-    public CellController(int x, int y){
+    private Maze maze;
+    public CellController(int x, int y, Maze maze){
         super(" ");
+        this.maze = maze;
         this.x = x;
         this.y = y;
         setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000");
@@ -27,5 +30,9 @@ public class CellController extends Button {
 
     public int getY() {
         return y;
+    }
+
+    public void setAction(){
+        setOnAction(e -> System.out.println(x + " " + y));
     }
 }

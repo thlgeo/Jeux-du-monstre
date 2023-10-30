@@ -1,5 +1,6 @@
 package fr.univlille.sae;
 
+import fr.univlille.sae.model.Maze;
 import fr.univlille.sae.view.MainView;
 import javafx.application.Application;
 import javafx.scene.text.Font;
@@ -16,6 +17,7 @@ import java.io.FileNotFoundException;
  */
 public class Main extends Application {
     public static final String FONT_DIR = System.getProperty("user.dir") + File.separator + "res" + File.separator + "font" + File.separator;
+    public static final String ARCADE_FONT = "arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF";
 
     /**
      * Cette méthode permet de lancer le Stage Principal de l'application
@@ -24,7 +26,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        new MainView();
+        new MainView(new Maze());
     }
 
     /**

@@ -3,13 +3,15 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static fr.univlille.sae.Main.FONT_DIR;
+
 
 public class TestMaze {
     Maze maze;
 
     @Test
     public void testInitializeMaze() {
-        maze = new Maze(1, 4, 4, "testMaze");
+        maze = new Maze(1, 3,3);
         Cell c1 = new Cell(new Coordinate(0,0), ICellEvent.CellInfo.WALL);
         Cell c2 = new Cell(new Coordinate(0,1), ICellEvent.CellInfo.EMPTY);
         Cell c3 = new Cell(new Coordinate(1,1), ICellEvent.CellInfo.MONSTER);

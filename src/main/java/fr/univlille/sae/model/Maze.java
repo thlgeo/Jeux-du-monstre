@@ -36,33 +36,34 @@ public class Maze {
 
     public static final int DEFAULT_DIMENSION = 10;
 
-    public Maze(int turn, int nbRows, int nbCols, String filepath) {
+    public Maze(int turn, int nbRows, int nbCols) {
         this.turn = turn;
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.maze = new Cell[nbRows][nbCols];
-        initializeMaze(filepath);
+        importMaze(nbRows, nbCols);
     }
 
     public Maze() {
-        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION, "defaultMaze");
+        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION);
     }
 
     /**
-     * Import un labyrinthe depuis un fichier spécifié en paramètre.
-     * @param filePath Nom du fichier
+     * Import un labyrinthe de la taille mise en paramètre.
+     * @param nbRows nombre de lignes du labyrinthe
+     * @param nbCols nombre de colonnes du labyrinthe
+     * @param id l'identifiant du labyrinthe
      */
-    private void initializeMaze(String filePath) {
+    private void importMaze(int nbRows, int nbCols, int id) {
         BufferedReader reader = null;
-        this.maze = new Cell[this.getNbRows()][this.getNbCols()];
         try {
-            reader = new BufferedReader(new FileReader(System.getProperty("user.dir")+FS+"res"+FS+"mazes"+FS+filePath));
-            int mazeRow = Integer.parseInt(reader.readLine());
-            int mazeCol = Integer.parseInt(reader.readLine());
-            if (mazeRow > getNbRows() && mazeCol > getNbRows()) {
+            if (nbRows > getNbRows() && nbCols > getNbRows()) {
                 throw new UnsupportedMazeException();
             }
-            for(int rowId = 0 ; rowId < mazeRow; rowId++) {
+            this.maze = new Cell[this.getNbRows()][this.getNbCols()];
+            String filePath = mazefilepath(nbRows, nbCols, id);
+            reader = new BufferedReader(new FileReader(filePath));
+            for(int rowId = 0 ; rowId < nbRows; rowId++) {
                 String currentLine = reader.readLine();
                 for (int colId = 0 ; colId < currentLine.length() ; colId++) {
                     maze[rowId][colId] = new Cell(new Coordinate(rowId, colId), Cell.charToInfo.get(currentLine.charAt(colId)));
@@ -76,6 +77,26 @@ public class Maze {
                 //Do Nothing
             }
         }
+    }
+
+    /**
+     * Prends les coordonnées et l'identifiant du labyrinthe et renvoit le chemin de ce labyrinthe (utilisé dans importMaze)
+     * @param nbCols Le nombre de colonnes du labyrinthe
+     * @param nbRows Le nombre de lignes du labyrinthe
+     * @param id Identifiant du labyrinthe
+     * @return String - le chemin du fichier du labyrinthe associé aux paramètres
+     */
+    private String mazefilepath(int nbRows, int nbCols, int id) {
+        return System.getProperty("user.dir")+FS+"res"+FS+"mazes"+FS+"maze-"+nbCols+"-"+nbRows+"-"+id;
+    }
+
+    /**
+     * Importe le labyrinthe par défaut (id=0) de ces paramètres
+     * @param nbCols
+     * @param nbRows
+     */
+    private void importMaze(int nbCols, int nbRows) {
+        importMaze(nbCols, nbRows, 0);
     }
 
     public Cell[][] getMaze() {

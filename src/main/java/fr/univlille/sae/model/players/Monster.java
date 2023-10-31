@@ -63,7 +63,7 @@ public class Monster implements IMonsterStrategy {
 
     /**
      * Met à jour le labyrinthe découvert avec l'information reçu.
-     * @param arg0  (ICellEvent)    Information reçu à mettre à jour
+     * @param cellule  (ICellEvent)    Information reçu à mettre à jour
      */
     @Override
     public void update(ICellEvent cellule) {

@@ -15,21 +15,21 @@ public class MazeController extends GridPane {
     Button[][] mazeTable;
     private Maze maze;
 
-    public MazeController(Maze maze){
+    public MazeController(Maze maze, boolean isMonsterMaze){
         this.maze = maze;
-        mazeTable = new Button[maze.getNbRows()][maze.getNbCols()]; //TODO: utiliser les data données par l'utilisateur
-        setDefaultMaze();
+        mazeTable = new Button[maze.getNbRows()][maze.getNbCols()];
+        setDefaultMaze(isMonsterMaze);
         setAlignment(Pos.CENTER);
     }
 
     /**
      * Cette méthode permet de créer le labyrinthe par défaut
      */
-    public void setDefaultMaze(){
+    public void setDefaultMaze(boolean isMonsterMaze){
         for(int i = 0; i < maze.getNbRows(); i++){
             for(int j = 0; j < maze.getNbCols(); j++){
-                CellController cell = new CellController(j, i, maze);
-                mazeTable[i][j] = cell; //TODO: utiliser une méthode, ce qui permettra de notifier les autres classes
+                CellController cell = new CellController(j, i, maze, isMonsterMaze);
+                mazeTable[i][j] = cell;
                 add(cell, i, j);
             }
         }

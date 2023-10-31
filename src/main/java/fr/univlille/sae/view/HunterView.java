@@ -1,5 +1,6 @@
 package fr.univlille.sae.view;
 
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
@@ -9,13 +10,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
 
 /**
  * Cette classe est la fenêtre de jeu du chasseur
@@ -84,7 +81,7 @@ public class HunterView extends Stage implements Observer {
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         tour = new Label("Tour du Monstre");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        mc = new MazeController(maze);
+        mc = new MazeController(maze, false);
     }
 
     /**
@@ -99,10 +96,10 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      * @param subject correspond au sujet observé
-     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
+     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre    -   (ICellEvent)
      */
     @Override
     public void update(Subject subject, Object o) {
-
+        if(o instanceof ICellEvent cell) { mc.setText(cell.getCoord().getRow(), cell.getCoord().getCol(), cell.getState().name()); }
     }
 }

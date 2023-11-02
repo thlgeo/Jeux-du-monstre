@@ -25,6 +25,11 @@ public class MazeController extends GridPane {
         setAlignment(Pos.CENTER);
     }
 
+    public void resize(){
+    	mazeTable = new Button[maze.getNbRows()][maze.getNbCols()];
+        setDefaultMaze(isMonsterMaze);
+    }
+
     /**
      * Cette méthode permet de créer le labyrinthe par défaut
      */
@@ -32,10 +37,6 @@ public class MazeController extends GridPane {
         for(int i = 0; i < maze.getNbRows(); i++){
             for(int j = 0; j < maze.getNbCols(); j++){
                 CellController cell = new CellController(j, i, maze, isMonsterMaze);
-                cell.setMinHeight(40);
-                cell.setMinWidth(40);
-                cell.setMaxHeight(40);
-                cell.setMaxWidth(40);
                 mazeTable[i][j] = cell;
                 add(cell, i, j);
             }

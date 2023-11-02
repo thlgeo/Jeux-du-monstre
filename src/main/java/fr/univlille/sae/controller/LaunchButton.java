@@ -2,10 +2,6 @@ package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
 import fr.univlille.sae.model.Maze;
-import fr.univlille.sae.view.HunterView;
-import fr.univlille.sae.view.MainView;
-import fr.univlille.sae.view.MonsterView;
-import fr.univlille.sae.view.PassTurnView;
 import javafx.scene.control.Button;
 
 import java.io.File;
@@ -31,9 +27,9 @@ public class LaunchButton extends Button {
      */
     public void setAction(){
         setOnAction(event -> {
-            new MonsterView(maze);
-            new HunterView(maze);
-            //new PassTurnView(true); //TODO: Changer le fonctionnements, pour que les boutons de changement soit dans la View des deux autres
+            maze.notifyShowMH();
+            maze.notifyDiscoveredMaze();
+            //new PassTurnView(true);
             //new PassTurnView(false);
         });
     }

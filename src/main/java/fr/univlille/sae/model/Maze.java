@@ -12,7 +12,6 @@ import java.util.Random;
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.events.CellEvent;
-import fr.univlille.sae.model.events.ParameterEvent;
 import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
 import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 import fr.univlille.sae.model.players.Monster;
@@ -26,8 +25,7 @@ import fr.univlille.sae.model.players.Hunter;
  * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0
  */
-public class
-Maze extends Subject {
+public class Maze extends Subject {
 
     public static final Random RDM = new Random();
     protected int turn;
@@ -41,7 +39,7 @@ Maze extends Subject {
     protected static final String FS = File.separator;
 
     public static final int DEFAULT_DIMENSION = 10;
-    private static final int DEFAULT_TURN = 0;
+    private static final int DEFAULT_TURN = 1;
 
     private Maze(int turn, int nbRows, int nbCols) {
         this.turn = turn;
@@ -173,8 +171,10 @@ Maze extends Subject {
     public void deplacementMonstre(ICoordinate newCoord) {
         try {
             this.getCoordMonster(this.getTurn());
-            if(!this.monster.canMove(newCoord)) { monster.notifyCantMove();  }
-
+            if (!this.monster.canMove(newCoord)) {
+                monster.notifyCantMove();
+                return;
+            }
             if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
                 victory(true);
                 return;
@@ -186,7 +186,7 @@ Maze extends Subject {
         monster.update(event);
         monster.setCoordinateMonster(newCoord);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
-        monster.notifyTurnChange();
+        hunter.notifyTurnChange();
     }
 
     /**
@@ -226,7 +226,7 @@ Maze extends Subject {
         monster.update(monsterEvent);
         hunter.update(hunterEvent);
         turn++;
-        hunter.notifyTurnChange();
+        monster.notifyTurnChange();
     }
 
     /**
@@ -255,8 +255,10 @@ Maze extends Subject {
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         importMaze(nbRows, nbCols);
-        this.hunter = new Hunter(hunterName, nbRows, nbCols);
-        this.monster = new Monster(monsterName, this.maze);
+        hunter.setName(hunterName);
+        monster.setName(monsterName);
+        hunter.setRowCol(nbRows, nbCols);
+        monster.setMaze(this.maze);
         notifyObservers("ParamMAJ");
     }
 
@@ -276,22 +278,23 @@ Maze extends Subject {
 
     public void attachMonster(Observer o){
         monster.attach(o);
-        monster.notifyDiscoveredMaze();
-        notifyObservers("close");
     }
 
     public void attachHunter(Observer o){
         hunter.attach(o);
     }
 
-    public void attachParameter(Observer o){
-        attach(o);
-        ParameterEvent pe = new ParameterEvent();
-        pe.setValue(ParameterEvent.NB_COLS, "" + nbCols);
-        pe.setValue(ParameterEvent.NB_ROWS, "" + nbRows);
-        pe.setValue(ParameterEvent.NAME_MONSTER, monster.getName());
-        pe.setValue(ParameterEvent.NAME_HUNTER, hunter.getName());
-        notifyObservers(pe);
+    public void notifyDiscoveredMaze(){
+        monster.notifyDiscoveredMaze();
+        hunter.notifyDiscoveredMaze();
     }
 
+    public void notifyShowParameter(){
+        notifyObservers();
+    }
+
+    public void notifyShowMH(){
+        monster.notifyShow();
+        hunter.notifyShow();
+    }
 }

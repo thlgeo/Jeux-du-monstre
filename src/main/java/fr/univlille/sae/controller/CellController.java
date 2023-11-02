@@ -26,6 +26,8 @@ public class CellController extends Button {
         this.x = x;
         this.y = y;
         this.isMonster = isMonsterCell;
+        setMinHeight(40);
+        setMinWidth(40);
         setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000");
         setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 20));
         this.setOnAction(e -> setAction());

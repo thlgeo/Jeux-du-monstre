@@ -33,6 +33,13 @@ public class Monster extends Subject implements IMonsterStrategy {
         lastShotHunter = null;
     }
 
+    public void setMaze(Cell[][] maze) {
+        discoveredMaze = maze;
+        this.maze = convert();
+        coordinateMonster = null;
+        lastShotHunter = null;
+    }
+
     /**
      * Convertie le labyrinthe de type Cell[][] à boolean[][]. Les cellules du nouveau labyrinthe sont égales à true si la cellule est vide ou égale à zéro, sinon false.
      * @return  (boolean[][])   Le labyrinthe converti
@@ -69,16 +76,18 @@ public class Monster extends Subject implements IMonsterStrategy {
     public void update(ICellEvent cellule) {
         if(cellule.getState() == CellInfo.HUNTER)  {
             notifyObservers(cellule);
-            Cell cell = get(lastShotHunter);
-            notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));
+            if(lastShotHunter != null){
+                Cell cell = get(lastShotHunter);
+                notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));
+            }
             lastShotHunter = cellule.getCoord();
         } else {
             ICoordinate coord = cellule.getCoord();
             Cell updateCell = this.discoveredMaze[coord.getRow()][coord.getCol()];
             updateCell.setInfo(cellule.getState());
             updateCell.setTurn(cellule.getTurn());
-            notifyObservers(cellule);
         }
+        notifyObservers(cellule);
     }
 
     /**
@@ -142,4 +151,8 @@ public class Monster extends Subject implements IMonsterStrategy {
     }
 
     public void notifyTurnChange() { notifyObservers("changerTour"); }
+
+    public void notifyShow(){
+        notifyObservers();
+    }
 }

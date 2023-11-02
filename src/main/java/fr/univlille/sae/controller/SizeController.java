@@ -18,17 +18,15 @@ public class SizeController extends HBox {
     Button plus = new Button("+");
     Label size = new Label();
     public static final int MIN_SIZE = 8;
+    public static final int DEFAULT_SIZE = 10;
     public static final int MAX_SIZE = 16;
 
 
-    public SizeController(){
-        this(MIN_SIZE);
-    }
 
-    public SizeController(int sizeValue) {
+    public SizeController() {
         getChildren().addAll(moins,new Label("  "), size, new Label("  "), plus);
         setAction();
-        size.setText(String.valueOf(sizeValue));
+        size.setText(String.valueOf(DEFAULT_SIZE));
         size.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         setAlignment(Pos.CENTER);
     }

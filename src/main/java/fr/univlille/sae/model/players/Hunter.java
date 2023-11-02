@@ -45,6 +45,11 @@ public class Hunter extends Subject implements IHunterStrategy {
     public void setName(String name) {
         this.name = name;
     }
+    public void setRowCol(int row, int col){
+        this.nbRows = row;
+        this.nbCols = col;
+        initialize(row,col);
+    }
 
     public Hunter() {
         this(DEFAULT_NAME);
@@ -111,5 +116,13 @@ public class Hunter extends Subject implements IHunterStrategy {
 
     public void notifyTurnChange(){
         notifyObservers("changerTour");
+    }
+
+    public void notifyShow(){
+        notifyObservers();
+    }
+
+    public void notifyDiscoveredMaze(){
+        notifyObservers(maze);
     }
 }

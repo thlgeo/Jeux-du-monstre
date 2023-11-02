@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  */
 public class HunterView extends Stage implements Observer {
     public static final int WIDTH = 750;
-    public static final int HEIGHT = 500;
+    public static final int HEIGHT = 700;
 
     private Label titre;
     private Label tour;
@@ -37,7 +37,6 @@ public class HunterView extends Stage implements Observer {
         setHunterNodes();
         setWaitScene();
         maze.attachHunter(this);
-        show();
     }
 
     /**
@@ -92,7 +91,7 @@ public class HunterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject) {
-        return;
+        show();
     }
 
     /**
@@ -106,8 +105,9 @@ public class HunterView extends Stage implements Observer {
             mc.setRender(cell.getCoord().getRow(), cell.getCoord().getCol(), Cell.render(cell.getState(), cell.getTurn()));
             tour.setText("Tour du monstre !");
             setWaitScene();
-        }
-        else if("endGame".equals(o)) {
+        } else if(o instanceof Cell[][]) {
+            mc.resize();
+        } else if("endGame".equals(o)) {
             close();
         } else if (o.equals("changerTour")) {
             tour.setText("Tour du chasseur !");

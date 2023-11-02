@@ -2,10 +2,7 @@ package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
 import fr.univlille.sae.model.Maze;
-import fr.univlille.sae.view.ParameterView;
 import javafx.scene.control.Button;
-
-import java.io.File;
 
 /**
  * Cette classe correspond au bouton de lancement de la page de paramètres
@@ -28,7 +25,7 @@ public class SettingButton extends Button {
      */
     public void setAction(){
         setOnAction(event -> {
-            new ParameterView(maze);
+            maze.notifyShowParameter();
         });
     }
 }

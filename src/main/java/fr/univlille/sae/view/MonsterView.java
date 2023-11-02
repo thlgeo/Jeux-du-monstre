@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  */
 public class MonsterView extends Stage implements Observer {
     public static final int WIDTH = 750;
-    public static final int HEIGHT = 500;
+    public static final int HEIGHT = 700;
     private Label titre;
     private Label tour;
     private MazeController mc;
@@ -36,7 +36,6 @@ public class MonsterView extends Stage implements Observer {
         setMonsterNodes();
         setMonsterScene();
         maze.attachMonster(this);
-        show();
     }
 
 
@@ -94,7 +93,7 @@ public class MonsterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject) {
-        return;
+        show();
     }
 
     /**
@@ -109,6 +108,7 @@ public class MonsterView extends Stage implements Observer {
             tour.setText("Tour du chasseur !");
             setWaitScene();
         } else if(o instanceof Cell[][] discoveredMaze) {
+            mc.resize();
             mc.initMaze(discoveredMaze);
         } else if("cantMove".equals(o)) {
             new Alert(Alert.AlertType.ERROR, "Impossible de vous déplacer sur cette case !").showAndWait();

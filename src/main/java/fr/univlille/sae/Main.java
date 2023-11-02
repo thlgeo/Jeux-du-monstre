@@ -1,7 +1,10 @@
 package fr.univlille.sae;
 
 import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.view.HunterView;
 import fr.univlille.sae.view.MainView;
+import fr.univlille.sae.view.MonsterView;
+import fr.univlille.sae.view.ParameterView;
 import javafx.application.Application;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -26,7 +29,11 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        new MainView(new Maze());
+        Maze maze = new Maze();
+        new MainView(maze);
+        new ParameterView(maze);
+        new HunterView(maze);
+        new MonsterView(maze);
     }
 
     /**

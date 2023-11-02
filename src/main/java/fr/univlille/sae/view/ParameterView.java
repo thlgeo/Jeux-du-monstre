@@ -43,8 +43,7 @@ public class ParameterView extends Stage implements Observer {
         setParameterNodes();
         setParameterScene();
         setResizable(false);
-        maze.attachParameter(this);
-        show();
+        maze.attach(this);
     }
 
 
@@ -75,12 +74,12 @@ public class ParameterView extends Stage implements Observer {
         nameMonster.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         nameHunter = new Label("Nom du Chasseur");
         nameHunter.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        titreHeight = new Label("Hauteur du labyrinthe");
+        titreHeight = new Label("taille du labyrinthe");
         titreHeight.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         //titreWidth = new Label("Largeur du labyrinthe");
         //titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        monsterName = new NameController();
-        hunterName = new NameController();
+        monsterName = new NameController(true);
+        hunterName = new NameController(false);
         height = new SizeController();
         //width = new SizeController();
         validation = new ValidationController(monsterName, hunterName, height, height, maze);
@@ -92,7 +91,7 @@ public class ParameterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject) {
-        return;
+        show();
     }
 
     /**
@@ -102,14 +101,6 @@ public class ParameterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o.equals("ParamMAJ")){
-            close();
-        }else if(o instanceof ParameterEvent pe){
-            System.out.println("AGYHQGAJGYAUGAUY");
-            monsterName.setText(pe.getValue(ParameterEvent.NAME_MONSTER));
-            hunterName.setText(pe.getValue(ParameterEvent.NAME_HUNTER));
-            height.setValue(pe.getValue(ParameterEvent.NB_ROWS));
-            //width.setValue(pe.getValue(ParameterEvent.NB_COLS));
-        }
+        close();
     }
 }

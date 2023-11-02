@@ -8,7 +8,8 @@ import javafx.scene.control.TextField;
  * @Version 1.0
  */
 public class NameController extends TextField {
-    public NameController(){
+    public NameController( boolean isMonster){
         setMinWidth(200);
+        setText(isMonster ? "Monster" : "Hunter");
     }
 }

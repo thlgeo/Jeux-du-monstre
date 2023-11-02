@@ -45,7 +45,7 @@ public class ValidationController extends Button {
                 new Alert(Alert.AlertType.ERROR, "Veuillez entrer une taille entre "  + SizeController.MIN_SIZE + " et " + SizeController.MAX_SIZE + "  !").showAndWait();
                 return;
             }
-            maze.changerParam(nameMonster.getText(), nameHunter.getText(), height.getValue(), width.getValue());
+            maze.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue());
         });
     }
 }

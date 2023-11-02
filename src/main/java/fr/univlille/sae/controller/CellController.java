@@ -46,7 +46,7 @@ public class CellController extends Button {
     public void setAction(){
         if(this.isMonster) { this.maze.deplacementMonstre(this.getCoord()); }
         else {
-            try { this.maze.tireChasseur(this.getCoord()); }
+            try { this.maze.tirerChasseur(this.getCoord()); }
             catch (Exception e) { new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait(); }
         }
     }

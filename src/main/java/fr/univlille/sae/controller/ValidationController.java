@@ -4,6 +4,7 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.model.Maze;
 import fr.univlille.sae.view.HunterView;
 import fr.univlille.sae.view.MonsterView;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 import java.io.File;
@@ -20,7 +21,8 @@ public class ValidationController extends Button {
     private SizeController width;
     private Maze maze;
 
-    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width) {
+    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, Maze maze) {
+        this.maze = maze;
         this.nameMonster = nameMonster;
         this.nameHunter = nameHunter;
         this.height = height;
@@ -34,7 +36,16 @@ public class ValidationController extends Button {
      * Cette méthode permet de paramétrer les actions du bouton cad signaler les changements de paramètres
      */
     public void setAction(){
-        //TODO: Ajouter le setOnAction
-        return;
+        setOnAction(event -> {
+            if(nameMonster.getText() == null || nameHunter.getText() == null) {
+                new Alert(Alert.AlertType.ERROR, "Veuillez entrer un nom !").showAndWait();
+                return;
+            }
+            if(!height.isValid() || !width.isValid()) {
+                new Alert(Alert.AlertType.ERROR, "Veuillez entrer une taille entre "  + SizeController.MIN_SIZE + " et " + SizeController.MAX_SIZE + "  !").showAndWait();
+                return;
+            }
+            maze.changerParam(nameMonster.getText(), nameHunter.getText(), height.getValue(), width.getValue());
+        });
     }
 }

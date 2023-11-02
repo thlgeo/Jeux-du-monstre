@@ -7,6 +7,7 @@ import fr.univlille.sae.controller.SizeController;
 import fr.univlille.sae.controller.NameController;
 import fr.univlille.sae.controller.ValidationController;
 import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.events.ParameterEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -42,6 +43,7 @@ public class ParameterView extends Stage implements Observer {
         setParameterNodes();
         setParameterScene();
         setResizable(false);
+        maze.attachParameter(this);
         show();
     }
 
@@ -49,7 +51,7 @@ public class ParameterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène principale de la page de paramétrage
      */
-    public void setParameterScene(){ //TODO: faire ma fonction de sauvegarder des données saisies
+    public void setParameterScene(){
         VBox root = new VBox();
         Region spacer1 = new Region();
         Region spacer2 = new Region();
@@ -75,13 +77,13 @@ public class ParameterView extends Stage implements Observer {
         nameHunter.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         titreHeight = new Label("Hauteur du labyrinthe");
         titreHeight.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        titreWidth = new Label("Largeur du labyrinthe");
-        titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        monsterName = new NameController(true);
-        hunterName = new NameController(false);
+        //titreWidth = new Label("Largeur du labyrinthe");
+        //titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        monsterName = new NameController();
+        hunterName = new NameController();
         height = new SizeController();
-        width = new SizeController();
-        validation = new ValidationController(monsterName, hunterName, height, width);
+        //width = new SizeController();
+        validation = new ValidationController(monsterName, hunterName, height, height, maze);
     }
 
     /**
@@ -100,6 +102,14 @@ public class ParameterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-
+        if(o.equals("ParamMAJ")){
+            close();
+        }else if(o instanceof ParameterEvent pe){
+            System.out.println("AGYHQGAJGYAUGAUY");
+            monsterName.setText(pe.getValue(ParameterEvent.NAME_MONSTER));
+            hunterName.setText(pe.getValue(ParameterEvent.NAME_HUNTER));
+            height.setValue(pe.getValue(ParameterEvent.NB_ROWS));
+            //width.setValue(pe.getValue(ParameterEvent.NB_COLS));
+        }
     }
 }

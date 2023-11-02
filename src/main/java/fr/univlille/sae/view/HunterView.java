@@ -5,6 +5,7 @@ import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.MazeController;
+import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Maze;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -101,6 +102,16 @@ public class HunterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o instanceof ICellEvent cell) { mc.setText(cell.getCoord().getRow(), cell.getCoord().getCol(), cell.getState().name()); }
+        if(o instanceof ICellEvent cell) {
+            mc.setRender(cell.getCoord().getRow(), cell.getCoord().getCol(), Cell.render(cell.getState(), cell.getTurn()));
+            tour.setText("Tour du monstre !");
+            setWaitScene();
+        }
+        else if("endGame".equals(o)) {
+            close();
+        } else if (o.equals("changerTour")) {
+            tour.setText("Tour du chasseur !");
+            setReadyScene();
+        }
     }
 }

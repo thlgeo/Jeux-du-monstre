@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.events.CellEvent;
 
@@ -16,7 +17,7 @@ import fr.univlille.sae.model.events.CellEvent;
  * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0
  */
-public class Monster implements IMonsterStrategy {
+public class Monster extends Subject implements IMonsterStrategy {
     private static final int DEPLACEMENT = 1;
     protected boolean[][] maze;
     protected String name;
@@ -24,10 +25,9 @@ public class Monster implements IMonsterStrategy {
     protected ICoordinate coordinateMonster;
     protected ICoordinate lastShotHunter;
 
-    public Monster(String name, Cell[][] discorveredMaze)
-    {
+    public Monster(String name, Cell[][] discoveredMaze) {
         this.name = name;
-        this.discoveredMaze = discorveredMaze;
+        this.discoveredMaze = discoveredMaze;
         this.maze = convert();
         coordinateMonster = null;
         lastShotHunter = null;
@@ -41,7 +41,7 @@ public class Monster implements IMonsterStrategy {
         boolean[][] mazeB = new boolean[discoveredMaze.length][discoveredMaze[0].length];
         for(int i = 0; i < discoveredMaze.length; i++) {
             for(int j = 0; j < discoveredMaze[0].length; j++) {
-                mazeB[i][j] = discoveredMaze[i][j].getInfo().equals(ICellEvent.CellInfo.EMPTY) || discoveredMaze[i][j].getInfo().equals(ICellEvent.CellInfo.EXIT);
+                mazeB[i][j] = discoveredMaze[i][j].getInfo().equals(CellInfo.EMPTY) || discoveredMaze[i][j].getInfo().equals(CellInfo.EXIT) || discoveredMaze[i][j].getInfo().equals(CellInfo.MONSTER);
             }
         }
         return mazeB;
@@ -72,9 +72,12 @@ public class Monster implements IMonsterStrategy {
             Cell cell = get(lastShotHunter);
             notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));
             lastShotHunter = cellule.getCoord();
-        }else{
-            Coordinate coord = (Coordinate) cellule.getCoord();
-            discoveredMaze[coord.getRow()][coord.getCol()].setInfo(cellule.getState());
+        } else {
+            ICoordinate coord = cellule.getCoord();
+            Cell updateCell = this.discoveredMaze[coord.getRow()][coord.getCol()];
+            updateCell.setInfo(cellule.getState());
+            updateCell.setTurn(cellule.getTurn());
+            notifyObservers(cellule);
         }
     }
 
@@ -105,6 +108,10 @@ public class Monster implements IMonsterStrategy {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setDiscoveredMaze(Cell[][] discoveredMaze) {
         this.discoveredMaze = discoveredMaze;
     }
@@ -112,4 +119,27 @@ public class Monster implements IMonsterStrategy {
     public void setCoordinateMonster(ICoordinate coordinateMonster) {
         this.coordinateMonster = coordinateMonster;
     }
+
+    @Override
+    public String toString() {
+        return "Monster " + this.name;
+    }
+
+    public void notifyDiscoveredMaze(){
+        notifyObservers(discoveredMaze);
+    }
+
+    public void notifyCantMove(){
+        notifyObservers("cantMove");
+    }
+
+    public void notifyEndGame() {
+        notifyObservers("endGame");
+    }
+
+    private Cell get(ICoordinate coord){
+        return discoveredMaze[coord.getRow()][coord.getCol()];
+    }
+
+    public void notifyTurnChange() { notifyObservers("changerTour"); }
 }

@@ -4,7 +4,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
-import fr.univlille.sae.model.cellule.CellEvent;
+import fr.univlille.sae.model.events.CellEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

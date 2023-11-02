@@ -25,20 +25,20 @@ public class Cell {
         put('M', CellInfo.MONSTER);
         put('X', CellInfo.EXIT);
     }};
+    public static final String IS_WALL = "W";
 
-    public Cell(ICoordinate coord, CellInfo info, int turn)
+    public Cell(CellInfo info, int turn)
     {
-        this.coord = coord;
         this.info = info;
         this.turn = turn;
     }
 
-    public Cell(ICoordinate coord, char car) {
-        this(coord, charToInfo.get(car));
+    public Cell(char car) {
+        this(charToInfo.get(car));
     }
 
-    public Cell(ICoordinate coord, CellInfo info) {
-        this(coord, info, -1);
+    public Cell(CellInfo info) {
+        this(info, 0);
     }
 
     public Cell()
@@ -63,6 +63,31 @@ public class Cell {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
-        return Objects.equals(coord, cell.coord) && info == cell.info;
+        return  info == cell.info && turn == cell.turn;
     }
+
+    private String getRender() {
+        switch(info) {
+            case WALL -> {
+                return IS_WALL;
+            }
+            case MONSTER -> {
+                return String.valueOf(turn);
+            }
+            case HUNTER -> {
+                return "H";
+            }
+            case EXIT -> {
+                return "X";
+            }
+            default -> {
+                return " ";
+            }
+        }
+    }
+
+    public static String render(CellInfo cellInfo, int turn) {
+        return new Cell(cellInfo, turn).getRender();
+    }
+
 }

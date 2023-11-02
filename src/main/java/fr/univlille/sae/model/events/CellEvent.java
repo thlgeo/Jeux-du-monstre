@@ -1,4 +1,4 @@
-package fr.univlille.sae.model.cellule;
+package fr.univlille.sae.model.events;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;

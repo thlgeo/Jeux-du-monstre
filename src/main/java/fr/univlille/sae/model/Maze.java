@@ -7,8 +7,12 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 import java.io.*;
+import java.util.Random;
 
-import fr.univlille.sae.model.cellule.CellEvent;
+import fr.univlille.iutinfo.utils.Observer;
+import fr.univlille.iutinfo.utils.Subject;
+import fr.univlille.sae.model.events.CellEvent;
+import fr.univlille.sae.model.events.ParameterEvent;
 import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
 import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 import fr.univlille.sae.model.players.Monster;
@@ -22,30 +26,39 @@ import fr.univlille.sae.model.players.Hunter;
  * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0
  */
-public class Maze {
+public class
+Maze extends Subject {
 
+    public static final Random RDM = new Random();
     protected int turn;
     protected int nbRows;
     protected int nbCols;
     protected boolean isHunterTurn;
     protected Hunter hunter;
     protected Monster monster;
-    public Cell[][] maze;
+    protected Cell[][] maze;
 
     protected static final String FS = File.separator;
 
     public static final int DEFAULT_DIMENSION = 10;
+    private static final int DEFAULT_TURN = 0;
 
-    public Maze(int turn, int nbRows, int nbCols) {
+    private Maze(int turn, int nbRows, int nbCols) {
         this.turn = turn;
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.maze = new Cell[nbRows][nbCols];
         importMaze(nbRows, nbCols);
+        this.monster = new Monster("Monster", this.maze);
+        this.hunter = new Hunter("Hunter", nbRows, nbCols);
+    }
+
+    public Maze(int nbRows, int nbCols) {
+        this(DEFAULT_TURN, nbRows, nbCols);
     }
 
     public Maze() {
-        this(0, DEFAULT_DIMENSION, DEFAULT_DIMENSION);
+        this(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
     }
 
     /**
@@ -66,17 +79,23 @@ public class Maze {
             for(int rowId = 0 ; rowId < nbRows; rowId++) {
                 String currentLine = reader.readLine();
                 for (int colId = 0 ; colId < currentLine.length() ; colId++) {
-                    maze[rowId][colId] = new Cell(new Coordinate(rowId, colId), Cell.charToInfo.get(currentLine.charAt(colId)));
+                    maze[rowId][colId] = new Cell(Cell.charToInfo.get(currentLine.charAt(colId)));
                 }
             }
         } catch (UnsupportedMazeException | IOException e) {
             System.out.println(e.getMessage());
         } finally {
-            try { reader.close(); }
+            try {
+                assert reader != null;
+                reader.close(); }
             catch(Exception e) {
                 //Do Nothing
             }
         }
+    }
+
+    public void reset() {
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols);
     }
 
     /**
@@ -92,11 +111,11 @@ public class Maze {
 
     /**
      * Importe le labyrinthe par défaut (id=0) de ces paramètres
-     * @param nbCols
      * @param nbRows
+     * @param nbCols
      */
-    private void importMaze(int nbCols, int nbRows) {
-        importMaze(nbCols, nbRows, 0);
+    private void importMaze(int nbRows, int nbCols) {
+        importMaze(nbRows, nbCols, 0);
     }
 
     public Cell[][] getMaze() {
@@ -167,7 +186,18 @@ public class Maze {
         monster.update(event);
         monster.setCoordinateMonster(newCoord);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
-        return; // notifyObserver
+        monster.notifyTurnChange();
+    }
+
+    /**
+     * Fonction récursive initialisant le monstre sur la maze. On prends des coordonnées aléatoires puis on regarde si la cellule associée est bien vide.
+     * Si elle ne l'est pas, on réessaye.
+     * @return ICoorinate, les coordonnées du monstre
+     */
+    private ICoordinate initMonsterPosition() {
+        ICoordinate coord = new Coordinate(RDM.nextInt(this.nbRows), RDM.nextInt(this.nbCols));
+        Cell c = getCell(coord);
+        return c.getInfo() != ICellEvent.CellInfo.EMPTY ? initMonsterPosition() : coord;
     }
 
     /**
@@ -175,7 +205,10 @@ public class Maze {
      * @param isMonster booléen indiquant qui a gagné (true = monstre, false = hunter)
      */
     public void victory(boolean isMonster) {
-
+        monster.notifyEndGame();
+        hunter.notifyEndGame();
+        reset();
+        notifyObservers(isMonster ? monster.getName() : hunter.getName());
     }
 
     /**
@@ -183,7 +216,7 @@ public class Maze {
      * @param coord coordinate chosen by the player/AI.
      * @throws MonsterNotFoundException
      */
-    public void tireChasseur(ICoordinate coord) throws MonsterNotFoundException {
+    public void tirerChasseur(ICoordinate coord) throws MonsterNotFoundException {
         if(coord.equals(getCoordMonster(turn)))
         {
             victory(false);
@@ -193,7 +226,7 @@ public class Maze {
         monster.update(monsterEvent);
         hunter.update(hunterEvent);
         turn++;
-        return; // TODO: notify
+        hunter.notifyTurnChange();
     }
 
     /**
@@ -203,43 +236,28 @@ public class Maze {
      * @throws MonsterNotFoundException
      */
     public ICoordinate getCoordMonster(int turn) throws MonsterNotFoundException {
-        for(Cell[] line : maze) {
-            for(Cell cell : line) {
-                if(cell.getInfo() == ICellEvent.CellInfo.MONSTER && cell.getTurn() == turn - 1) return cell.getCoord();
+        for(int i = 0; i < maze.length; i++) {
+            for(int j = 0; j < maze[i].length; j++) {
+                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER) return new Coordinate(i, j);
             }
         }
         throw new MonsterNotFoundException();
     }
 
-    public ICoordinate getCoordMonster() throws MonsterNotFoundException {
-        return getCoordMonster(turn - 1);
-    }
-
-    /*
-    public void entrerNom(String newNameMonster, String newNameHunter) {
-        Hunter hunter = (Hunter) this.getHunter();
-        hunter.setName(newNameHunter);
-        // TODO -> change setter name
-        Monster monster = (Monster) this.getMonster();
-        monster.setName(newNameMonster);
-        return;
-    }
-    */
-
-    public void lancerJeu() {
-        //TODO
-        return;
-    }
-
+    /**
+     * Fonction permettant de changer les paramètre de la partie
+     * @param hunterName
+     * @param monsterName
+     * @param nbRows
+     * @param nbCols
+     */
     public void changerParam(String hunterName, String monsterName, int nbRows, int nbCols) {
+        this.nbRows = nbRows;
+        this.nbCols = nbCols;
+        importMaze(nbRows, nbCols);
         this.hunter = new Hunter(hunterName, nbRows, nbCols);
         this.monster = new Monster(monsterName, this.maze);
-    }
-
-    public void changerTailleGrille(int newCols, int newRows) {
-        this.setNbCols(newCols);
-        this.setNbRows(newRows);
-        return;
+        notifyObservers("ParamMAJ");
     }
 
     public Cell getCell(ICoordinate coordinate) {
@@ -254,6 +272,26 @@ public class Maze {
 
     public void update(ICellEvent event) {
         update(event.getCoord(), event.getState());
+    }
+
+    public void attachMonster(Observer o){
+        monster.attach(o);
+        monster.notifyDiscoveredMaze();
+        notifyObservers("close");
+    }
+
+    public void attachHunter(Observer o){
+        hunter.attach(o);
+    }
+
+    public void attachParameter(Observer o){
+        attach(o);
+        ParameterEvent pe = new ParameterEvent();
+        pe.setValue(ParameterEvent.NB_COLS, "" + nbCols);
+        pe.setValue(ParameterEvent.NB_ROWS, "" + nbRows);
+        pe.setValue(ParameterEvent.NAME_MONSTER, monster.getName());
+        pe.setValue(ParameterEvent.NAME_HUNTER, hunter.getName());
+        notifyObservers(pe);
     }
 
 }

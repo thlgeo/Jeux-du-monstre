@@ -21,7 +21,7 @@ public class TestMonster {
         {
             for(int j=0;j<maze[i].length;j++)
             {
-                maze[i][j] = new Cell(new Coordinate(i, j), CellInfo.EMPTY);
+                maze[i][j] = new Cell(CellInfo.EMPTY);
             }
         }
         maze[0][0].setInfo(CellInfo.WALL);

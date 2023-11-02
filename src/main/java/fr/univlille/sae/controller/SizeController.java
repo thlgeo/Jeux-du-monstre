@@ -17,10 +17,18 @@ public class SizeController extends HBox {
     Button moins = new Button("-");
     Button plus = new Button("+");
     Label size = new Label();
+    public static final int MIN_SIZE = 8;
+    public static final int MAX_SIZE = 16;
+
+
     public SizeController(){
+        this(MIN_SIZE);
+    }
+
+    public SizeController(int sizeValue) {
         getChildren().addAll(moins,new Label("  "), size, new Label("  "), plus);
         setAction();
-        size.setText("8");
+        size.setText(String.valueOf(sizeValue));
         size.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         setAlignment(Pos.CENTER);
     }
@@ -28,15 +36,42 @@ public class SizeController extends HBox {
     public void setAction(){
         plus.setOnAction(e -> {
             int actualSize = Integer.parseInt(size.getText());
-            if(actualSize != 16){
+            if(actualSize != MAX_SIZE){
                 size.setText( "" + (actualSize + 1));
             }
         });
         moins.setOnAction(e -> {
             int actualSize = Integer.parseInt(size.getText());
-            if(actualSize != 8){
+            if(actualSize != MIN_SIZE){
                 size.setText( "" + (actualSize - 1));
             }
         });
     }
+
+    public int getValue() {
+        return Integer.valueOf(this.size.getText());
+    }
+
+    public boolean setValue(int value) {
+        if (value >= MIN_SIZE && value <= MAX_SIZE) {
+            this.size.setText(String.valueOf(value));
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setValue(String value) {
+        try {
+            int v = Integer.valueOf(value);
+            return setValue(v);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public boolean isValid() {
+        int value = getValue();
+        return value >= MIN_SIZE && value <= MAX_SIZE;
+    }
+
 }

@@ -3,6 +3,7 @@ package fr.univlille.sae.model.players;
 import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
 
@@ -15,7 +16,7 @@ import fr.univlille.sae.model.Coordinate;
  * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0
  */
-public class Hunter implements IHunterStrategy {
+public class Hunter extends Subject implements IHunterStrategy {
 
     protected int nbRows;
     protected int nbCols;
@@ -59,7 +60,7 @@ public class Hunter implements IHunterStrategy {
         this.maze = new Cell[rows][cols];
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < cols; j++)
-                this.maze[i][j] = new Cell(new Coordinate(i, j), ICellEvent.CellInfo.EMPTY);
+                this.maze[i][j] = new Cell(ICellEvent.CellInfo.EMPTY);
         }
     }
 
@@ -99,4 +100,16 @@ public class Hunter implements IHunterStrategy {
         return (col >= 0 && col < nbCols) && (row >= 0 && row < nbRows);
     }
 
+    @Override
+    public String toString() {
+        return "Hunter " + this.name;
+    }
+
+    public void notifyEndGame() {
+        notifyObservers("endGame");
+    }
+
+    public void notifyTurnChange(){
+        notifyObservers("changerTour");
+    }
 }

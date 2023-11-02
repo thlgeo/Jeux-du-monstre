@@ -33,6 +33,7 @@ public class MonsterView extends Stage implements Observer {
         setResizable(false);
         setMonsterNodes();
         setMonsterScene();
+        maze.attachMonster(this);
         show();
     }
 
@@ -75,12 +76,12 @@ public class MonsterView extends Stage implements Observer {
      * Cette méthode permet d'initialiser les éléments de la fenêtre du monstre
      */
     public void setMonsterNodes(){
-        ready = new Button("Prêt ?");
+        ready = new Button("Pret !");
         ready.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         ready.setMinSize(200, 50);
         titre = new Label("Monstre");
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        tour = new Label("Tour du Monstre");
+        tour = new Label("Cliquez sur une case pour commencer");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         mc = new MazeController(maze, true);
     }
@@ -101,6 +102,19 @@ public class MonsterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o instanceof ICellEvent cell){ mc.setText(cell.getCoord().getRow(), cell.getCoord().getCol(), cell.getState().toString()); }
+        if(o instanceof ICellEvent cell){
+            mc.setRender(cell.getCoord().getRow(), cell.getCoord().getCol(), Cell.render(cell.getState(), cell.getTurn()));
+            tour.setText("Tour du chasseur !");
+            setWaitScene();
+        } else if(o instanceof Cell[][] discoveredMaze) {
+            mc.initMaze(discoveredMaze);
+        } else if("cantMove".equals(o)) {
+            new Alert(Alert.AlertType.ERROR, "Impossible de vous déplacer sur cette case !").showAndWait();
+        } else if("endGame".equals(o)) {
+            close();
+        } else if("changerTour".equals(o)) {
+            tour.setText("Tour du monstre !");
+            setReadyScene();
+        }
     }
 }

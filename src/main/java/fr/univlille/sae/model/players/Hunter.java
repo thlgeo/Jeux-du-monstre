@@ -80,6 +80,7 @@ public class Hunter implements IHunterStrategy {
         Cell updateCell = this.maze[coord.getRow()][coord.getCol()];
         updateCell.setInfo(iCellEvent.getState());
         updateCell.setTurn(iCellEvent.getTurn());
+        notifyObservers(iCellEvent);
     }
 
 

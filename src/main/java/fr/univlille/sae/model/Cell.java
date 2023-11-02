@@ -16,7 +16,6 @@ import java.util.Objects;
  * @version 1.0.0
  */
 public class Cell {
-    protected ICoordinate coord;
     protected CellInfo info;
     protected int turn;
     public static final Map<Character, CellInfo> charToInfo = new HashMap<>() {{
@@ -44,25 +43,11 @@ public class Cell {
 
     public Cell()
     {
-        this(null, null);
-    }
-
-    public int getCol()
-    {
-        return coord.getCol();
-    }
-
-    public int getRow()
-    {
-        return coord.getRow();
+        this(null);
     }
 
     public CellInfo getInfo() {
         return info;
-    }
-
-    public ICoordinate getCoord() {
-        return coord;
     }
 
     public void setInfo(CellInfo info) {

@@ -5,7 +5,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.Coordinate;
+import fr.univlille.sae.model.events.CellEvent;
 
 /**
  * Classe Monster - Un monstre est un joueur humain qui peut se déplacer sur une cellule (si la cellule peut être atteinte).
@@ -67,8 +67,10 @@ public class Monster implements IMonsterStrategy {
      */
     @Override
     public void update(ICellEvent cellule) {
-        if(cellule.getState() == CellInfo.HUNTER)
-        {
+        if(cellule.getState() == CellInfo.HUNTER)  {
+            notifyObservers(cellule);
+            Cell cell = get(lastShotHunter);
+            notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));
             lastShotHunter = cellule.getCoord();
         }else{
             Coordinate coord = (Coordinate) cellule.getCoord();

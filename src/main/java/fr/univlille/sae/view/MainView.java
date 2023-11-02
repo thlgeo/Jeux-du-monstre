@@ -6,11 +6,14 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
 import fr.univlille.sae.controller.SettingButton;
 import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.events.ParameterEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -35,6 +38,7 @@ public class MainView extends Stage implements Observer {
         setResizable(false);
         setMainNodes();
         setMainScene();
+        maze.attach(this);
         show();
     }
 
@@ -62,6 +66,21 @@ public class MainView extends Stage implements Observer {
     }
 
     /**
+     * Cette méthode permet d'initialiser les éléments de la fenêtre principale
+     */
+    public void setVictoryScene(String winner){
+        VBox root = new VBox();
+        Label message = new Label("Victoire de " + winner);
+        message.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
+        Button validation = new Button("OK");
+        validation.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        validation.setOnAction(e -> setMainScene());
+        root.getChildren().addAll(message, validation);
+        root.setAlignment(Pos.CENTER);
+        setScene(new Scene(root, WIDTH, HEIGHT));
+    }
+
+    /**
      * Cette méthode permet de mettre à jour la fenêtre (non utilisée ici)
      * @param subject correspond au sujet observé
      */
@@ -77,6 +96,15 @@ public class MainView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-
+        if(o.equals("ParamMAJ")){
+            show();
+        }else if(o.equals("close")){
+            close();
+        }else if(o instanceof String winner){
+            show();
+            setVictoryScene(winner);
+        }else if(o instanceof ParameterEvent){
+            close();
+        }
     }
 }

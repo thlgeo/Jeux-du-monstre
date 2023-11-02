@@ -34,7 +34,8 @@ public class HunterView extends Stage implements Observer {
         setTitle("S3.02_G1_Chasseur");
         setResizable(false);
         setHunterNodes();
-        setHunterScene();
+        setWaitScene();
+        maze.attachHunter(this);
         show();
     }
 
@@ -74,7 +75,7 @@ public class HunterView extends Stage implements Observer {
      * Cette méthode permet d'initialiser les éléments de la fenêtre du chasseur
      */
     public void setHunterNodes(){
-        ready = new Button("Prêt ?");
+        ready = new Button("Pret !");
         ready.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         ready.setMinSize(200, 50);
         titre = new Label("Chasseur");

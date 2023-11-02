@@ -41,7 +41,19 @@ public class MazeController extends GridPane {
      * @param y ordonnée de la case
      * @param text nouvelle valeur de la case
      */
-    public void setText(int x, int y, String text){
-        mazeTable[y][x].setText(text);
+    public void setRender(int o, int a, String text){
+        Button b = mazeTable[a][o];
+        if(text.equals(Cell.IS_WALL)){
+            b.setStyle("-fx-background-color: #000000; -fx-border-color: #000000");
+        }
+        else { b.setText(text); }
+    }
+
+    public void initMaze(Cell[][] discoveredMaze){
+        for(int i = 0; i < discoveredMaze.length; i++){
+            for(int j = 0; j < discoveredMaze[i].length; j++ ) {
+                setRender(i, j, Cell.render(discoveredMaze[i][j].getInfo(), discoveredMaze[i][j].getTurn()));
+            }
+        }
     }
 }

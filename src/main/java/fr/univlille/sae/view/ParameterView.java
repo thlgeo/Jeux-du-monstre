@@ -28,11 +28,11 @@ public class ParameterView extends Stage implements Observer {
     private Label nameMonster;
     private Label nameHunter;
     private Label titreHeight;
-    private Label titreWidth;
+    //private Label titreWidth;
     private NameController monsterName;
     private NameController hunterName;
     private SizeController height;
-    private SizeController width;
+    //private SizeController width;
     private ValidationController validation;
     private Maze maze;
 
@@ -54,12 +54,12 @@ public class ParameterView extends Stage implements Observer {
         Region spacer1 = new Region();
         Region spacer2 = new Region();
         Region spacer3 = new Region();
-        Region spacer4 = new Region();
+        //Region spacer4 = new Region();
         spacer1.setMinHeight(10);
         spacer2.setMinHeight(10);
         spacer3.setMinHeight(10);
-        spacer4.setMinHeight(10);
-        root.getChildren().addAll(nameMonster, monsterName, spacer1, nameHunter, hunterName, spacer2, titreHeight, height, spacer3, titreWidth, width, spacer4, validation);
+        //spacer4.setMinHeight(10);
+        root.getChildren().addAll(nameMonster, monsterName, spacer1, nameHunter, hunterName, spacer2, titreHeight, height, spacer3, validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
     }

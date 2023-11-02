@@ -152,15 +152,20 @@ public class Maze {
      * @param newCoord coordinate chosen by the player/AI.
      */
     public void deplacementMonstre(ICoordinate newCoord) {
-        if(!this.monster.canMove(newCoord)) { return;  } //TODO: Notify
+        try {
+            this.getCoordMonster(this.getTurn());
+            if(!this.monster.canMove(newCoord)) { monster.notifyCantMove();  }
 
-        if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
-            victory(true);
-            return;
+            if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
+                victory(true);
+                return;
+            }
+        } catch(MonsterNotFoundException e) {
+            newCoord = this.initMonsterPosition();
         }
-
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
         monster.update(event);
+        monster.setCoordinateMonster(newCoord);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
         return; // notifyObserver
     }
@@ -181,10 +186,12 @@ public class Maze {
     public void tireChasseur(ICoordinate coord) throws MonsterNotFoundException {
         if(coord.equals(getCoordMonster(turn)))
         {
-            return; // TODO: victoire hunter
+            victory(false);
         }
-        monster.update(new CellEvent(turn, CellInfo.HUNTER, coord));
-        hunter.update(new CellEvent(turn, getCell(coord).getInfo(), coord));
+        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
+        ICellEvent hunterEvent = new CellEvent(turn, getCell(coord).getInfo(), coord);
+        monster.update(monsterEvent);
+        hunter.update(hunterEvent);
         turn++;
         return; // TODO: notify
     }

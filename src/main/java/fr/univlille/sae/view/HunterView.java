@@ -79,7 +79,7 @@ public class HunterView extends Stage implements Observer {
         ready.setMinSize(200, 50);
         titre = new Label("Chasseur");
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        tour = new Label("Tour du Monstre");
+        tour = new Label("Tour du monstre !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         mc = new MazeController(maze, false);
     }

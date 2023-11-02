@@ -165,6 +165,10 @@ public class Maze {
         return; // notifyObserver
     }
 
+    /**
+     * Demande a indiquer la fin de la partie à monstre & à joueur, puis envois le nom du vainqueur a la MainView pour afficher la fin de partie
+     * @param isMonster booléen indiquant qui a gagné (true = monstre, false = hunter)
+     */
     public void victory(boolean isMonster) {
 
     }
@@ -185,6 +189,12 @@ public class Maze {
         return; // TODO: notify
     }
 
+    /**
+     * Cherche dans la maze pour trouver la coordonnée du monstre dans la maze
+     * @param turn
+     * @return ICoordinate les coordonnées du monstre
+     * @throws MonsterNotFoundException
+     */
     public ICoordinate getCoordMonster(int turn) throws MonsterNotFoundException {
         for(Cell[] line : maze) {
             for(Cell cell : line) {

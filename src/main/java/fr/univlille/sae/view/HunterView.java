@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
+import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Maze;
@@ -11,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -21,8 +23,8 @@ import javafx.stage.Stage;
  * @Version 1.0
  */
 public class HunterView extends Stage implements Observer {
-    public static final int WIDTH = 750;
-    public static final int HEIGHT = 700;
+    public static int WIDTH = 150;
+    public static int HEIGHT = 100;
 
     private Label titre;
     private Label tour;
@@ -46,7 +48,7 @@ public class HunterView extends Stage implements Observer {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, tour);
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, WIDTH, HEIGHT));
+        setScene(mc.getSize(), root);
     }
 
     /**
@@ -56,7 +58,7 @@ public class HunterView extends Stage implements Observer {
         VBox root = new VBox();
         root.getChildren().addAll(tour);
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, WIDTH, HEIGHT));
+        setScene(mc.getSize(), root);
     }
 
 
@@ -68,7 +70,7 @@ public class HunterView extends Stage implements Observer {
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setHunterScene());
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, WIDTH, HEIGHT));
+        setScene(mc.getSize(), root);
     }
 
     /**
@@ -108,6 +110,7 @@ public class HunterView extends Stage implements Observer {
             setWaitScene();
         } else if(o instanceof Cell[][]) {
             mc.resize();
+            resize();
         } else if("endGame".equals(o)) {
             close();
         } else if (o.equals("changerTour")) {
@@ -115,4 +118,16 @@ public class HunterView extends Stage implements Observer {
             setReadyScene();
         }
     }
+
+    public void setScene(int size, Pane pane) {
+        super.setScene(new Scene(pane, size * CellController.SIZE + WIDTH, size * CellController.SIZE + HEIGHT));
+    }
+
+    public void resize() {
+        int width = this.mc.getSize() * CellController.SIZE + WIDTH;
+        int height = this.mc.getSize() * CellController.SIZE + HEIGHT;
+        if(width != getWidth()) setWidth(width);
+        if(height != getHeight()) setHeight(height);
+    }
+
 }

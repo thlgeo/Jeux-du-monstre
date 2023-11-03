@@ -129,6 +129,10 @@ public class Monster extends Subject implements IMonsterStrategy {
         this.coordinateMonster = coordinateMonster;
     }
 
+    public ICoordinate getCoordinateMonster() {
+        return coordinateMonster;
+    }
+
     @Override
     public String toString() {
         return "Monster " + this.name;

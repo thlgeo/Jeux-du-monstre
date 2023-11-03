@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
+import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Maze;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -21,8 +23,8 @@ import javafx.stage.Stage;
  * @Version 1.0
  */
 public class MonsterView extends Stage implements Observer {
-    public static final int WIDTH = 750;
-    public static final int HEIGHT = 700;
+    public static final double WIDTH = 150.0d;
+    public static final double HEIGHT = 100.0d;
     private Label titre;
     private Label tour;
     private MazeController mc;
@@ -46,7 +48,7 @@ public class MonsterView extends Stage implements Observer {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, tour);
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, WIDTH, HEIGHT));
+        setScene(mc.getSize(), root);
     }
 
 
@@ -57,7 +59,7 @@ public class MonsterView extends Stage implements Observer {
         VBox root = new VBox();
         root.getChildren().addAll(tour);
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, WIDTH, HEIGHT));
+        setScene(mc.getSize(), root);
     }
 
 
@@ -69,7 +71,7 @@ public class MonsterView extends Stage implements Observer {
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setMonsterScene());
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, WIDTH, HEIGHT));
+        setScene(mc.getSize(), root);
     }
 
 
@@ -112,6 +114,7 @@ public class MonsterView extends Stage implements Observer {
             setWaitScene();
         } else if(o instanceof Cell[][] discoveredMaze) {
             mc.resize();
+            resize();
             mc.initMaze(discoveredMaze);
         } else if("cantMove".equals(o)) {
             new Alert(Alert.AlertType.ERROR, "Impossible de vous déplacer sur cette case !").showAndWait();
@@ -122,4 +125,14 @@ public class MonsterView extends Stage implements Observer {
             setReadyScene();
         }
     }
+
+    public void setScene(int size, Pane pane) {
+        super.setScene(new Scene(pane, size * CellController.SIZE + WIDTH, size * CellController.SIZE + HEIGHT));
+    }
+
+    public void resize() {
+        setWidth(this.mc.getSize() * CellController.SIZE + WIDTH);
+        setHeight(this.mc.getSize() * CellController.SIZE + HEIGHT);
+    }
+
 }

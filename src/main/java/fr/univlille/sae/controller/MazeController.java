@@ -67,4 +67,8 @@ public class MazeController extends GridPane {
             }
         }
     }
+
+    public int getSize() {
+        return maze.getNbCols();
+    }
 }

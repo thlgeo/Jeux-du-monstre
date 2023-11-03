@@ -170,7 +170,7 @@ public class Maze extends Subject {
      */
     public void deplacementMonstre(ICoordinate newCoord) {
         try {
-            this.getCoordMonster(this.getTurn());
+            if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
             if (!this.monster.canMove(newCoord)) {
                 monster.notifyCantMove();
                 return;
@@ -217,8 +217,7 @@ public class Maze extends Subject {
      * @throws MonsterNotFoundException
      */
     public void tirerChasseur(ICoordinate coord) throws MonsterNotFoundException {
-        if(coord.equals(getCoordMonster(turn)))
-        {
+        if(coord.equals(monster.getCoordinateMonster())) {
             victory(false);
             return;
         }
@@ -228,21 +227,6 @@ public class Maze extends Subject {
         hunter.update(hunterEvent);
         turn++;
         monster.notifyTurnChange();
-    }
-
-    /**
-     * Cherche dans la maze pour trouver la coordonnée du monstre dans la maze
-     * @param turn
-     * @return ICoordinate les coordonnées du monstre
-     * @throws MonsterNotFoundException
-     */
-    public ICoordinate getCoordMonster(int turn) throws MonsterNotFoundException {
-        for(int i = 0; i < maze.length; i++) {
-            for(int j = 0; j < maze[i].length; j++) {
-                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER) return new Coordinate(i, j);
-            }
-        }
-        throw new MonsterNotFoundException();
     }
 
     /**

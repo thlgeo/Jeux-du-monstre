@@ -56,6 +56,8 @@ public class Coordinate implements ICoordinate {
         return col == other.col;
     }
 
-    
-    
+    @Override
+    public String toString() {
+        return "Coordinate [row=" + row + ", col=" + col + "]";
+    }
 }

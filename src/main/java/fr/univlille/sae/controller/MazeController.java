@@ -8,6 +8,8 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Cette classe correspond GridPane représentant le labyrinthe du jeu
+ * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @Version 1.0
  */
 public class MazeController extends GridPane {
 
@@ -51,10 +53,13 @@ public class MazeController extends GridPane {
      */
     public void setRender(int o, int a, String text) {
         Button b = mazeTable[a][o];
+        if(!isMonsterMaze){
+            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+        }
         if(text.equals(Cell.IS_WALL)) {
             b.setStyle("-fx-background-color: #000000; -fx-border-color: #000000");
             b.setText(" ");
-        } else if(!isMonsterMaze && text.equals("X")) {
+        }else if(!isMonsterMaze && text.equals("X")) {
             b.setText(" ");
         } else {
             b.setText(text);

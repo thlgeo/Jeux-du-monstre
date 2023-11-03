@@ -34,7 +34,6 @@ public class MonsterView extends Stage implements Observer {
         setTitle("S3.02_G1_Monstre");
         setResizable(false);
         setMonsterNodes();
-        setMonsterScene();
         maze.attachMonster(this);
     }
 
@@ -45,8 +44,8 @@ public class MonsterView extends Stage implements Observer {
     public void setMonsterScene() {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, tour);
-        root.setAlignment(Pos.CENTER);
         setScene(mc.getSize(), root);
+        root.setAlignment(Pos.CENTER);
     }
 
 
@@ -56,8 +55,8 @@ public class MonsterView extends Stage implements Observer {
     public void setWaitScene() {
         VBox root = new VBox();
         root.getChildren().addAll(tour);
-        root.setAlignment(Pos.CENTER);
         setScene(mc.getSize(), root);
+        root.setAlignment(Pos.CENTER);
     }
 
 
@@ -68,8 +67,8 @@ public class MonsterView extends Stage implements Observer {
         VBox root = new VBox();
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setMonsterScene());
-        root.setAlignment(Pos.CENTER);
         setScene(mc.getSize(), root);
+        root.setAlignment(Pos.CENTER);
     }
 
 
@@ -82,7 +81,7 @@ public class MonsterView extends Stage implements Observer {
         ready.setMinSize(200, 50);
         titre = new Label("Monstre");
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        tour = new Label("Cliquez sur une case pour commencer");
+        tour = new Label("Cliquez pour commencer");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         mc = new MazeController(maze, true);
     }
@@ -114,7 +113,7 @@ public class MonsterView extends Stage implements Observer {
             setWaitScene();
         } else if(o instanceof Cell[][] discoveredMaze) {
             mc.resize();
-            resize();
+            //resize();
             mc.initMaze(discoveredMaze);
         } else if("cantMove".equals(o)) {
             new Alert(Alert.AlertType.ERROR, "Impossible de vous déplacer sur cette case !").showAndWait();

@@ -11,6 +11,8 @@ import java.io.File;
 
 /**
  * Cette classe coorespond au bouton d'une cellule du labyrinthe
+ * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @Version 1.0
  */
 public class CellController extends Button {
     public static final int SIZE = 50;
@@ -19,7 +21,7 @@ public class CellController extends Button {
     private final int o;
     private final Maze maze;
 
-    public CellController(int a, int o, Maze maze, boolean isMonsterCell) {
+    public CellController(int a, int o, Maze maze, boolean isMonsterCell){
         super(" ");
         this.maze = maze;
         this.a = a;
@@ -29,8 +31,12 @@ public class CellController extends Button {
         setMinWidth(SIZE);
         setMaxHeight(SIZE);
         setMaxWidth(SIZE);
-        setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000");
-        setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 20));
+        if(!isMonster){
+            setStyle("-fx-background-color: #9B9B9B; -fx-border-color: #000000");
+        }else {
+            setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000");
+        }
+        setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 15));
         this.setOnAction(e -> setAction());
     }
 
@@ -41,6 +47,14 @@ public class CellController extends Button {
      */
     public ICoordinate getCoord() {
         return new Coordinate(a, o);
+    }
+
+    public int getA() {
+        return a;
+    }
+
+    public int getO() {
+        return o;
     }
 
     /**

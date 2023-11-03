@@ -34,7 +34,6 @@ public class HunterView extends Stage implements Observer {
         setTitle("S3.02_G1_Chasseur");
         setResizable(false);
         setHunterNodes();
-        setWaitScene();
         maze.attachHunter(this);
     }
 
@@ -44,8 +43,8 @@ public class HunterView extends Stage implements Observer {
     public void setHunterScene() {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, tour);
-        root.setAlignment(Pos.CENTER);
         setScene(mc.getSize(), root);
+        root.setAlignment(Pos.CENTER);
     }
 
     /**
@@ -54,8 +53,8 @@ public class HunterView extends Stage implements Observer {
     public void setWaitScene() {
         VBox root = new VBox();
         root.getChildren().addAll(tour);
-        root.setAlignment(Pos.CENTER);
         setScene(mc.getSize(), root);
+        root.setAlignment(Pos.CENTER);
     }
 
 
@@ -66,8 +65,8 @@ public class HunterView extends Stage implements Observer {
         VBox root = new VBox();
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setHunterScene());
-        root.setAlignment(Pos.CENTER);
         setScene(mc.getSize(), root);
+        root.setAlignment(Pos.CENTER);
     }
 
     /**
@@ -109,7 +108,7 @@ public class HunterView extends Stage implements Observer {
             setWaitScene();
         } else if(o instanceof Cell[][]) {
             mc.resize();
-            resize();
+            //resize();
         } else if("endGame".equals(o)) {
             close();
         } else if(o.equals("changerTour")) {

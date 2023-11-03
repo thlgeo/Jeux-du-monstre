@@ -201,7 +201,7 @@ public class Maze extends Subject {
             return;
         }
         ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
-        ICellEvent hunterEvent = new CellEvent(turn, getCell(coord).getInfo(), coord);
+        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
         monster.update(monsterEvent);
         hunter.update(hunterEvent);
         turn++;

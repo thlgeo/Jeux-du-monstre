@@ -1,0 +1,7 @@
+fr.univlille.sae
+fr.univlille.sae.controller
+fr.univlille.sae.model
+fr.univlille.sae.model.events
+fr.univlille.sae.model.exceptions
+fr.univlille.sae.model.players
+fr.univlille.sae.view

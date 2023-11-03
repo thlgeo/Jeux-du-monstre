@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.univlille.sae"},{"l":"fr.univlille.sae.controller"},{"l":"fr.univlille.sae.model"},{"l":"fr.univlille.sae.model.events"},{"l":"fr.univlille.sae.model.exceptions"},{"l":"fr.univlille.sae.model.players"},{"l":"fr.univlille.sae.view"}];updateSearchResults();

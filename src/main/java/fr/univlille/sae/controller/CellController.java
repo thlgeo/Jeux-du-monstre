@@ -19,7 +19,7 @@ public class CellController extends Button {
     private int o;
     private Maze maze;
     private final boolean isMonster;
-    public static final int SIZE = 50;
+    public static final int SIZE = 40;
 
     public CellController(int a, int o, Maze maze, boolean isMonsterCell){
         super(" ");
@@ -31,8 +31,12 @@ public class CellController extends Button {
         setMinWidth(SIZE);
         setMaxHeight(SIZE);
         setMaxWidth(SIZE);
-        setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000");
-        setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 20));
+        if(!isMonster){
+            setStyle("-fx-background-color: #9B9B9B; -fx-border-color: #000000");
+        }else {
+            setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #000000");
+        }
+        setFont(Main.loadFont("arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF", 15));
         this.setOnAction(e -> setAction());
     }
 

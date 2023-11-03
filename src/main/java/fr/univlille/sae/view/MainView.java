@@ -6,17 +6,13 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
 import fr.univlille.sae.controller.SettingButton;
 import fr.univlille.sae.model.Maze;
-import fr.univlille.sae.model.events.ParameterEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 /**
  * Cette classe est la fenêtre principale de l'application

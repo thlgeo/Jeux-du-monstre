@@ -7,7 +7,6 @@ import fr.univlille.sae.controller.SizeController;
 import fr.univlille.sae.controller.NameController;
 import fr.univlille.sae.controller.ValidationController;
 import fr.univlille.sae.model.Maze;
-import fr.univlille.sae.model.events.ParameterEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

@@ -94,6 +94,9 @@ public class MonsterView extends Stage implements Observer {
     @Override
     public void update(Subject subject) {
         show();
+        tour = new Label("Cliquez sur une case pour commencer");
+        tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
+        setMonsterScene();
     }
 
     /**

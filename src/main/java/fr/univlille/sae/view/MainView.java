@@ -86,7 +86,7 @@ public class MainView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject) {
-        return;
+        close();
     }
 
     /**
@@ -103,8 +103,6 @@ public class MainView extends Stage implements Observer {
         }else if(o instanceof String winner){
             show();
             setVictoryScene(winner);
-        }else if(o instanceof ParameterEvent){
-            close();
         }
     }
 }

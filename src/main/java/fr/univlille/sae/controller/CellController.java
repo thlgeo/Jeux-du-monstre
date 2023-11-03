@@ -15,16 +15,16 @@ import java.io.File;
  * @Version 1.0
  */
 public class CellController extends Button {
-    private int x;
-    private int y;
+    private int a;
+    private int o;
     private Maze maze;
     private final boolean isMonster;
 
-    public CellController(int x, int y, Maze maze, boolean isMonsterCell){
+    public CellController(int a, int o, Maze maze, boolean isMonsterCell){
         super(" ");
         this.maze = maze;
-        this.x = x;
-        this.y = y;
+        this.a = a;
+        this.o = o;
         this.isMonster = isMonsterCell;
         setMinHeight(40);
         setMinWidth(40);
@@ -33,16 +33,16 @@ public class CellController extends Button {
         this.setOnAction(e -> setAction());
     }
 
-    public int getX() {
-        return x;
+    public int getA() {
+        return a;
     }
 
-    public int getY() {
-        return y;
+    public int getO() {
+        return o;
     }
 
     public ICoordinate getCoord() {
-        return new Coordinate(x, y);
+        return new Coordinate(a, o);
     }
 
     public void setAction(){

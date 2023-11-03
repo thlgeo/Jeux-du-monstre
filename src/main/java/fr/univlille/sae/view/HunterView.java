@@ -92,6 +92,7 @@ public class HunterView extends Stage implements Observer {
     @Override
     public void update(Subject subject) {
         show();
+        setWaitScene();
     }
 
     /**

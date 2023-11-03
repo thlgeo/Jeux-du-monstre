@@ -220,6 +220,7 @@ public class Maze extends Subject {
         if(coord.equals(getCoordMonster(turn)))
         {
             victory(false);
+            return;
         }
         ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
         ICellEvent hunterEvent = new CellEvent(turn, getCell(coord).getInfo(), coord);
@@ -259,6 +260,7 @@ public class Maze extends Subject {
         monster.setName(monsterName);
         hunter.setRowCol(nbRows, nbCols);
         monster.setMaze(this.maze);
+        turn = DEFAULT_TURN;
         notifyObservers("ParamMAJ");
     }
 
@@ -296,5 +298,6 @@ public class Maze extends Subject {
     public void notifyShowMH(){
         monster.notifyShow();
         hunter.notifyShow();
+        notifyObservers("close");
     }
 }

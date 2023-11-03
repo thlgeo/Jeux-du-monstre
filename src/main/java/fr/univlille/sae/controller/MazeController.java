@@ -34,6 +34,7 @@ public class MazeController extends GridPane {
      * Cette méthode permet de créer le labyrinthe par défaut
      */
     public void setDefaultMaze(boolean isMonsterMaze){
+        getChildren().clear();
         for(int i = 0; i < maze.getNbRows(); i++){
             for(int j = 0; j < maze.getNbCols(); j++){
                 CellController cell = new CellController(j, i, maze, isMonsterMaze);
@@ -53,8 +54,10 @@ public class MazeController extends GridPane {
         Button b = mazeTable[a][o];
         if(text.equals(Cell.IS_WALL)){
             b.setStyle("-fx-background-color: #000000; -fx-border-color: #000000");
-        }
-        else { b.setText(text); }
+            b.setText(" ");
+        }else if(!isMonsterMaze && text.equals("X")){
+            b.setText(" ");;
+        } else { b.setText(text); }
     }
 
     public void initMaze(Cell[][] discoveredMaze){

@@ -34,10 +34,6 @@ public class Monster extends Subject implements IMonsterStrategy {
         lastShotHunter = null;
     }
 
-    private Monster() {
-        this(null, null);
-    }
-
     /**
      * Définie le labyrinthe du monstre.
      *

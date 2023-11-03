@@ -50,7 +50,7 @@ public class SizeController extends HBox {
      * @return (int)   La valeur de la taille
      */
     public int getValue() {
-        return Integer.valueOf(this.size.getText());
+        return Integer.parseInt(this.size.getText());
     }
 
     /**

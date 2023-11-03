@@ -38,7 +38,7 @@ public class Main extends Application {
      */
     public static Font loadFont(String path, int size) {
         try {
-            return Font.loadFont(new FileInputStream(new File(FONT_DIR + path)), size);
+            return Font.loadFont(new FileInputStream(FONT_DIR + path), size);
         } catch(FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -49,10 +49,9 @@ public class Main extends Application {
      * Cette méthode permet de lancer le Stage Principal de l'application
      *
      * @param stage correspond au stage par défaut de l'application, mais non utilisé ici
-     * @throws Exception retourne une exception si le stage ne peut pas être lancé
      */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         Maze maze = new Maze();
         new MainView(maze);
         new ParameterView(maze);

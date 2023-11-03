@@ -35,7 +35,6 @@ public class Maze extends Subject {
     protected int turn;
     protected int nbRows;
     protected int nbCols;
-    protected boolean isHunterTurn;
     protected Hunter hunter;
     protected Monster monster;
     protected Cell[][] maze;
@@ -115,8 +114,8 @@ public class Maze extends Subject {
     /**
      * Importe le labyrinthe par défaut (id=0) de ces paramètres
      *
-     * @param nbRows
-     * @param nbCols
+     * @param nbRows    (int)   Nombre de lignes du labyrinthe
+     * @param nbCols    (int)   Nombre de colonnes du labyrinthe
      */
     private void importMaze(int nbRows, int nbCols) {
         importMaze(nbRows, nbCols, 0);
@@ -198,6 +197,9 @@ public class Maze extends Subject {
             victory(false);
             return;
         }
+        if(!hunter.canShoot(coord)) {
+            return;
+        }
         ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
         ICellEvent hunterEvent = new CellEvent(turn, getCell(coord).getInfo(), coord);
         monster.update(monsterEvent);
@@ -209,13 +211,13 @@ public class Maze extends Subject {
     /**
      * Fonction permettant de changer les paramètre de la partie
      *
-     * @param hunterName
-     * @param monsterName
-     * @param height
+     * @param hunterName    (String)    Nom du chasseur
+     * @param monsterName   (String)    Nom du monstre
+     * @param size    (int)       Taille du labyrinthe
      */
-    public void changerParam(String hunterName, String monsterName, int height) {
-        this.nbRows = height;
-        this.nbCols = height;
+    public void changerParam(String hunterName, String monsterName, int size) {
+        this.nbRows = size;
+        this.nbCols = size;
         importMaze(nbRows, nbCols);
         hunter.setName(hunterName);
         monster.setName(monsterName);

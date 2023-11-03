@@ -4,23 +4,22 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
 /**
  * Classe Coordinate - Une coordonnée est une position dans le labyrinthe, composée d'un numéro de ligne et de colonne.
- * @see ICoordinate
+ *
  * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0
+ * @see ICoordinate
  */
 public class Coordinate implements ICoordinate {
     protected int row;
     protected int col;
 
-    public Coordinate(int row, int col)
-    {
+    public Coordinate(int row, int col) {
         this.row = row;
         this.col = col;
     }
 
-    public Coordinate()
-    {
-        this(-1,-1);
+    public Coordinate() {
+        this(-1, -1);
     }
 
     @Override
@@ -44,14 +43,14 @@ public class Coordinate implements ICoordinate {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if(this == obj)
             return true;
-        if (obj == null)
+        if(obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if(getClass() != obj.getClass())
             return false;
         Coordinate other = (Coordinate) obj;
-        if (row != other.row)
+        if(row != other.row)
             return false;
         return col == other.col;
     }

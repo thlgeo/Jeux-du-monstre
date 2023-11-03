@@ -19,19 +19,17 @@ import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre de jeu du monstre
- * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @Version 1.0
  */
 public class MonsterView extends Stage implements Observer {
     public static final double WIDTH = 150.0d;
     public static final double HEIGHT = 100.0d;
+    private final Maze maze;
     private Label titre;
     private Label tour;
     private MazeController mc;
-    private Maze maze;
     private Button ready;
 
-    public MonsterView(Maze maze){
+    public MonsterView(Maze maze) {
         this.maze = maze;
         setTitle("S3.02_G1_Monstre");
         setResizable(false);
@@ -44,7 +42,7 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène principale du monstre
      */
-    public void setMonsterScene(){
+    public void setMonsterScene() {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, tour);
         root.setAlignment(Pos.CENTER);
@@ -55,7 +53,7 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène d'attente du monstre
      */
-    public void setWaitScene(){
+    public void setWaitScene() {
         VBox root = new VBox();
         root.getChildren().addAll(tour);
         root.setAlignment(Pos.CENTER);
@@ -66,7 +64,7 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène d'avant de jouer du monstre
      */
-    public void setReadyScene(){
+    public void setReadyScene() {
         VBox root = new VBox();
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setMonsterScene());
@@ -78,7 +76,7 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet d'initialiser les éléments de la fenêtre du monstre
      */
-    public void setMonsterNodes(){
+    public void setMonsterNodes() {
         ready = new Button("Pret !");
         ready.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         ready.setMinSize(200, 50);
@@ -91,6 +89,7 @@ public class MonsterView extends Stage implements Observer {
 
     /**
      * Cette méthode permet de mettre à jour la fenêtre (non utilisée ici)
+     *
      * @param subject correspond au sujet observé
      */
     @Override
@@ -103,12 +102,13 @@ public class MonsterView extends Stage implements Observer {
 
     /**
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
+     *
      * @param subject correspond au sujet observé
-     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre   -   (ICellEvent)
+     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre   -   (ICellEvent)
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o instanceof ICellEvent cell){
+        if(o instanceof ICellEvent cell) {
             mc.setRender(cell.getCoord().getRow(), cell.getCoord().getCol(), Cell.render(cell.getState(), cell.getTurn()));
             tour.setText("Tour du chasseur !");
             setWaitScene();
@@ -126,10 +126,19 @@ public class MonsterView extends Stage implements Observer {
         }
     }
 
+    /**
+     * Cette méthode permet de changer la scène de la fenêtre
+     *
+     * @param size (int)   correspond à la taille du labyrinthe
+     * @param pane (Pane)  correspond au panneau à afficher
+     */
     public void setScene(int size, Pane pane) {
         super.setScene(new Scene(pane, size * CellController.SIZE + WIDTH, size * CellController.SIZE + HEIGHT));
     }
 
+    /**
+     * Cette méthode permet de redimensionner la fenêtre
+     */
     public void resize() {
         setWidth(this.mc.getSize() * CellController.SIZE + WIDTH);
         setHeight(this.mc.getSize() * CellController.SIZE + HEIGHT);

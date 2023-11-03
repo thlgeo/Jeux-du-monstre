@@ -19,20 +19,17 @@ import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre de jeu du chasseur
- * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @Version 1.0
  */
 public class HunterView extends Stage implements Observer {
-    public static int WIDTH = 150;
-    public static int HEIGHT = 100;
-
+    public static final double WIDTH = 150.0d;
+    public static final double HEIGHT = 100.0d;
+    private final Maze maze;
     private Label titre;
     private Label tour;
     private MazeController mc;
-    private Maze maze;
     private Button ready;
 
-    public HunterView(Maze maze){
+    public HunterView(Maze maze) {
         this.maze = maze;
         setTitle("S3.02_G1_Chasseur");
         setResizable(false);
@@ -44,7 +41,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène principale du chasseur
      */
-    public void setHunterScene(){
+    public void setHunterScene() {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, tour);
         root.setAlignment(Pos.CENTER);
@@ -54,7 +51,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène d'attente du chasseur
      */
-    public void setWaitScene(){
+    public void setWaitScene() {
         VBox root = new VBox();
         root.getChildren().addAll(tour);
         root.setAlignment(Pos.CENTER);
@@ -65,7 +62,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène d'avant de jouer du chasseur
      */
-    public void setReadyScene(){
+    public void setReadyScene() {
         VBox root = new VBox();
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setHunterScene());
@@ -76,7 +73,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet d'initialiser les éléments de la fenêtre du chasseur
      */
-    public void setHunterNodes(){
+    public void setHunterNodes() {
         ready = new Button("Pret !");
         ready.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         ready.setMinSize(200, 50);
@@ -89,6 +86,7 @@ public class HunterView extends Stage implements Observer {
 
     /**
      * Cette méthode permet de mettre à jour la fenêtre (non utilisée ici)
+     *
      * @param subject correspond au sujet observé
      */
     @Override
@@ -99,8 +97,9 @@ public class HunterView extends Stage implements Observer {
 
     /**
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
+     *
      * @param subject correspond au sujet observé
-     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre    -   (ICellEvent)
+     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre    -   (ICellEvent)
      */
     @Override
     public void update(Subject subject, Object o) {
@@ -113,19 +112,28 @@ public class HunterView extends Stage implements Observer {
             resize();
         } else if("endGame".equals(o)) {
             close();
-        } else if (o.equals("changerTour")) {
+        } else if(o.equals("changerTour")) {
             tour.setText("Tour du chasseur !");
             setReadyScene();
         }
     }
 
+    /**
+     * Cette méthode permet de changer la scène de la fenêtre
+     *
+     * @param size correspond à la taille du labyrinthe
+     * @param pane correspond au panneau à afficher
+     */
     public void setScene(int size, Pane pane) {
         super.setScene(new Scene(pane, size * CellController.SIZE + WIDTH, size * CellController.SIZE + HEIGHT));
     }
 
+    /**
+     * Cette méthode permet de redimensionner la fenêtre
+     */
     public void resize() {
-        int width = this.mc.getSize() * CellController.SIZE + WIDTH;
-        int height = this.mc.getSize() * CellController.SIZE + HEIGHT;
+        double width = this.mc.getSize() * CellController.SIZE + WIDTH;
+        double height = this.mc.getSize() * CellController.SIZE + HEIGHT;
         if(width != getWidth()) setWidth(width);
         if(height != getHeight()) setHeight(height);
     }

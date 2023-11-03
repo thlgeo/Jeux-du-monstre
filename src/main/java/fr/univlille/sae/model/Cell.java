@@ -10,27 +10,30 @@ import java.util.Objects;
 /**
  * Classe représentant une cellule de la grille.
  * Une cellule est caractérisée une coordonnée, son type et le tour auquel elle a été découverte.
- * @see ICoordinate
- * @see CellInfo
+ *
  * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0
+ * @see ICoordinate
+ * @see CellInfo
  */
 public class Cell {
+    protected static Map<Character, CellInfo> charToInfo = new HashMap<>();
+    public static final String IS_WALL = "W";
     protected CellInfo info;
     protected int turn;
-    public static final Map<Character, CellInfo> charToInfo = new HashMap<>() {{
-        put('W', CellInfo.WALL);
-        put('E', CellInfo.EMPTY);
-        put('H', CellInfo.HUNTER);
-        put('M', CellInfo.MONSTER);
-        put('X', CellInfo.EXIT);
-    }};
-    public static final String IS_WALL = "W";
 
-    public Cell(CellInfo info, int turn)
-    {
+    public Cell(CellInfo info, int turn) {
+        if(charToInfo.isEmpty()) initialiseCharToInfo();
         this.info = info;
         this.turn = turn;
+    }
+
+    public static void initialiseCharToInfo() {
+        charToInfo.put('W', CellInfo.WALL);
+        charToInfo.put('E', CellInfo.EMPTY);
+        charToInfo.put('H', CellInfo.HUNTER);
+        charToInfo.put('M', CellInfo.MONSTER);
+        charToInfo.put('X', CellInfo.EXIT);
     }
 
     public Cell(char car) {
@@ -41,9 +44,12 @@ public class Cell {
         this(info, 0);
     }
 
-    public Cell()
-    {
+    public Cell() {
         this(null);
+    }
+
+    public static String render(CellInfo cellInfo, int turn) {
+        return new Cell(cellInfo, turn).getRender();
     }
 
     public CellInfo getInfo() {
@@ -54,16 +60,25 @@ public class Cell {
         this.info = info;
     }
 
-    public int getTurn() { return turn; }
+    public int getTurn() {
+        return turn;
+    }
 
-    public void setTurn(int turn) { this.turn = turn; }
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
-        return  info == cell.info && turn == cell.turn;
+        return info == cell.info && turn == cell.turn;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getInfo(), getTurn());
     }
 
     private String getRender() {
@@ -84,10 +99,6 @@ public class Cell {
                 return " ";
             }
         }
-    }
-
-    public static String render(CellInfo cellInfo, int turn) {
-        return new Cell(cellInfo, turn).getRender();
     }
 
 }

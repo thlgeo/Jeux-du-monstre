@@ -11,17 +11,15 @@ import java.io.File;
 
 /**
  * Cette classe coorespond au bouton d'une cellule du labyrinthe
- * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @Version 1.0
  */
 public class CellController extends Button {
-    private int a;
-    private int o;
-    private Maze maze;
-    private final boolean isMonster;
     public static final int SIZE = 50;
+    private final boolean isMonster;
+    private final int a;
+    private final int o;
+    private final Maze maze;
 
-    public CellController(int a, int o, Maze maze, boolean isMonsterCell){
+    public CellController(int a, int o, Maze maze, boolean isMonsterCell) {
         super(" ");
         this.maze = maze;
         this.a = a;
@@ -36,23 +34,27 @@ public class CellController extends Button {
         this.setOnAction(e -> setAction());
     }
 
-    public int getA() {
-        return a;
-    }
-
-    public int getO() {
-        return o;
-    }
-
+    /**
+     * Cette méthode permet de récupérer les coordonnées de la cellule
+     *
+     * @return (ICoordinate)   Les coordonnées de la cellule
+     */
     public ICoordinate getCoord() {
         return new Coordinate(a, o);
     }
 
-    public void setAction(){
-        if(this.isMonster) { this.maze.deplacementMonstre(this.getCoord()); }
-        else {
-            try { this.maze.tirerChasseur(this.getCoord()); }
-            catch (Exception e) { new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait(); }
+    /**
+     * Cette méthode permet de définir l'action du bouton
+     */
+    public void setAction() {
+        if(this.isMonster) {
+            this.maze.deplacementMonstre(this.getCoord());
+        } else {
+            try {
+                this.maze.tirerChasseur(this.getCoord());
+            } catch(Exception e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+            }
         }
     }
 }

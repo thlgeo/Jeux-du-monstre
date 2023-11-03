@@ -5,11 +5,12 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
 /**
  * Classe CellEvent - une CellEvent est une cellule avec un type et un tour.
+ *
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0.0
  * @see ICellEvent
  * @see ICoordinate
  * @see CellInfo
- * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
- * @version 1.0.0
  */
 public class CellEvent implements ICellEvent {
 

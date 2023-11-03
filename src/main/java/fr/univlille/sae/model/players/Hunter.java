@@ -5,27 +5,26 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.Coordinate;
 
 /**
  * Classe Hunter - Un chasseur est un joueur humain qui peut tirer sur une cellule pour en découvrir son type.
+ *
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0.0
  * @see IHunterStrategy
  * @see ICellEvent
  * @see ICoordinate
  * @see Cell
- * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
- * @version 1.0.0
  */
 public class Hunter extends Subject implements IHunterStrategy {
 
-    protected int nbRows;
-    protected int nbCols;
-
-    protected String name;
-    protected Cell[][] maze;
     private static final int DEFAULT_NB_ROWS = 10;
     private static final int DEFAULT_NB_COLS = 10;
     private static final String DEFAULT_NAME = "Hunter";
+    protected int nbRows;
+    protected int nbCols;
+    protected String name;
+    protected Cell[][] maze;
 
     public Hunter(String name, int nbRows, int nbCols) {
         this.nbCols = nbCols;
@@ -38,6 +37,10 @@ public class Hunter extends Subject implements IHunterStrategy {
         this(name, DEFAULT_NB_ROWS, DEFAULT_NB_COLS);
     }
 
+    public Hunter() {
+        this(DEFAULT_NAME);
+    }
+
     public String getName() {
         return name;
     }
@@ -45,20 +48,24 @@ public class Hunter extends Subject implements IHunterStrategy {
     public void setName(String name) {
         this.name = name;
     }
-    public void setRowCol(int row, int col){
+
+    /**
+     * Reinitialise le labyrinthe avec le nombre de lignes et de colonnes spécifiés en paramètre.
+     *
+     * @param row (int)   Nombre de lignes
+     * @param col (int)   Nombre de colonnes
+     */
+    public void setRowCol(int row, int col) {
         this.nbRows = row;
         this.nbCols = col;
-        initialize(row,col);
-    }
-
-    public Hunter() {
-        this(DEFAULT_NAME);
+        initialize(row, col);
     }
 
     /**
      * Initialise le labyrinthe avec le nombre de lignes et de colonnes spécifiés en paramètre.
-     * @param rows  (int)   Nombre de lignes
-     * @param cols  (int)   Nombre de colonnes
+     *
+     * @param rows (int)   Nombre de lignes
+     * @param cols (int)   Nombre de colonnes
      */
     @Override
     public void initialize(int rows, int cols) {
@@ -71,14 +78,18 @@ public class Hunter extends Subject implements IHunterStrategy {
 
     /**
      * Play is not available for a hunter.
-     * @throws UnsupportedOperationException    Play is not available for a hunter.
+     *
+     * @throws UnsupportedOperationException Play is not available for a hunter.
      */
     @Override
-    public ICoordinate play() { throw new UnsupportedOperationException(); }
+    public ICoordinate play() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Met à jour le labyrinthe avec l'information sur la cellule tirée.
-     * @param iCellEvent    (ICellEvent)    Cellule tiré
+     *
+     * @param iCellEvent (ICellEvent)    Cellule tiré
      */
     @Override
     public void update(ICellEvent iCellEvent) {
@@ -92,13 +103,20 @@ public class Hunter extends Subject implements IHunterStrategy {
 
     /**
      * Récupère la cellule à la coordonnée spécifiée en paramètre.
-     * @param iCoordinate   (ICoordinate)   Coordonnée
-     * @return  (Cell)  Cellule à la coordonnée
+     *
+     * @param iCoordinate (ICoordinate)   Coordonnée
+     * @return (Cell)  Cellule à la coordonnée
      */
     public Cell getCelule(ICoordinate iCoordinate) {
         return this.maze[iCoordinate.getRow()][iCoordinate.getCol()];
     }
 
+    /**
+     * Regarde si la coordonnée spécifiée en paramètre est dans le labyrinthe.
+     *
+     * @param coord (ICoordinate)   Coordonnée
+     * @return (boolean)   Vrai si la coordonnée est dans le labyrinthe, faux sinon
+     */
     public boolean canShoot(ICoordinate coord) {
         int col = coord.getCol();
         int row = coord.getRow();
@@ -110,19 +128,31 @@ public class Hunter extends Subject implements IHunterStrategy {
         return "Hunter " + this.name;
     }
 
+    /**
+     * Notifie les observateurs de la fin de la partie.
+     */
     public void notifyEndGame() {
         notifyObservers("endGame");
     }
 
-    public void notifyTurnChange(){
+    /**
+     * Notifie les observateurs du changement de tour.
+     */
+    public void notifyTurnChange() {
         notifyObservers("changerTour");
     }
 
-    public void notifyShow(){
+    /**
+     * Notifie les observateurs que la partie est en cours.
+     */
+    public void notifyShow() {
         notifyObservers();
     }
 
-    public void notifyDiscoveredMaze(){
+    /**
+     * Notifie les observateurs avec le labyrinthe découvert par le chasseur.
+     */
+    public void notifyDiscoveredMaze() {
         notifyObservers(maze);
     }
 }

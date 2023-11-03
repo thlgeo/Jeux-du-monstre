@@ -8,8 +8,8 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Cette classe correspond GridPane représentant le labyrinthe du jeu
- * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @Version 1.0
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version 1.0
  */
 public class MazeController extends GridPane {
 

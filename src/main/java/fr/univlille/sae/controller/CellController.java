@@ -11,8 +11,8 @@ import java.io.File;
 
 /**
  * Cette classe coorespond au bouton d'une cellule du labyrinthe
- * @Author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @Version 1.0
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version  1.0
  */
 public class CellController extends Button {
     public static final int SIZE = 50;

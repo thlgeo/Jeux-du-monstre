@@ -176,7 +176,7 @@ public class Maze extends Subject {
     }
 
     /**
-     * Demande a indiquer la fin de la partie à monstre & à joueur, puis envois le nom du vainqueur a la MainView pour afficher la fin de partie
+     * Demande a indiquer la fin de la partie à monstre à joueur, puis envois le nom du vainqueur a la MainView pour afficher la fin de partie
      *
      * @param isMonster booléen indiquant qui a gagné (true = monstre, false = hunter)
      */

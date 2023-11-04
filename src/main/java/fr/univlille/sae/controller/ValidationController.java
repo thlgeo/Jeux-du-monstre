@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 
 /**
  * Cette classe correspond au bouton de validation des paramètres
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version  1.0
  */
 public class ValidationController extends Button {
     private final NameController nameMonster;
@@ -25,7 +27,7 @@ public class ValidationController extends Button {
     }
 
     /**
-     * Cette méthode permet de paramétrer les actions du bouton cad signaler les changements de paramètres
+     * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire signaler les changements de paramètres
      */
     public void setAction() {
         setOnAction(event -> {

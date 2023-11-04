@@ -100,7 +100,7 @@ public class Maze extends Subject {
     }
 
     /**
-     * Prends les coordonnées et l'identifiant du labyrinthe et renvoit le chemin de ce labyrinthe (utilisé dans importMaze)
+     * Prends les coordonnées et l'identifiant du labyrinthe et renvoi le chemin de ce labyrinthe (utilisé dans importMaze)
      *
      * @param nbCols Le nombre de colonnes du labyrinthe
      * @param nbRows Le nombre de lignes du labyrinthe
@@ -138,9 +138,9 @@ public class Maze extends Subject {
     }
 
     /**
-     * Notifie aux observeurs si le monstre a bougé ou non, ou s'il a gagné.
+     * Notifie aux observers si le monstre a bougé ou non, ou s'il a gagné.
      *
-     * @param newCoord coordinate chosen by the player/AI.
+     * @param newCoord coordonnées choisies
      */
     public void deplacementMonstre(ICoordinate newCoord) {
         try {
@@ -164,7 +164,7 @@ public class Maze extends Subject {
     }
 
     /**
-     * Fonction récursive initialisant le monstre sur la maze. On prends des coordonnées aléatoires puis on regarde si la cellule associée est bien vide.
+     * Fonction récursive initialisant le monstre sur la maze. On prend des coordonnées aléatoires puis on regarde si la cellule associée est bien vide.
      * Si elle ne l'est pas, on réessaye.
      *
      * @return ICoorinate, les coordonnées du monstre
@@ -176,7 +176,7 @@ public class Maze extends Subject {
     }
 
     /**
-     * Demande a indiquer la fin de la partie à monstre à joueur, puis envois le nom du vainqueur a la MainView pour afficher la fin de partie
+     * Demande à indiquer la fin de la partie à monstre à joueur, puis envois le nom du vainqueur a la MainView pour afficher la fin de partie
      *
      * @param isMonster booléen indiquant qui a gagné (true = monstre, false = hunter)
      */
@@ -190,7 +190,7 @@ public class Maze extends Subject {
     /**
      * Notifie aux observers si le chasseur a tiré sur le monstre (victoire), sinon informe le monstre des coordonnées du tir et informe le chasseur du type de la cellule choisie.
      *
-     * @param coord coordinate chosen by the player/AI.
+     * @param coord coordonnées choisies
      */
     public void tirerChasseur(ICoordinate coord) {
         if(coord.equals(monster.getCoordinateMonster())) {
@@ -260,15 +260,24 @@ public class Maze extends Subject {
         hunter.attach(o);
     }
 
+    /**
+     * Notifie aux observers le labyrinthe déjà découvert
+     */
     public void notifyDiscoveredMaze() {
         monster.notifyDiscoveredMaze();
         hunter.notifyDiscoveredMaze();
     }
 
+    /**
+     * Notifie aux observers d'afficher les paramètres
+     */
     public void notifyShowParameter() {
         notifyObservers();
     }
 
+    /**
+     * Notifie aux observers d'afficher les pages monstre et le chasseur
+     */
     public void notifyShowMH() {
         monster.notifyShow();
         hunter.notifyShow();

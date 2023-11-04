@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre où l'utilisateur peut changer les paramètres
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version  1.0
  */
 public class ParameterView extends Stage implements Observer {
     public static final int WIDTH = 500;
@@ -73,7 +75,7 @@ public class ParameterView extends Stage implements Observer {
     }
 
     /**
-     * Cette méthode permet de mettre à jour la fenêtre (non utilisée ici)
+     * Cette méthode permet de mettre à jour la fenêtre
      *
      * @param subject correspond au sujet observé
      */
@@ -86,7 +88,7 @@ public class ParameterView extends Stage implements Observer {
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      *
      * @param subject correspond au sujet observé
-     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre
+     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
      */
     @Override
     public void update(Subject subject, Object o) {

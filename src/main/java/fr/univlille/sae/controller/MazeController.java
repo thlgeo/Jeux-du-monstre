@@ -25,6 +25,9 @@ public class MazeController extends GridPane {
         setAlignment(Pos.CENTER);
     }
 
+    /*
+        * Cette méthode permet de changer le labyrinthe
+     */
     public void resize() {
         mazeTable = new Button[maze.getNbRows()][maze.getNbCols()];
         setDefaultMaze(isMonsterMaze);
@@ -47,8 +50,8 @@ public class MazeController extends GridPane {
     /**
      * Cette méthode permet de changer la valeur d'une case du labyrinthe
      *
-     * @param a    absisse de la case
-     * @param o    ordonnée de la case
+     * @param a abscisse de la case
+     * @param o ordonnée de la case
      * @param text nouvelle valeur de la case
      */
     public void setRender(int o, int a, String text) {
@@ -82,7 +85,7 @@ public class MazeController extends GridPane {
     /**
      * Cette méthode permet de récupérer la taille du labyrinthe
      *
-     * @return (int)   La taille du labyrinthe
+     * @return (int) La taille du labyrinthe
      */
     public int getSize() {
         return maze.getNbCols();

@@ -5,7 +5,9 @@ import fr.univlille.sae.model.Maze;
 import javafx.scene.control.Button;
 
 /**
- * Cette classe coorespond au bouton de lancement du jeu
+ * Cette classe correspond au bouton de lancement du jeu
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version  1.0
  */
 public class LaunchButton extends Button {
 
@@ -20,7 +22,7 @@ public class LaunchButton extends Button {
     }
 
     /**
-     * Cette méthode permet de paramétrer les actions du bouton càd lancer les deux fenetres hunter et monster
+     * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire afficher et initialiser les pages Monster et Hunter
      */
     public void setAction() {
         setOnAction(event -> {

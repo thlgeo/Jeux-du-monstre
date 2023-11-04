@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestMonster {
+class TestMonster {
     Monster monstre;
     Cell[][] maze;
 
     @BeforeEach
-    public void initialize()
+    void initialize()
     {
         maze = new Cell[5][5];
         for(int i=0;i<maze.length;i++)
@@ -31,11 +31,11 @@ public class TestMonster {
     }
 
     @Test 
-    public void testCanMove() //TODO
+    void testCanMove()
     {
         assertTrue(monstre.canMove(new Coordinate(2, 0))); // se déplace vers le bas sur une case vide
         assertTrue(monstre.canMove(new Coordinate(2,1))); // se déplace en diagonal
-        assertFalse(monstre.canMove(new Coordinate(1,0))); // se déplace sur lui même
+        assertFalse(monstre.canMove(new Coordinate(1,0))); // se déplace sur lui-même
         assertFalse(monstre.canMove(new Coordinate(0, 0))); // se déplace sur un mur
         monstre.setCoordinateMonster(new Coordinate(3,3));
         assertTrue(monstre.canMove(new Coordinate(3,4))); // se déplace à gauche sur une case vide

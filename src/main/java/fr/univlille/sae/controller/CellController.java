@@ -43,7 +43,7 @@ public class CellController extends Button {
     /**
      * Cette méthode permet de récupérer les coordonnées de la cellule
      *
-     * @return (ICoordinate)   Les coordonnées de la cellule
+     * @return (ICoordinate) Les coordonnées de la cellule
      */
     public ICoordinate getCoord() {
         return new Coordinate(a, o);

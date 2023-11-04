@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 
 /**
  * Cette classe correspond au bouton de lancement de la page de paramètres
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version  1.0
  */
 public class SettingButton extends Button {
     private final Maze maze;
@@ -19,7 +21,7 @@ public class SettingButton extends Button {
     }
 
     /**
-     * Cette méthode permet de paramétrer les actions du bouton càd lancer la fenetre de parametrage
+     * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire afficher la page de paramètres
      */
     public void setAction() {
         setOnAction(event -> maze.notifyShowParameter());

@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre de jeu du monstre
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version  1.0
  */
 public class MonsterView extends Stage implements Observer {
     public static final double WIDTH = 150.0d;
@@ -87,14 +89,14 @@ public class MonsterView extends Stage implements Observer {
     }
 
     /**
-     * Cette méthode permet de mettre à jour la fenêtre (non utilisée ici)
+     * Cette méthode permet de mettre à jour la fenêtre
      *
      * @param subject correspond au sujet observé
      */
     @Override
     public void update(Subject subject) {
         show();
-        tour = new Label("Cliquez sur une case pour commencer");
+        tour = new Label("Cliquez pour commencer");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         setMonsterScene();
     }
@@ -103,7 +105,7 @@ public class MonsterView extends Stage implements Observer {
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      *
      * @param subject correspond au sujet observé
-     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre   -   (ICellEvent)
+     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
      */
     @Override
     public void update(Subject subject, Object o) {
@@ -128,8 +130,8 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre
      *
-     * @param size (int)   correspond à la taille du labyrinthe
-     * @param pane (Pane)  correspond au panneau à afficher
+     * @param size (int) correspond à la taille du labyrinthe
+     * @param pane (Pane) correspond au panneau à afficher
      */
     public void setScene(int size, Pane pane) {
         super.setScene(new Scene(pane, size * CellController.SIZE + WIDTH, size * CellController.SIZE + HEIGHT));

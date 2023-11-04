@@ -50,7 +50,7 @@ public class Hunter extends Subject implements IHunterStrategy {
     }
 
     /**
-     * Reinitialise le labyrinthe avec le nombre de lignes et de colonnes spécifiés en paramètre.
+     * Reinitialise le labyrinthe avec le nombre de lignes et de colonnes spécifié en paramètre.
      *
      * @param row (int)   Nombre de lignes
      * @param col (int)   Nombre de colonnes

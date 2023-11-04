@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
 
 /**
  * Cette classe permet de lancer l'application
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version  1.0
  */
 public class Main extends Application {
     public static final String FONT_DIR = System.getProperty("user.dir") + File.separator + "res" + File.separator + "font" + File.separator;

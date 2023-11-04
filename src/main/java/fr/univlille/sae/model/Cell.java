@@ -81,6 +81,11 @@ public class Cell {
         return Objects.hash(getInfo(), getTurn());
     }
 
+    /**
+     * Récupère le rendu de la cellule à partir de son info.
+     *
+     * @return (String) Rendu de la cellule
+     */
     private String getRender() {
         switch(info) {
             case WALL -> {

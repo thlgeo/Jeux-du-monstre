@@ -8,6 +8,8 @@ import javafx.scene.layout.HBox;
 
 /**
  * Cette classe correspond à une zone pour changer la taille du labyrinthe
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version  1.0
  */
 public class SizeController extends HBox {
     public static final int MIN_SIZE = 8;
@@ -47,7 +49,7 @@ public class SizeController extends HBox {
     /**
      * Cette méthode permet de récupérer la valeur de la taille
      *
-     * @return (int)   La valeur de la taille
+     * @return (int) La valeur de la taille
      */
     public int getValue() {
         return Integer.parseInt(this.size.getText());
@@ -56,8 +58,8 @@ public class SizeController extends HBox {
     /**
      * Cette méthode permet de changer la valeur de la taille
      *
-     * @param value (int)   La nouvelle valeur de la taille
-     * @return (boolean)   true si la valeur est correcte, false sinon
+     * @param value (int) La nouvelle valeur de la taille
+     * @return (boolean) true si la valeur est correcte, false sinon
      */
     public boolean setValue(int value) {
         if(value >= MIN_SIZE && value <= MAX_SIZE) {
@@ -70,7 +72,7 @@ public class SizeController extends HBox {
     /**
      * Cette méthode permet de savoir si la valeur est correcte
      *
-     * @return (boolean)   true si la valeur est correcte, false sinon
+     * @return (boolean) true si la valeur est correcte, false sinon
      */
     public boolean isValid() {
         int value = getValue();

@@ -25,4 +25,13 @@ class TestCell {
         assertEquals(c1, c2);
     }
 
+    @Test
+    void testRender(){
+        assertEquals(" ", Cell.render(ICellEvent.CellInfo.EMPTY, 5));
+        assertEquals("5", Cell.render(ICellEvent.CellInfo.MONSTER, 5));
+        assertEquals("X", Cell.render(ICellEvent.CellInfo.EXIT, 5));
+        assertEquals("W", Cell.render(ICellEvent.CellInfo.WALL, 5));
+        assertEquals("H", Cell.render(ICellEvent.CellInfo.HUNTER, 5));
+    }
+
 }

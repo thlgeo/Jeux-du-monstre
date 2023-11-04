@@ -7,8 +7,8 @@ import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.events.CellEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestHunter {
 
@@ -38,6 +38,14 @@ class TestHunter {
         Cell c = h1.getCelule(coord);
         assertEquals(ICellEvent.CellInfo.MONSTER, c.getInfo());
         assertEquals(5, c.getTurn());
+    }
+
+    @Test
+    void canShot(){
+        ICoordinate coordV = new Coordinate(0, 0);
+        ICoordinate coordF = new Coordinate(16, 16);
+        assertTrue(h1.canShoot(coordV));
+        assertFalse(h1.canShoot(coordF));
     }
 
     @Test

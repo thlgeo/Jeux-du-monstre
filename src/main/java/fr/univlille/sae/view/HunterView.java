@@ -110,7 +110,6 @@ public class HunterView extends Stage implements Observer {
             setWaitScene();
         } else if(o instanceof Cell[][]) {
             mc.resize();
-            //resize();
         } else if("endGame".equals(o)) {
             close();
         } else if(o.equals("changerTour")) {

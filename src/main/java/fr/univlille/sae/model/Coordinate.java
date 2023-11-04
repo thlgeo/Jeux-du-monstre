@@ -18,10 +18,6 @@ public class Coordinate implements ICoordinate {
         this.col = col;
     }
 
-    public Coordinate() {
-        this(-1, -1);
-    }
-
     @Override
     public int getCol() {
         return col;

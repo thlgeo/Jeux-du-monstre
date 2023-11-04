@@ -15,7 +15,7 @@ import java.io.File;
  * @version  1.0
  */
 public class CellController extends Button {
-    public static final int SIZE = 50;
+    public static final int SIZE = 40;
     private final boolean isMonster;
     private final int a;
     private final int o;

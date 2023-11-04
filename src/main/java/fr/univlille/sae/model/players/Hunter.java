@@ -45,6 +45,14 @@ public class Hunter extends Subject implements IHunterStrategy {
         this.name = name;
     }
 
+    public int getNbRows(){
+        return nbRows;
+    }
+
+    public int getNbCols(){
+        return nbCols;
+    }
+
     /**
      * Reinitialise le labyrinthe avec le nombre de lignes et de colonnes spécifié en paramètre.
      *
@@ -150,5 +158,18 @@ public class Hunter extends Subject implements IHunterStrategy {
      */
     public void notifyDiscoveredMaze() {
         notifyObservers(maze);
+    }
+
+    public Cell getCell(ICoordinate coord){
+        if(coord == null) {
+            return null;
+        }
+        if(coord.getRow() < 0 || coord.getRow() >= maze.length) {
+            return null;
+        }
+        if(coord.getCol() < 0 || coord.getCol() >= maze[0].length) {
+            return null;
+        }
+        return maze[coord.getRow()][coord.getCol()];
     }
 }

@@ -6,7 +6,10 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.Maze;
 import fr.univlille.sae.model.events.CellEvent;
+
+import java.util.Arrays;
 
 /**
  * Classe Monster - Un monstre est un joueur humain qui peut se déplacer sur une cellule (si la cellule peut être atteinte).
@@ -28,7 +31,7 @@ public class Monster extends Subject implements IMonsterStrategy {
 
     public Monster(String name, Cell[][] discoveredMaze) {
         this.name = name;
-        this.discoveredMaze = discoveredMaze;
+        this.discoveredMaze = copyOf(discoveredMaze);
         this.maze = convert();
         coordinateMonster = null;
         lastShotHunter = null;
@@ -40,7 +43,7 @@ public class Monster extends Subject implements IMonsterStrategy {
      * @param maze (Cell[][])   Le labyrinthe
      */
     public void setMaze(Cell[][] maze) {
-        discoveredMaze = maze;
+        discoveredMaze = copyOf(maze);
         this.maze = convert();
         coordinateMonster = null;
         lastShotHunter = null;
@@ -130,6 +133,8 @@ public class Monster extends Subject implements IMonsterStrategy {
         return coordinateMonster;
     }
 
+    public ICoordinate getLastShotHunter(){return lastShotHunter;}
+
     public void setCoordinateMonster(ICoordinate coordinateMonster) {
         this.coordinateMonster = coordinateMonster;
     }
@@ -166,7 +171,7 @@ public class Monster extends Subject implements IMonsterStrategy {
      * @param coord (ICoordinate)   Coordonnée
      * @return (Cell)  Cellule à la coordonnée
      */
-    private Cell get(ICoordinate coord) {
+    public Cell get(ICoordinate coord) {
         if(coord == null) {
             return null;
         }
@@ -191,5 +196,17 @@ public class Monster extends Subject implements IMonsterStrategy {
      */
     public void notifyShow() {
         notifyObservers();
+    }
+
+    public Cell[][] getDiscoveredMaze(){
+        return discoveredMaze;
+    }
+
+    private Cell[][] copyOf(Cell[][] maze){
+        Cell[][] newMaze = new Cell[maze.length][];
+        for(int i = 0; i < maze.length; i++){
+            newMaze[i] = Arrays.copyOf(maze[i], maze[i].length);
+        }
+        return newMaze;
     }
 }

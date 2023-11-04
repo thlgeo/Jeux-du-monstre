@@ -1,13 +1,16 @@
 package fr.univlille.sae.model.players;
 
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
+import fr.univlille.sae.model.events.CellEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestMonster {
     Monster monstre;
@@ -39,5 +42,19 @@ class TestMonster {
         assertFalse(monstre.canMove(new Coordinate(0, 0))); // se déplace sur un mur
         monstre.setCoordinateMonster(new Coordinate(3,3));
         assertTrue(monstre.canMove(new Coordinate(3,4))); // se déplace à gauche sur une case vide
+    }
+
+    @Test
+    void test_update() {
+        ICoordinate coord = new Coordinate(2, 2);
+        CellEvent event = new CellEvent(5, ICellEvent.CellInfo.MONSTER, coord);
+        ICoordinate coordH = new Coordinate(0, 0);
+        CellEvent eventH = new CellEvent(5, CellInfo.HUNTER, coordH);
+        monstre.update(event);
+        monstre.update(eventH);
+        Cell c = monstre.get(coord);
+        assertEquals(ICellEvent.CellInfo.MONSTER, c.getInfo());
+        assertEquals(5, c.getTurn());
+        assertEquals(new Coordinate(0, 0), monstre.getLastShotHunter());
     }
 }

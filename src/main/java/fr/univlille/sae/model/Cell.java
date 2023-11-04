@@ -22,21 +22,13 @@ public class Cell {
     protected CellInfo info;
     protected int turn;
 
-    public Cell(CellInfo info, int turn) {
+    Cell(CellInfo info, int turn) {
         if(charToInfo.isEmpty()) initialiseCharToInfo();
         this.info = info;
         this.turn = turn;
     }
 
-    public static void initialiseCharToInfo() {
-        charToInfo.put('W', CellInfo.WALL);
-        charToInfo.put('E', CellInfo.EMPTY);
-        charToInfo.put('H', CellInfo.HUNTER);
-        charToInfo.put('M', CellInfo.MONSTER);
-        charToInfo.put('X', CellInfo.EXIT);
-    }
-
-    public Cell(char car) {
+    Cell(char car) {
         this(charToInfo.get(car));
     }
 
@@ -46,6 +38,14 @@ public class Cell {
 
     public Cell() {
         this(null);
+    }
+
+    protected static void initialiseCharToInfo() {
+        charToInfo.put('W', CellInfo.WALL);
+        charToInfo.put('E', CellInfo.EMPTY);
+        charToInfo.put('H', CellInfo.HUNTER);
+        charToInfo.put('M', CellInfo.MONSTER);
+        charToInfo.put('X', CellInfo.EXIT);
     }
 
     public static String render(CellInfo cellInfo, int turn) {
@@ -86,7 +86,7 @@ public class Cell {
      *
      * @return (String) Rendu de la cellule
      */
-    private String getRender() {
+    protected String getRender() {
         switch(info) {
             case WALL -> {
                 return IS_WALL;

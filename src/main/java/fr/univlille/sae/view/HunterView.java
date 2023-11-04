@@ -42,7 +42,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène principale du chasseur
      */
-    public void setHunterScene() {
+    private void setHunterScene() {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, tour);
         setScene(mc.getSize(), root);
@@ -52,7 +52,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène d'attente du chasseur
      */
-    public void setWaitScene() {
+    private void setWaitScene() {
         VBox root = new VBox();
         root.getChildren().addAll(tour);
         setScene(mc.getSize(), root);
@@ -63,7 +63,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène d'avant de jouer du chasseur
      */
-    public void setReadyScene() {
+    private void setReadyScene() {
         VBox root = new VBox();
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setHunterScene());
@@ -74,7 +74,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet d'initialiser les éléments de la fenêtre du chasseur
      */
-    public void setHunterNodes() {
+    private void setHunterNodes() {
         ready = new Button("Pret !");
         ready.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         ready.setMinSize(200, 50);
@@ -99,7 +99,7 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      *
-     * @param subject correspond au sujet observé
+      * @param subject correspond au sujet observé
      * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
      */
     @Override
@@ -125,18 +125,8 @@ public class HunterView extends Stage implements Observer {
      * @param size correspond à la taille du labyrinthe
      * @param pane correspond au panneau à afficher
      */
-    public void setScene(int size, Pane pane) {
+    private void setScene(int size, Pane pane) {
         super.setScene(new Scene(pane, size * CellController.SIZE + WIDTH, size * CellController.SIZE + HEIGHT));
-    }
-
-    /**
-     * Cette méthode permet de redimensionner la fenêtre
-     */
-    public void resize() {
-        double width = this.mc.getSize() * CellController.SIZE + WIDTH;
-        double height = this.mc.getSize() * CellController.SIZE + HEIGHT;
-        if(width != getWidth()) setWidth(width);
-        if(height != getHeight()) setHeight(height);
     }
 
 }

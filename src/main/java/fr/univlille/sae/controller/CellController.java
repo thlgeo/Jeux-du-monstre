@@ -45,22 +45,14 @@ public class CellController extends Button {
      *
      * @return (ICoordinate) Les coordonnées de la cellule
      */
-    public ICoordinate getCoord() {
+    protected ICoordinate getCoord() {
         return new Coordinate(a, o);
-    }
-
-    public int getA() {
-        return a;
-    }
-
-    public int getO() {
-        return o;
     }
 
     /**
      * Cette méthode permet de définir l'action du bouton
      */
-    public void setAction() {
+    private void setAction() {
         if(this.isMonster) {
             this.maze.deplacementMonstre(this.getCoord());
         } else {

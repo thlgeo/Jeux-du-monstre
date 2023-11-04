@@ -33,12 +33,8 @@ public class Hunter extends Subject implements IHunterStrategy {
         this.initialize(this.nbRows, this.nbCols);
     }
 
-    public Hunter(String name) {
-        this(name, DEFAULT_NB_ROWS, DEFAULT_NB_COLS);
-    }
-
-    public Hunter() {
-        this(DEFAULT_NAME);
+    Hunter() {
+        this(DEFAULT_NAME, DEFAULT_NB_ROWS, DEFAULT_NB_COLS);
     }
 
     public String getName() {
@@ -107,7 +103,7 @@ public class Hunter extends Subject implements IHunterStrategy {
      * @param iCoordinate (ICoordinate)   Coordonnée
      * @return (Cell)  Cellule à la coordonnée
      */
-    public Cell getCelule(ICoordinate iCoordinate) {
+    Cell getCelule(ICoordinate iCoordinate) {
         return this.maze[iCoordinate.getRow()][iCoordinate.getCol()];
     }
 

@@ -43,7 +43,7 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène principale du monstre
      */
-    public void setMonsterScene() {
+    private void setMonsterScene() {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, tour);
         setScene(mc.getSize(), root);
@@ -54,7 +54,7 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène d'attente du monstre
      */
-    public void setWaitScene() {
+    private void setWaitScene() {
         VBox root = new VBox();
         root.getChildren().addAll(tour);
         setScene(mc.getSize(), root);
@@ -65,7 +65,7 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène d'avant de jouer du monstre
      */
-    public void setReadyScene() {
+    private void setReadyScene() {
         VBox root = new VBox();
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setMonsterScene());
@@ -77,7 +77,7 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet d'initialiser les éléments de la fenêtre du monstre
      */
-    public void setMonsterNodes() {
+    private void setMonsterNodes() {
         ready = new Button("Pret !");
         ready.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         ready.setMinSize(200, 50);
@@ -133,16 +133,8 @@ public class MonsterView extends Stage implements Observer {
      * @param size (int) correspond à la taille du labyrinthe
      * @param pane (Pane) correspond au panneau à afficher
      */
-    public void setScene(int size, Pane pane) {
+    private void setScene(int size, Pane pane) {
         super.setScene(new Scene(pane, size * CellController.SIZE + WIDTH, size * CellController.SIZE + HEIGHT));
-    }
-
-    /**
-     * Cette méthode permet de redimensionner la fenêtre
-     */
-    public void resize() {
-        setWidth(this.mc.getSize() * CellController.SIZE + WIDTH);
-        setHeight(this.mc.getSize() * CellController.SIZE + HEIGHT);
     }
 
 }

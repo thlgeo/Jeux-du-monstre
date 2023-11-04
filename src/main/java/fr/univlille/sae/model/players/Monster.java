@@ -51,7 +51,7 @@ public class Monster extends Subject implements IMonsterStrategy {
      *
      * @return (boolean[][])   Le labyrinthe converti
      */
-    public boolean[][] convert() {
+    protected boolean[][] convert() {
         boolean[][] mazeB = new boolean[discoveredMaze.length][discoveredMaze[0].length];
         for(int i = 0; i < discoveredMaze.length; i++) {
             for(int j = 0; j < discoveredMaze[0].length; j++) {
@@ -124,10 +124,6 @@ public class Monster extends Subject implements IMonsterStrategy {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setDiscoveredMaze(Cell[][] discoveredMaze) {
-        this.discoveredMaze = discoveredMaze;
     }
 
     public ICoordinate getCoordinateMonster() {

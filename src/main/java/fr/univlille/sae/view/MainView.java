@@ -41,7 +41,7 @@ public class MainView extends Stage implements Observer {
     /**
      * Cette méthode permet de mettre en place la scène principale
      */
-    public void setMainScene() {
+    private void setMainScene() {
         VBox root = new VBox();
         VBox.setMargin(titre, new Insets(10, 0, 10, 0));
         VBox.setMargin(settingButton, new Insets(10, 0, 10, 0));
@@ -54,7 +54,7 @@ public class MainView extends Stage implements Observer {
     /**
      * Cette méthode permet d'initialiser les éléments de la fenêtre principale
      */
-    public void setMainNodes() {
+    private void setMainNodes() {
         titre = new Label("Chasse Au Monstre");
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         settingButton = new SettingButton(maze);
@@ -66,7 +66,7 @@ public class MainView extends Stage implements Observer {
      *
      * @param winner (String)    Le nom du gagnant
      */
-    public void setVictoryScene(String winner) {
+    private void setVictoryScene(String winner) {
         VBox root = new VBox();
         Label message = new Label("Victoire de " + winner);
         message.setFont(Main.loadFont(Main.ARCADE_FONT, 30));

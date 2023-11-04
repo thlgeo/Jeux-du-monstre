@@ -31,7 +31,7 @@ public class SizeController extends HBox {
     /**
      * Cette méthode permet de paramétrer les actions des boutons plus et moins
      */
-    public void setAction() {
+    private void setAction() {
         plus.setOnAction(e -> {
             int actualSize = Integer.parseInt(size.getText());
             if(actualSize != MAX_SIZE) {
@@ -53,20 +53,6 @@ public class SizeController extends HBox {
      */
     public int getValue() {
         return Integer.parseInt(this.size.getText());
-    }
-
-    /**
-     * Cette méthode permet de changer la valeur de la taille
-     *
-     * @param value (int) La nouvelle valeur de la taille
-     * @return (boolean) true si la valeur est correcte, false sinon
-     */
-    public boolean setValue(int value) {
-        if(value >= MIN_SIZE && value <= MAX_SIZE) {
-            this.size.setText(String.valueOf(value));
-            return true;
-        }
-        return false;
     }
 
     /**

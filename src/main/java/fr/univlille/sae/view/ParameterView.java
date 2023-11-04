@@ -44,7 +44,7 @@ public class ParameterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre à la scène principale de la page de paramétrage
      */
-    public void setParameterScene() {
+    private void setParameterScene() {
         VBox root = new VBox();
         Region spacer1 = new Region();
         Region spacer2 = new Region();
@@ -61,7 +61,7 @@ public class ParameterView extends Stage implements Observer {
     /**
      * Cette méthode permet d'initialiser les éléments de la scène principale de la page de paramétrage
      */
-    public void setParameterNodes() {
+    private void setParameterNodes() {
         nameMonster = new Label("Nom du Monstre");
         nameMonster.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         nameHunter = new Label("Nom du Chasseur");

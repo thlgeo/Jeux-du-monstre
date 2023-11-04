@@ -28,8 +28,8 @@ import java.util.Random;
  */
 public class Maze extends Subject {
 
-    public static final Random RDM = new Random();
-    public static final int DEFAULT_DIMENSION = 10;
+    private static final Random RDM = new Random();
+    private static final int DEFAULT_DIMENSION = 10;
     protected static final String FS = File.separator;
     private static final int DEFAULT_TURN = 1;
     protected int turn;
@@ -49,7 +49,7 @@ public class Maze extends Subject {
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
     }
 
-    public Maze(int nbRows, int nbCols) {
+    Maze(int nbRows, int nbCols) {
         this(DEFAULT_TURN, nbRows, nbCols);
     }
 
@@ -64,7 +64,7 @@ public class Maze extends Subject {
      * @param nbCols nombre de colonnes du labyrinthe
      * @param id     l'identifiant du labyrinthe
      */
-    private void importMaze(int nbRows, int nbCols, int id) {
+    protected void importMaze(int nbRows, int nbCols, int id) {
         BufferedReader reader = null;
         new Cell(); // Permet d'initialiser la map charToInfo
         try {
@@ -95,7 +95,7 @@ public class Maze extends Subject {
     /**
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
-    public void reset() {
+    protected void reset() {
         changerParam(hunter.getName(), monster.getName(), nbRows);
     }
 
@@ -121,10 +121,6 @@ public class Maze extends Subject {
         importMaze(nbRows, nbCols, 0);
     }
 
-    public Cell[][] getMaze() {
-        return maze;
-    }
-
     public int getNbRows() {
         return nbRows;
     }
@@ -133,7 +129,7 @@ public class Maze extends Subject {
         return nbCols;
     }
 
-    public Cell getCell(int row, int col) {
+    Cell getCell(int row, int col) {
         return maze[row][col];
     }
 
@@ -180,7 +176,7 @@ public class Maze extends Subject {
      *
      * @param isMonster booléen indiquant qui a gagné (true = monstre, false = hunter)
      */
-    public void victory(boolean isMonster) {
+    protected void victory(boolean isMonster) {
         monster.notifyEndGame();
         hunter.notifyEndGame();
         reset();
@@ -233,7 +229,7 @@ public class Maze extends Subject {
      * @param coordinate (ICoordinate)   Coordonnées de la cellule
      * @return (Cell)  Cellule associée aux coordonnées
      */
-    public Cell getCell(ICoordinate coordinate) {
+    Cell getCell(ICoordinate coordinate) {
         if(coordinate == null) return null;
         if(coordinate.getRow() < 0 || coordinate.getRow() >= nbRows || coordinate.getCol() < 0 || coordinate.getCol() >= nbCols)
             return null;
@@ -246,7 +242,7 @@ public class Maze extends Subject {
      * @param coordinate (ICoordinate)   Coordonnées de la cellule
      * @param cellInfo   (CellInfo)  Informations de la cellule
      */
-    public void update(ICoordinate coordinate, ICellEvent.CellInfo cellInfo) {
+    void update(ICoordinate coordinate, ICellEvent.CellInfo cellInfo) {
         Cell updatedCell = getCell(coordinate);
         updatedCell.setInfo(cellInfo);
         updatedCell.setTurn(turn);

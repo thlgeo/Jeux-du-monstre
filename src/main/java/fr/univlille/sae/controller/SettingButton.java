@@ -23,7 +23,7 @@ public class SettingButton extends Button {
     /**
      * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire afficher la page de paramètres
      */
-    public void setAction() {
+    private void setAction() {
         setOnAction(event -> maze.notifyShowParameter());
     }
 }

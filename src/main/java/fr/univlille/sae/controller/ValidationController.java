@@ -29,7 +29,7 @@ public class ValidationController extends Button {
     /**
      * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire signaler les changements de paramètres
      */
-    public void setAction() {
+    private void setAction() {
         setOnAction(event -> {
             if(nameMonster.getText() == null || nameHunter.getText() == null) {
                 new Alert(Alert.AlertType.ERROR, "Veuillez entrer un nom !").showAndWait();

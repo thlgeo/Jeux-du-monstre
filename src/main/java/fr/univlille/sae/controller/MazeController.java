@@ -36,7 +36,7 @@ public class MazeController extends GridPane {
     /**
      * Cette méthode permet de créer le labyrinthe par défaut
      */
-    public void setDefaultMaze(boolean isMonsterMaze) {
+    private void setDefaultMaze(boolean isMonsterMaze) {
         getChildren().clear();
         for(int i = 0; i < maze.getNbRows(); i++) {
             for(int j = 0; j < maze.getNbCols(); j++) {

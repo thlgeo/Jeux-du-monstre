@@ -24,7 +24,7 @@ public class LaunchButton extends Button {
     /**
      * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire afficher et initialiser les pages Monster et Hunter
      */
-    public void setAction() {
+    private void setAction() {
         setOnAction(event -> {
             maze.notifyShowMH();
             maze.notifyDiscoveredMaze();

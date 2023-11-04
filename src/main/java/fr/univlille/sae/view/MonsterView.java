@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 public class MonsterView extends Stage implements Observer {
     public static final double WIDTH = 150.0d;
     public static final double HEIGHT = 100.0d;
+    public static final int MARGIN=150;
     private final Maze maze;
     private Label titre;
     private Label tour;
@@ -36,6 +37,8 @@ public class MonsterView extends Stage implements Observer {
         setTitle("S3.02_G1_Monstre");
         setResizable(false);
         setMonsterNodes();
+        setX(MainView.BOUNDS.getMinX()+WIDTH);
+        setY(MainView.BOUNDS.getMinY()+MARGIN);
         maze.attachMonster(this);
     }
 

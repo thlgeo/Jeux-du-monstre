@@ -185,7 +185,7 @@ public class Monster extends Subject implements IMonsterStrategy {
     }
 
     /**
-     * Notifie les observateurs du changement de tour.
+     * Notifie les observateurs du passage de tour à l'adversaire.
      */
     public void notifyTurnChange() {
         notifyObservers("changerTour");
@@ -196,6 +196,14 @@ public class Monster extends Subject implements IMonsterStrategy {
      */
     public void notifyShow() {
         notifyObservers();
+    }
+
+    /**
+     * Notifie les observateurs que le numéro de tour change.
+     * @param turn nouveau tour
+     */
+    public void notifyTurnPlus(int turn) {
+        notifyObservers(turn);
     }
 
     public Cell[][] getDiscoveredMaze(){

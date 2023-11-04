@@ -201,6 +201,8 @@ public class Maze extends Subject {
         monster.update(monsterEvent);
         hunter.update(hunterEvent);
         turn++;
+        hunter.notifyTurnPlus(turn);
+        monster.notifyTurnPlus(turn);
         monster.notifyTurnChange();
     }
 

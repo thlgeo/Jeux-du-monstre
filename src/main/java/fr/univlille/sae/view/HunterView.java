@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -31,6 +32,7 @@ public class HunterView extends Stage implements Observer {
     private Label tour;
     private MazeController mc;
     private Button ready;
+    private Label nbTour;
 
     public HunterView(Maze maze) {
         this.maze = maze;
@@ -47,7 +49,10 @@ public class HunterView extends Stage implements Observer {
      */
     private void setHunterScene() {
         VBox root = new VBox();
-        root.getChildren().addAll(titre, mc, tour);
+        HBox turnBox = new HBox();
+        turnBox.getChildren().addAll(tour, nbTour);
+        turnBox.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(titre, mc, turnBox);
         setScene(mc.getSize(), root);
         root.setAlignment(Pos.CENTER);
     }
@@ -57,7 +62,10 @@ public class HunterView extends Stage implements Observer {
      */
     private void setWaitScene() {
         VBox root = new VBox();
-        root.getChildren().addAll(tour);
+        HBox turnBox = new HBox();
+        turnBox.getChildren().addAll(tour, nbTour);
+        turnBox.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(turnBox);
         setScene(mc.getSize(), root);
         root.setAlignment(Pos.CENTER);
     }
@@ -85,6 +93,8 @@ public class HunterView extends Stage implements Observer {
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         tour = new Label("Tour du monstre !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
+        nbTour = new Label("  Tour 1");
+        nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         mc = new MazeController(maze, false);
     }
 
@@ -98,6 +108,8 @@ public class HunterView extends Stage implements Observer {
         show();
         tour = new Label("Tour du monstre !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
+        nbTour = new Label("  Tour 1");
+        nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         setWaitScene();
     }
 
@@ -120,6 +132,8 @@ public class HunterView extends Stage implements Observer {
         } else if(o.equals("changerTour")) {
             tour.setText("Tour du chasseur !");
             setReadyScene();
+        }else if(o instanceof Integer turn){
+            nbTour.setText("  Tour "+turn);
         }
     }
 

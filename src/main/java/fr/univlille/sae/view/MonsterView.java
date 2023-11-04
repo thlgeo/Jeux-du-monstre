@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -31,6 +32,7 @@ public class MonsterView extends Stage implements Observer {
     private Label tour;
     private MazeController mc;
     private Button ready;
+    private Label nbTour;
 
     public MonsterView(Maze maze) {
         this.maze = maze;
@@ -48,7 +50,10 @@ public class MonsterView extends Stage implements Observer {
      */
     private void setMonsterScene() {
         VBox root = new VBox();
-        root.getChildren().addAll(titre, mc, tour);
+        HBox turnBox = new HBox();
+        turnBox.getChildren().addAll(tour, nbTour);
+        turnBox.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(titre, mc, turnBox);
         setScene(mc.getSize(), root);
         root.setAlignment(Pos.CENTER);
     }
@@ -59,7 +64,10 @@ public class MonsterView extends Stage implements Observer {
      */
     private void setWaitScene() {
         VBox root = new VBox();
-        root.getChildren().addAll(tour);
+        HBox turnBox = new HBox();
+        turnBox.getChildren().addAll(tour, nbTour);
+        turnBox.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(turnBox);
         setScene(mc.getSize(), root);
         root.setAlignment(Pos.CENTER);
     }
@@ -86,8 +94,10 @@ public class MonsterView extends Stage implements Observer {
         ready.setMinSize(200, 50);
         titre = new Label("Monstre");
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        tour = new Label("Cliquez pour commencer");
+        tour = new Label("Cliquez pour commencer !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
+        nbTour = new Label("  Tour 1");
+        nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         mc = new MazeController(maze, true);
     }
 
@@ -99,8 +109,10 @@ public class MonsterView extends Stage implements Observer {
     @Override
     public void update(Subject subject) {
         show();
-        tour = new Label("Cliquez pour commencer");
+        tour = new Label("Cliquez pour commencer !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
+        nbTour = new Label("  Tour 1");
+        nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         setMonsterScene();
     }
 
@@ -126,6 +138,8 @@ public class MonsterView extends Stage implements Observer {
         } else if("changerTour".equals(o)) {
             tour.setText("Tour du monstre !");
             setReadyScene();
+        }else if(o instanceof Integer turn){
+            nbTour.setText("  Tour "+turn);
         }
     }
 

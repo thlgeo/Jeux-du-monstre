@@ -140,7 +140,7 @@ public class Hunter extends Subject implements IHunterStrategy {
     }
 
     /**
-     * Notifie les observateurs du changement de tour.
+     * Notifie les observateurs du passage de tour à l'adversaire.
      */
     public void notifyTurnChange() {
         notifyObservers("changerTour");
@@ -158,6 +158,14 @@ public class Hunter extends Subject implements IHunterStrategy {
      */
     public void notifyDiscoveredMaze() {
         notifyObservers(maze);
+    }
+
+    /**
+     * Notifie les observateurs que le numéro de tour change.
+     * @param turn nouveau tour
+     */
+    public void notifyTurnPlus(int turn) {
+        notifyObservers(turn);
     }
 
     public Cell getCell(ICoordinate coord){

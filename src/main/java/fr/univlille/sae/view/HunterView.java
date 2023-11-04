@@ -93,6 +93,8 @@ public class HunterView extends Stage implements Observer {
     @Override
     public void update(Subject subject) {
         show();
+        tour = new Label("Tour du monstre !");
+        tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         setWaitScene();
     }
 

@@ -8,10 +8,12 @@ import fr.univlille.sae.controller.SettingButton;
 import fr.univlille.sae.model.Maze;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -23,6 +25,7 @@ public class MainView extends Stage implements Observer {
 
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;
+    public static final Rectangle2D BOUNDS = Screen.getPrimary().getVisualBounds();
     private final Maze maze;
     private Label titre;
     private SettingButton settingButton;

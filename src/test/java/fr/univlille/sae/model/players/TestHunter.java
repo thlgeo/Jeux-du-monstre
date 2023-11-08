@@ -35,7 +35,7 @@ class TestHunter {
         ICoordinate coord = new Coordinate(2, 2);
         CellEvent event = new CellEvent(5, ICellEvent.CellInfo.MONSTER, coord);
         h1.update(event);
-        Cell c = h1.getCelule(coord);
+        Cell c = h1.getCell(coord);
         assertEquals(ICellEvent.CellInfo.MONSTER, c.getInfo());
         assertEquals(5, c.getTurn());
     }

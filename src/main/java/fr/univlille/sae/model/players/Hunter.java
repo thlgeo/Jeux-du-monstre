@@ -104,17 +104,6 @@ public class Hunter extends Subject implements IHunterStrategy {
         notifyObservers(iCellEvent);
     }
 
-
-    /**
-     * Récupère la cellule à la coordonnée spécifiée en paramètre.
-     *
-     * @param iCoordinate (ICoordinate)   Coordonnée
-     * @return (Cell)  Cellule à la coordonnée
-     */
-    Cell getCelule(ICoordinate iCoordinate) {
-        return this.maze[iCoordinate.getRow()][iCoordinate.getCol()];
-    }
-
     /**
      * Regarde si la coordonnée spécifiée en paramètre est dans le labyrinthe.
      *

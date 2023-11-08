@@ -38,6 +38,7 @@ public class Maze extends Subject {
     protected Hunter hunter;
     protected Monster monster;
     protected Cell[][] maze;
+    protected boolean deplacementDiag;
 
     private Maze(int turn, int nbRows, int nbCols) {
         this.turn = turn;
@@ -47,6 +48,7 @@ public class Maze extends Subject {
         importMaze(nbRows, nbCols);
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
+        this.deplacementDiag = false;
     }
 
     Maze(int nbRows, int nbCols) {
@@ -141,7 +143,7 @@ public class Maze extends Subject {
     public void deplacementMonstre(ICoordinate newCoord) {
         try {
             if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
-            if(!this.monster.canMove(newCoord)) {
+            if(!this.monster.canMove(newCoord,deplacementDiag)) {
                 monster.notifyCantMove();
                 return;
             }

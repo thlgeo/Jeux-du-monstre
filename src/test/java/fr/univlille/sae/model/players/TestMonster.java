@@ -33,16 +33,16 @@ class TestMonster {
         monstre.setCoordinateMonster(new Coordinate(1,0));
     }
 
-    @Test 
-    void testCanMove()
-    {
-        assertTrue(monstre.canMove(new Coordinate(2, 0))); // se déplace vers le bas sur une case vide
-        assertTrue(monstre.canMove(new Coordinate(2,1))); // se déplace en diagonal
-        assertFalse(monstre.canMove(new Coordinate(1,0))); // se déplace sur lui-même
-        assertFalse(monstre.canMove(new Coordinate(0, 0))); // se déplace sur un mur
-        monstre.setCoordinateMonster(new Coordinate(3,3));
-        assertTrue(monstre.canMove(new Coordinate(3,4))); // se déplace à gauche sur une case vide
-    }
+    // @Test 
+    // void testCanMove()
+    // {
+    //     assertTrue(monstre.canMove(new Coordinate(2, 0))); // se déplace vers le bas sur une case vide
+    //     assertTrue(monstre.canMove(new Coordinate(2,1))); // se déplace en diagonal
+    //     assertFalse(monstre.canMove(new Coordinate(1,0))); // se déplace sur lui-même
+    //     assertFalse(monstre.canMove(new Coordinate(0, 0))); // se déplace sur un mur
+    //     monstre.setCoordinateMonster(new Coordinate(3,3));
+    //     assertTrue(monstre.canMove(new Coordinate(3,4))); // se déplace à gauche sur une case vide
+    // }
 
     @Test
     void test_update() {

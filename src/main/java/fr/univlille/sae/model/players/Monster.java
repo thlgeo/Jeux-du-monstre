@@ -7,7 +7,6 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
-import fr.univlille.sae.model.Maze;
 import fr.univlille.sae.model.events.CellEvent;
 
 import java.util.ArrayList;
@@ -111,13 +110,19 @@ public class Monster extends Subject implements IMonsterStrategy {
         this.maze = maze;
     }
 
+    public boolean canMove(ICoordinate coord, boolean diag)
+    {
+        if(diag) return canMoveDiag(coord);
+        return canMoveNotDiag(coord);
+    }
+
     /**
      * Vérifie si le monstre peut se déplacer aux coordonnées indiquées (diagonales incluses).
      *
      * @param coord (ICoordinate)  Les coordonnées à verifier
      * @return (boolean)   True si le monstre peut s'y déplacer sinon false
      */
-    public boolean canMoveDiag(ICoordinate coord) {
+    private boolean canMoveDiag(ICoordinate coord) {
         if((coord.getCol() <= coordinateMonster.getCol() + DEPLACEMENT && coord.getCol() >= coordinateMonster.getCol() - DEPLACEMENT) && (coord.getRow() <= coordinateMonster.getRow() + DEPLACEMENT && coord.getRow() >= coordinateMonster.getRow() - DEPLACEMENT)) {
             return maze[coord.getRow()][coord.getCol()] && !coord.equals(coordinateMonster);
         }
@@ -130,7 +135,7 @@ public class Monster extends Subject implements IMonsterStrategy {
      * @param coord (ICoordinate)  Les coordonnées à verifier
      * @return (boolean)   True si le monstre peut s'y déplacer sinon false
      */
-    public boolean canMove(ICoordinate coord)
+    private boolean canMoveNotDiag(ICoordinate coord)
     {
         return around().contains(coord);
     }

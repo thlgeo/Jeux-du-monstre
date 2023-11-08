@@ -6,7 +6,7 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.NameController;
 import fr.univlille.sae.controller.SizeController;
 import fr.univlille.sae.controller.ValidationController;
-import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class ParameterView extends Stage implements Observer {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;
-    private final Maze maze;
+    private final ModelMain modelMain;
     private Label nameMonster;
     private Label nameHunter;
     private Label titreHeight;
@@ -31,13 +31,13 @@ public class ParameterView extends Stage implements Observer {
     private SizeController size;
     private ValidationController validation;
 
-    public ParameterView(Maze maze) {
-        this.maze = maze;
+    public ParameterView(ModelMain modelMain) {
+        this.modelMain = modelMain;
         setTitle("S3.02_G1_Parametres");
         setParameterNodes();
         setParameterScene();
         setResizable(false);
-        maze.attach(this);
+        modelMain.attach(this);
     }
 
 
@@ -71,7 +71,7 @@ public class ParameterView extends Stage implements Observer {
         monsterName = new NameController(true);
         hunterName = new NameController(false);
         size = new SizeController();
-        validation = new ValidationController(monsterName, hunterName, size, maze);
+        validation = new ValidationController(monsterName, hunterName, size, modelMain);
     }
 
     /**

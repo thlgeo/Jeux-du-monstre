@@ -5,7 +5,7 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
 import fr.univlille.sae.controller.SettingButton;
-import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -26,18 +26,18 @@ public class MainView extends Stage implements Observer {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;
     public static final Rectangle2D BOUNDS = Screen.getPrimary().getVisualBounds();
-    private final Maze maze;
+    private final ModelMain modelMain;
     private Label titre;
     private SettingButton settingButton;
     private LaunchButton launchButton;
 
-    public MainView(Maze maze) {
-        this.maze = maze;
+    public MainView(ModelMain modelMain) {
+        this.modelMain = modelMain;
         setTitle("S3.02_G1_ChasseAuMonstre");
         setResizable(false);
         setMainNodes();
         setMainScene();
-        maze.attach(this);
+        modelMain.attach(this);
         show();
     }
 
@@ -60,8 +60,8 @@ public class MainView extends Stage implements Observer {
     private void setMainNodes() {
         titre = new Label("Chasse Au Monstre");
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        settingButton = new SettingButton(maze);
-        launchButton = new LaunchButton(maze);
+        settingButton = new SettingButton(modelMain);
+        launchButton = new LaunchButton(modelMain);
     }
 
     /**

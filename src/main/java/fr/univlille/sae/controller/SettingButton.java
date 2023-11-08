@@ -1,7 +1,7 @@
 package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
-import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Button;
 
 /**
@@ -10,11 +10,11 @@ import javafx.scene.control.Button;
  * @version  1.0
  */
 public class SettingButton extends Button {
-    private final Maze maze;
+    private final ModelMain modelMain;
 
-    public SettingButton(Maze maze) {
+    public SettingButton(ModelMain modelMain) {
         super("Changer Parametres");
-        this.maze = maze;
+        this.modelMain = modelMain;
         setAction();
         setMinSize(200, 30);
         setFont(Main.loadFont(Main.ARCADE_FONT, 20));
@@ -24,6 +24,6 @@ public class SettingButton extends Button {
      * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire afficher la page de paramètres
      */
     private void setAction() {
-        setOnAction(event -> maze.notifyShowParameter());
+        setOnAction(event -> modelMain.notifyShowParameter());
     }
 }

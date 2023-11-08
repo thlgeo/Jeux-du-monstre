@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance">fr.univlille.iutinfo.utils.Subject
-<div class="inheritance">fr.univlille.sae.model.Maze</div>
+<div class="inheritance">fr.univlille.sae.model.ModelMain</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
@@ -135,7 +135,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color"><code><a href="#hunter" class="member-name-link">hunter</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="Cell.html" title="class in fr.univlille.sae.model">Cell</a>[][]</code></div>
-<div class="col-second even-row-color"><code><a href="#maze" class="member-name-link">maze</a></code></div>
+<div class="col-second even-row-color"><code><a href="#modelMain" class="member-name-link">modelMain</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="players/Monster.html" title="class in fr.univlille.sae.model.players">Monster</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#monster" class="member-name-link">monster</a></code></div>
@@ -242,7 +242,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private fr.univlille.iutinfo.cam.player.perception.ICoordinate</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initMonsterPosition()" class="member-name-link">initMonsterPosition</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Fonction récursive initialisant le monstre sur la maze.</div>
+<div class="block">Fonction récursive initialisant le monstre sur la modelMain.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private <a href="https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mazefilepath(int,int,int)" class="member-name-link">mazefilepath</a><wbr>(int&nbsp;nbRows,
@@ -378,9 +378,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="maze">
-<h3>maze</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="Cell.html" title="class in fr.univlille.sae.model">Cell</a>[][]</span>&nbsp;<span class="element-name">maze</span></div>
+<section class="detail" id="modelMain">
+<h3>modelMain</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="Cell.html" title="class in fr.univlille.sae.model">Cell</a>[][]</span>&nbsp;<span class="element-name">modelMain</span></div>
 </section>
 </li>
 </ul>
@@ -506,7 +506,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="initMonsterPosition()">
 <h3>initMonsterPosition</h3>
 <div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">fr.univlille.iutinfo.cam.player.perception.ICoordinate</span>&nbsp;<span class="element-name">initMonsterPosition</span>()</div>
-<div class="block">Fonction récursive initialisant le monstre sur la maze. On prend des coordonnées aléatoires puis on regarde si la cellule associée est bien vide.
+<div class="block">Fonction récursive initialisant le monstre sur la modelMain. On prend des coordonnées aléatoires puis on regarde si la cellule associée est bien vide.
  Si elle ne l'est pas, on réessaye.</div>
 <dl class="notes">
 <dt>Returns:</dt>

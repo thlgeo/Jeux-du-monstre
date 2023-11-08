@@ -1,7 +1,7 @@
 package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
-import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
@@ -14,10 +14,10 @@ public class ValidationController extends Button {
     private final NameController nameMonster;
     private final NameController nameHunter;
     private final SizeController height;
-    private final Maze maze;
+    private final ModelMain modelMain;
 
-    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, Maze maze) {
-        this.maze = maze;
+    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, ModelMain modelMain) {
+        this.modelMain = modelMain;
         this.nameMonster = nameMonster;
         this.nameHunter = nameHunter;
         this.height = height;
@@ -39,7 +39,7 @@ public class ValidationController extends Button {
                 new Alert(Alert.AlertType.ERROR, "Veuillez entrer une taille entre " + SizeController.MIN_SIZE + " et " + SizeController.MAX_SIZE + "  !").showAndWait();
                 return;
             }
-            maze.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue());
+            modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue());
         });
     }
 }

@@ -35,7 +35,7 @@ Monster : play() :
         On lui indique qu'il ne peut s'y déplacer et demande de nouvelles coordonnées.
 
 Monster : canMove(coord Coordinate) :
-    Si maze.getCell(coord).getState() == Cellinfo.EMPTY ou Cellinfo.Monstre 
+    Si modelMain.getCell(coord).getState() == Cellinfo.EMPTY ou Cellinfo.Monstre 
     et que coord se trouve à une case de distance du monstre.
         Alors on retourne vrai
     Sinon

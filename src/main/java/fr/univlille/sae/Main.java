@@ -1,6 +1,6 @@
 package fr.univlille.sae;
 
-import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.view.HunterView;
 import fr.univlille.sae.view.MainView;
 import fr.univlille.sae.view.MonsterView;
@@ -52,11 +52,11 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        Maze maze = new Maze();
-        new MainView(maze);
-        new ParameterView(maze);
-        new HunterView(maze);
-        new MonsterView(maze);
+        ModelMain modelMain = new ModelMain();
+        new MainView(modelMain);
+        new ParameterView(modelMain);
+        new HunterView(modelMain);
+        new MonsterView(modelMain);
     }
 
 }

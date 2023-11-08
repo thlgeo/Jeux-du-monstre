@@ -8,7 +8,7 @@ Corrections des bugs du jeu.
 Correction des erreurs de la documentation.  
 Mise en place des méthodes update de la vue.  
 Mise en place des notifications du model vers la view.  
-Écriture des tests unitaires manquants du maze, du hunter et du monstre.  
+Écriture des tests unitaires manquants du modelMain, du hunter et du monstre.  
 Écriture des classes de test Cell, Coordinate et CellEvent.
 
 ## Contribution de Valentin THUILLIER

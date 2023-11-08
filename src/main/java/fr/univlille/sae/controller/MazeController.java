@@ -1,7 +1,7 @@
 package fr.univlille.sae.controller;
 
 import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -13,13 +13,13 @@ import javafx.scene.layout.GridPane;
  */
 public class MazeController extends GridPane {
 
-    private final Maze maze;
+    private final ModelMain modelMain;
     private final boolean isMonsterMaze;
     Button[][] mazeTable;
 
-    public MazeController(Maze maze, boolean isMonsterMaze) {
-        this.maze = maze;
-        mazeTable = new Button[maze.getNbRows()][maze.getNbCols()];
+    public MazeController(ModelMain modelMain, boolean isMonsterMaze) {
+        this.modelMain = modelMain;
+        mazeTable = new Button[modelMain.getNbRows()][modelMain.getNbCols()];
         this.isMonsterMaze = isMonsterMaze;
         setDefaultMaze(isMonsterMaze);
         setAlignment(Pos.CENTER);
@@ -29,7 +29,7 @@ public class MazeController extends GridPane {
         * Cette méthode permet de changer le labyrinthe
      */
     public void resize() {
-        mazeTable = new Button[maze.getNbRows()][maze.getNbCols()];
+        mazeTable = new Button[modelMain.getNbRows()][modelMain.getNbCols()];
         setDefaultMaze(isMonsterMaze);
     }
 
@@ -39,9 +39,9 @@ public class MazeController extends GridPane {
      */
     private void setDefaultMaze(boolean isMonsterMaze) {
         getChildren().clear();
-        for(int i = 0; i < maze.getNbRows(); i++) {
-            for(int j = 0; j < maze.getNbCols(); j++) {
-                CellController cell = new CellController(j, i, maze, isMonsterMaze);
+        for(int i = 0; i < modelMain.getNbRows(); i++) {
+            for(int j = 0; j < modelMain.getNbCols(); j++) {
+                CellController cell = new CellController(j, i, modelMain, isMonsterMaze);
                 mazeTable[i][j] = cell;
                 add(cell, i, j);
             }
@@ -89,6 +89,6 @@ public class MazeController extends GridPane {
      * @return (int) La taille du labyrinthe
      */
     public int getSize() {
-        return maze.getNbCols();
+        return modelMain.getNbCols();
     }
 }

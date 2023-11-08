@@ -6,6 +6,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.events.CellEvent;
 
 import java.util.ArrayList;

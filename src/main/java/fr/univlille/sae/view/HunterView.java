@@ -7,7 +7,7 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
 import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,21 +27,21 @@ public class HunterView extends Stage implements Observer {
     public static final double WIDTH = 150.0d;
     public static final double HEIGHT = 100.0d;
     public static final int MARGIN=150;
-    private final Maze maze;
+    private final ModelMain modelMain;
     private Label titre;
     private Label tour;
     private MazeController mc;
     private Button ready;
     private Label nbTour;
 
-    public HunterView(Maze maze) {
-        this.maze = maze;
+    public HunterView(ModelMain modelMain) {
+        this.modelMain = modelMain;
         setTitle("S3.02_G1_Chasseur");
         setResizable(false);
         setHunterNodes();
         setX(MainView.BOUNDS.getMaxX()/2+WIDTH);
         setY(MainView.BOUNDS.getMinY()+MARGIN);
-        maze.attachHunter(this);
+        modelMain.attachHunter(this);
     }
 
     /**
@@ -95,7 +95,7 @@ public class HunterView extends Stage implements Observer {
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         nbTour = new Label("  Tour 1");
         nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        mc = new MazeController(maze, false);
+        mc = new MazeController(modelMain, false);
     }
 
     /**

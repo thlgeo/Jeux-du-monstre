@@ -26,7 +26,7 @@ import java.util.Random;
  * @see Hunter
  * @see Cell
  */
-public class Maze extends Subject {
+public class ModelMain extends Subject {
 
     private static final Random RDM = new Random();
     private static final int DEFAULT_DIMENSION = 10;
@@ -40,7 +40,7 @@ public class Maze extends Subject {
     protected Cell[][] maze;
     protected boolean deplacementDiag;
 
-    private Maze(int turn, int nbRows, int nbCols) {
+    private ModelMain(int turn, int nbRows, int nbCols) {
         this.turn = turn;
         this.nbRows = nbRows;
         this.nbCols = nbCols;
@@ -51,11 +51,11 @@ public class Maze extends Subject {
         this.deplacementDiag = false;
     }
 
-    Maze(int nbRows, int nbCols) {
+    ModelMain(int nbRows, int nbCols) {
         this(DEFAULT_TURN, nbRows, nbCols);
     }
 
-    public Maze() {
+    public ModelMain() {
         this(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
     }
 

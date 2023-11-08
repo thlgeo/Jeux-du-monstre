@@ -1,7 +1,7 @@
 package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
-import fr.univlille.sae.model.Maze;
+import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Button;
 
 /**
@@ -11,11 +11,11 @@ import javafx.scene.control.Button;
  */
 public class LaunchButton extends Button {
 
-    private final Maze maze;
+    private final ModelMain modelMain;
 
-    public LaunchButton(Maze maze) {
+    public LaunchButton(ModelMain modelMain) {
         super("Jouer");
-        this.maze = maze;
+        this.modelMain = modelMain;
         setAction();
         setMinSize(200, 30);
         setFont(Main.loadFont(Main.ARCADE_FONT, 20));
@@ -26,8 +26,8 @@ public class LaunchButton extends Button {
      */
     private void setAction() {
         setOnAction(event -> {
-            maze.notifyShowMH();
-            maze.notifyDiscoveredMaze();
+            modelMain.notifyShowMH();
+            modelMain.notifyDiscoveredMaze();
         });
     }
 }

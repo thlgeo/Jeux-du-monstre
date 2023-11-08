@@ -6,10 +6,13 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.Maze;
 import fr.univlille.sae.model.events.CellEvent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Classe Monster - Un monstre est un joueur humain qui peut se déplacer sur une cellule (si la cellule peut être atteinte).
@@ -109,16 +112,44 @@ public class Monster extends Subject implements IMonsterStrategy {
     }
 
     /**
-     * Vérifie si le monstre peut se déplacer aux coordonnées indiquées.
+     * Vérifie si le monstre peut se déplacer aux coordonnées indiquées (diagonales incluses).
      *
      * @param coord (ICoordinate)  Les coordonnées à verifier
      * @return (boolean)   True si le monstre peut s'y déplacer sinon false
      */
-    public boolean canMove(ICoordinate coord) {
+    public boolean canMoveDiag(ICoordinate coord) {
         if((coord.getCol() <= coordinateMonster.getCol() + DEPLACEMENT && coord.getCol() >= coordinateMonster.getCol() - DEPLACEMENT) && (coord.getRow() <= coordinateMonster.getRow() + DEPLACEMENT && coord.getRow() >= coordinateMonster.getRow() - DEPLACEMENT)) {
             return maze[coord.getRow()][coord.getCol()] && !coord.equals(coordinateMonster);
         }
         return false;
+    }
+
+    /**
+     * Vérifie si le monstre peut se déplacer aux coordonnées indiquées (diagonales exclues).
+     * 
+     * @param coord (ICoordinate)  Les coordonnées à verifier
+     * @return (boolean)   True si le monstre peut s'y déplacer sinon false
+     */
+    public boolean canMove(ICoordinate coord)
+    {
+        return around().contains(coord);
+    }
+
+    /**
+     * Renvoie les coordonnées autour du monstre.
+     * 
+     * @return (List<ICoordinate>) liste des coordonnées atteignables.
+     */
+    private List<ICoordinate> around()
+    {
+        List<ICoordinate> l = new ArrayList<>();
+        int row = coordinateMonster.getRow();
+        int col = coordinateMonster.getCol();
+        l.add(new Coordinate(row+DEPLACEMENT, col));
+        l.add(new Coordinate(row-DEPLACEMENT, col));
+        l.add(new Coordinate(row, col+DEPLACEMENT));
+        l.add(new Coordinate(row, col-DEPLACEMENT));
+        return l;
     }
 
     public String getName() {

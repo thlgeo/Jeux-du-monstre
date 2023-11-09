@@ -30,6 +30,7 @@ import java.util.Random;
  */
 public class ModelMain extends Subject {
 
+    private static final int NB_TOUR_MIN = 5;
     private static final Random RDM = new Random();
     private static final int DEFAULT_DIMENSION = 10;
     protected static final String FS = File.separator;
@@ -100,7 +101,7 @@ public class ModelMain extends Subject {
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag);
     }
 
     /**
@@ -133,8 +134,22 @@ public class ModelMain extends Subject {
         return nbCols;
     }
 
-    Cell getCell(int row, int col) {
+    protected Cell getCell(int row, int col) {
         return maze[row][col];
+    }
+
+    protected ICoordinate getExit()
+    {
+        Cell c = null;
+        for(int i=0;i<nbRows;i++)
+        {
+            for(int j=0;j<nbCols;j++)
+            {
+                c = getCell(i, j);
+                if(c.getInfo() == CellInfo.EXIT) return new Coordinate(i, j);
+            }
+        }
+        return null;
     }
 
     /**
@@ -155,12 +170,33 @@ public class ModelMain extends Subject {
             }
         } catch(MonsterNotFoundException e) {
             newCoord = this.initMonsterPosition();
+            ICoordinate coordExit = getExit();
+            while(inRange(newCoord,coordExit))
+            {
+                newCoord = this.initMonsterPosition();
+            }
         }
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
         monster.update(event);
         monster.setCoordinateMonster(newCoord);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
         hunter.notifyTurnChange();
+    }
+
+    /**
+     * Vérifie si les coordonnées du monstre sont à une portée de 5 cases ou moins de la sortie.
+     * 
+     * @param coordMonster (ICoordinate) Coordonnée du monstre
+     * @param coordExit (ICoordinate) Coordonnée de la sortie
+     * @return Vrai si le monstre est à une portée de moins de 5 cases de la sortie, faux sinon
+     */
+    private boolean inRange(ICoordinate coordMonster, ICoordinate coordExit)
+    {
+        int rowM = coordMonster.getRow();
+        int colM = coordMonster.getCol();
+        int rowE = coordExit.getRow();
+        int colE = coordExit.getCol();
+        return (colM < colE+NB_TOUR_MIN && colM > colE-NB_TOUR_MIN) && (rowM < rowE+NB_TOUR_MIN && rowM > rowE-NB_TOUR_MIN);
     }
 
     /**
@@ -215,11 +251,14 @@ public class ModelMain extends Subject {
      *
      * @param hunterName    (String)    Nom du chasseur
      * @param monsterName   (String)    Nom du monstre
-     * @param size    (int)       Taille du labyrinthe
+     * @param height    (int)       hauteur du labyrinthe
+     * @param width   (int)       largeur du labyrinthe
+     * @param depDiag   (boolean)       déplacement en diagonale
      */
-    public void changerParam(String hunterName, String monsterName, int size) {
-        this.nbRows = size;
-        this.nbCols = size;
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag) {
+        this.nbRows = height;
+        this.nbCols = height;
+        this.deplacementDiag = depDiag;
         importMaze(nbRows, nbCols);
         hunter.setName(hunterName);
         monster.setName(monsterName);

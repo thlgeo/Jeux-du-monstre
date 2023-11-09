@@ -3,6 +3,7 @@ package fr.univlille.sae.view;
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
+import fr.univlille.sae.controller.DepDiagController;
 import fr.univlille.sae.controller.NameController;
 import fr.univlille.sae.controller.SizeController;
 import fr.univlille.sae.controller.ValidationController;
@@ -21,15 +22,18 @@ import javafx.stage.Stage;
  */
 public class ParameterView extends Stage implements Observer {
     public static final int WIDTH = 500;
-    public static final int HEIGHT = 300;
+    public static final int HEIGHT = 400;
     private final ModelMain modelMain;
     private Label nameMonster;
     private Label nameHunter;
     private Label titreHeight;
+    private Label titreWidth;
     private NameController monsterName;
     private NameController hunterName;
-    private SizeController size;
+    private SizeController heigth;
+    private SizeController width;
     private ValidationController validation;
+    private DepDiagController depDiag;
 
     public ParameterView(ModelMain modelMain) {
         this.modelMain = modelMain;
@@ -46,13 +50,12 @@ public class ParameterView extends Stage implements Observer {
      */
     private void setParameterScene() {
         VBox root = new VBox();
-        Region spacer1 = new Region();
-        Region spacer2 = new Region();
-        Region spacer3 = new Region();
-        spacer1.setMinHeight(10);
-        spacer2.setMinHeight(10);
-        spacer3.setMinHeight(10);
-        root.getChildren().addAll(nameMonster, monsterName, spacer1, nameHunter, hunterName, spacer2, titreHeight, size, spacer3, validation);
+        root.getChildren().addAll(nameMonster, monsterName);
+        root.getChildren().addAll(new Spacer(), nameHunter, hunterName);
+        root.getChildren().addAll(new Spacer(), titreHeight, heigth);
+        root.getChildren().addAll(new Spacer(), titreWidth, width);
+        root.getChildren().addAll(new Spacer(), depDiag);
+        root.getChildren().addAll(new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
     }
@@ -66,12 +69,16 @@ public class ParameterView extends Stage implements Observer {
         nameMonster.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         nameHunter = new Label("Nom du Chasseur");
         nameHunter.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        titreHeight = new Label("taille du labyrinthe");
+        titreHeight = new Label("hauteur du labyrinthe");
         titreHeight.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        titreWidth = new Label("largeur du labyrinthe");
+        titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         monsterName = new NameController(true);
         hunterName = new NameController(false);
-        size = new SizeController();
-        validation = new ValidationController(monsterName, hunterName, size, modelMain);
+        heigth = new SizeController();
+        width = new SizeController();
+        depDiag = new DepDiagController();
+        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, modelMain);
     }
 
     /**

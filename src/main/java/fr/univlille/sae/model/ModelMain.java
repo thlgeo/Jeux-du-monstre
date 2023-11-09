@@ -10,6 +10,8 @@ import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
 import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 import fr.univlille.sae.model.players.Hunter;
 import fr.univlille.sae.model.players.Monster;
+import fr.univlille.sae.model.players.RandomHunter;
+import fr.univlille.sae.model.players.RandomMonster;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,8 +50,8 @@ public class ModelMain extends Subject {
         this.nbCols = nbCols;
         this.maze = new Cell[nbRows][nbCols];
         importMaze(nbRows, nbCols);
-        this.monster = new Monster("Monster", this.maze);
-        this.hunter = new Hunter("Hunter", nbRows, nbCols);
+        this.monster = new RandomMonster("Monster", this.maze, this);
+        this.hunter = new RandomHunter("Hunter", nbRows, nbCols, this);
         this.deplacementDiag = false;
     }
 
@@ -100,7 +102,7 @@ public class ModelMain extends Subject {
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag);
     }
 
     /**
@@ -266,11 +268,14 @@ public class ModelMain extends Subject {
      *
      * @param hunterName    (String)    Nom du chasseur
      * @param monsterName   (String)    Nom du monstre
-     * @param size    (int)       Taille du labyrinthe
+     * @param height    (int)       hauteur du labyrinthe
+     * @param width   (int)       largeur du labyrinthe
+     * @param depDiag   (boolean)       déplacement en diagonale
      */
-    public void changerParam(String hunterName, String monsterName, int size) {
-        this.nbRows = size;
-        this.nbCols = size;
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag) {
+        this.nbRows = height;
+        this.nbCols = height;
+        this.deplacementDiag = depDiag;
         importMaze(nbRows, nbCols);
         hunter.setName(hunterName);
         monster.setName(monsterName);

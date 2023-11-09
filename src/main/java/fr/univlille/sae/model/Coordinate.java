@@ -55,4 +55,25 @@ public class Coordinate implements ICoordinate {
     public String toString() {
         return "Coordinate [row=" + row + ", col=" + col + "]";
     }
+
+    public ICoordinate north() {
+        return new Coordinate(row - 1, col);
+    }
+
+    public ICoordinate south() {
+        return new Coordinate(row + 1, col);
+    }
+
+    public ICoordinate east() {
+        return new Coordinate(row, col + 1);
+    }
+
+    public ICoordinate west() {
+        return new Coordinate(row, col - 1);
+    }
+
+    public ICoordinate[] around() {
+        return new ICoordinate[] { north(), south(), east(), west() };
+    }
+
 }

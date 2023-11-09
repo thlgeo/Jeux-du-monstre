@@ -43,6 +43,7 @@ public class ModelMain extends Subject {
     protected Monster monster;
     protected Cell[][] maze;
     protected boolean deplacementDiag;
+    protected boolean fog;
 
     private ModelMain(int turn, int nbRows, int nbCols) {
         this.turn = turn;
@@ -102,7 +103,7 @@ public class ModelMain extends Subject {
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, false);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog);
     }
 
     /**
@@ -162,7 +163,7 @@ public class ModelMain extends Subject {
         try {
             if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
             if(!this.monster.canMove(newCoord,deplacementDiag)) {
-                monster.notifyCantMove();
+                monster.notify("cantMove");
                 return;
             }
             if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
@@ -171,21 +172,21 @@ public class ModelMain extends Subject {
             }
         } catch(MonsterNotFoundException e) {
             newCoord = this.initMonsterPosition();
-            /*
             ICoordinate coordExit = getExit();
             while(inRange(newCoord,coordExit))
             {
                 newCoord = this.initMonsterPosition();
             }
-
-             */
         }
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
-        updateAround(newCoord);
-        monster.update(event);
-        monster.setCoordinateMonster(newCoord);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
-        hunter.notifyTurnChange();
+        monster.setCoordinateMonster(newCoord);
+        if(fog){
+            updateAround(newCoord);
+        }else{
+            monster.update(event);
+        }
+        hunter.notify("changerTour");
     }
 
     private void updateAround(ICoordinate newCoord)
@@ -237,8 +238,8 @@ public class ModelMain extends Subject {
      * @param isMonster booléen indiquant qui a gagné (true = monstre, false = hunter)
      */
     protected void victory(boolean isMonster) {
-        monster.notifyEndGame();
-        hunter.notifyEndGame();
+        monster.notify("endGame");
+        hunter.notify("endGame");
         reset();
         notifyObservers(isMonster ? monster.getName() : hunter.getName());
     }
@@ -261,9 +262,9 @@ public class ModelMain extends Subject {
         monster.update(monsterEvent);
         hunter.update(hunterEvent);
         turn++;
-        hunter.notifyTurnPlus(turn);
-        monster.notifyTurnPlus(turn);
-        monster.notifyTurnChange();
+        hunter.notify(turn);
+        monster.notify(turn);
+        monster.notify("changerTour");
     }
 
     /**
@@ -279,6 +280,7 @@ public class ModelMain extends Subject {
         this.nbRows = height;
         this.nbCols = height;
         this.deplacementDiag = depDiag;
+        this.fog = fog;
         importMaze(nbRows, nbCols);
         hunter.setName(hunterName);
         monster.setName(monsterName);

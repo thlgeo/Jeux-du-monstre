@@ -43,9 +43,10 @@ public class RandomMonster extends Monster {
         }
     }
 
+    /*
     @Override
     public void notifyTurnChange() {
-        super.notifyTurnChange();
+        super.notify("changerTour");
         ICoordinate played = play();
         if(played != null) modelMain.deplacementMonstre(played);
         else System.out.println("Monster not found !");
@@ -55,5 +56,7 @@ public class RandomMonster extends Monster {
     public void notifyCantMove() {
         notifyTurnChange();
     }
+
+     */
 
 }

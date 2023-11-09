@@ -122,17 +122,11 @@ public class Hunter extends Subject implements IHunterStrategy {
     }
 
     /**
-     * Notifie les observateurs de la fin de la partie.
+     * Notifie les observateurs avec une data.
+     * @param data data à notifier
      */
-    public void notifyEndGame() {
-        notifyObservers("endGame");
-    }
-
-    /**
-     * Notifie les observateurs du passage de tour à l'adversaire.
-     */
-    public void notifyTurnChange() {
-        notifyObservers("changerTour");
+    public void notify(Object data) {
+        notifyObservers(data);
     }
 
     /**
@@ -149,14 +143,6 @@ public class Hunter extends Subject implements IHunterStrategy {
         notifyObservers(maze);
     }
 
-    /**
-     * Notifie les observateurs que le numéro de tour change.
-     * @param turn nouveau tour
-     */
-    public void notifyTurnPlus(int turn) {
-        notifyObservers(turn);
-    }
-
     public Cell getCell(ICoordinate coord){
         if(coord == null) {
             return null;
@@ -170,3 +156,4 @@ public class Hunter extends Subject implements IHunterStrategy {
         return maze[coord.getRow()][coord.getCol()];
     }
 }
+

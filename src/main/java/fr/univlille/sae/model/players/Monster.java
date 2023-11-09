@@ -192,24 +192,18 @@ public class Monster extends Subject implements IMonsterStrategy {
     }
 
     /**
+     * Notifie les observateurs avec une data.
+     * @param data data à notifier
+     */
+    public void notify(Object data) {
+        notifyObservers(data);
+    }
+
+    /**
      * Notifie les observateurs avec le labyrinthe découvert par le monstre.
      */
     public void notifyDiscoveredMaze() {
         notifyObservers(discoveredMaze);
-    }
-
-    /**
-     * Notifie les observateurs que le monstre ne peut pas se déplacer.
-     */
-    public void notifyCantMove() {
-        notifyObservers("cantMove");
-    }
-
-    /**
-     * Notifie les observateurs que la partie est terminée.
-     */
-    public void notifyEndGame() {
-        notifyObservers("endGame");
     }
 
     /**
@@ -232,25 +226,10 @@ public class Monster extends Subject implements IMonsterStrategy {
     }
 
     /**
-     * Notifie les observateurs du passage de tour à l'adversaire.
-     */
-    public void notifyTurnChange() {
-        notifyObservers("changerTour");
-    }
-
-    /**
      * Notifie les observateurs que la partie est en cours.
      */
     public void notifyShow() {
         notifyObservers();
-    }
-
-    /**
-     * Notifie les observateurs que le numéro de tour change.
-     * @param turn nouveau tour
-     */
-    public void notifyTurnPlus(int turn) {
-        notifyObservers(turn);
     }
 
     public Cell[][] getDiscoveredMaze(){

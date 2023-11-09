@@ -21,9 +21,12 @@ public class RandomHunter extends Hunter{
         return new Coordinate(RDM.nextInt(nbRows), RDM.nextInt(nbCols));
     }
 
+    /*
     @Override
     public void notifyTurnChange() {
         super.notifyTurnChange();
         modelMain.tirerChasseur(play());
     }
+
+     */
 }

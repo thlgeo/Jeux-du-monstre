@@ -10,6 +10,8 @@ import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
 import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 import fr.univlille.sae.model.players.Hunter;
 import fr.univlille.sae.model.players.Monster;
+import fr.univlille.sae.model.players.RandomHunter;
+import fr.univlille.sae.model.players.RandomMonster;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,8 +48,8 @@ public class ModelMain extends Subject {
         this.nbCols = nbCols;
         this.maze = new Cell[nbRows][nbCols];
         importMaze(nbRows, nbCols);
-        this.monster = new Monster("Monster", this.maze);
-        this.hunter = new Hunter("Hunter", nbRows, nbCols);
+        this.monster = new RandomMonster("Monster", this.maze, this);
+        this.hunter = new RandomHunter("Hunter", nbRows, nbCols, this);
         this.deplacementDiag = false;
     }
 

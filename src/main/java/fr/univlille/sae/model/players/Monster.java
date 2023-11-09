@@ -148,7 +148,7 @@ public class Monster extends Subject implements IMonsterStrategy {
      */
     private boolean canMoveNotDiag(ICoordinate coord)
     {
-        return around().contains(coord);
+        return around().contains(coord) && (maze[coord.getRow()][coord.getCol()] && !coord.equals(coordinateMonster));
     }
 
     /**

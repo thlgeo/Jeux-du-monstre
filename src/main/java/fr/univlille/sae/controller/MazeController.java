@@ -57,9 +57,7 @@ public class MazeController extends GridPane {
      */
     public void setRender(int o, int a, String text) {
         Button b = mazeTable[a][o];
-        if(!isMonsterMaze){
-            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
-        }
+        b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
         if(text.equals(Cell.IS_WALL)) {
             b.setStyle("-fx-background-color: #000000; -fx-border-color: #000000");
             b.setText(" ");

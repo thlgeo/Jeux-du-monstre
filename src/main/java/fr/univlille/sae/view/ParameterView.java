@@ -3,10 +3,7 @@ package fr.univlille.sae.view;
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
-import fr.univlille.sae.controller.DepDiagController;
-import fr.univlille.sae.controller.NameController;
-import fr.univlille.sae.controller.SizeController;
-import fr.univlille.sae.controller.ValidationController;
+import fr.univlille.sae.controller.*;
 import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,6 +31,7 @@ public class ParameterView extends Stage implements Observer {
     private SizeController width;
     private ValidationController validation;
     private DepDiagController depDiag;
+    private FogController fog;
 
     public ParameterView(ModelMain modelMain) {
         this.modelMain = modelMain;
@@ -55,6 +53,7 @@ public class ParameterView extends Stage implements Observer {
         root.getChildren().addAll(new Spacer(), titreHeight, heigth);
         root.getChildren().addAll(new Spacer(), titreWidth, width);
         root.getChildren().addAll(new Spacer(), depDiag);
+        root.getChildren().addAll(new Spacer(), fog);
         root.getChildren().addAll(new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
@@ -78,7 +77,8 @@ public class ParameterView extends Stage implements Observer {
         heigth = new SizeController();
         width = new SizeController();
         depDiag = new DepDiagController();
-        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, modelMain);
+        fog = new FogController();
+        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, modelMain);
     }
 
     /**

@@ -35,6 +35,7 @@ public class ModelMain extends Subject {
     private static final int DEFAULT_DIMENSION = 10;
     protected static final String FS = File.separator;
     private static final int DEFAULT_TURN = 1;
+    private static final int VISION = 1;
     protected int turn;
     protected int nbRows;
     protected int nbCols;
@@ -50,7 +51,7 @@ public class ModelMain extends Subject {
         this.maze = null;
         genereMaze();
         this.monster = new Monster("Monster", this.maze);
-        this.hunter = new RandomHunter("Hunter", nbRows, nbCols, this);
+        this.hunter = new Hunter("Hunter", nbRows, nbCols);
         this.deplacementDiag = false;
     }
 
@@ -105,7 +106,7 @@ public class ModelMain extends Subject {
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, false);
     }
 
     /**
@@ -174,17 +175,36 @@ public class ModelMain extends Subject {
             }
         } catch(MonsterNotFoundException e) {
             newCoord = this.initMonsterPosition();
+            /*
             ICoordinate coordExit = getExit();
             while(inRange(newCoord,coordExit))
             {
                 newCoord = this.initMonsterPosition();
             }
+
+             */
         }
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
+        updateAround(newCoord);
         monster.update(event);
         monster.setCoordinateMonster(newCoord);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
         hunter.notifyTurnChange();
+    }
+
+    private void updateAround(ICoordinate newCoord)
+    {
+        int newRow = newCoord.getRow();
+        int newCol = newCoord.getCol();
+        ICoordinate coord;
+        for(int lig=newRow-VISION;lig<=newRow+VISION;lig++)
+        {
+            for(int col=newCol-VISION;col<=newCol+VISION;col++)
+            {
+                coord = new Coordinate(lig, col);
+                monster.update(new CellEvent(turn, getCell(coord).getInfo(),coord));
+            }
+        }
     }
 
     /**
@@ -259,7 +279,7 @@ public class ModelMain extends Subject {
      * @param width   (int)       largeur du labyrinthe
      * @param depDiag   (boolean)       déplacement en diagonale
      */
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag) {
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog) {
         this.nbRows = height;
         this.nbCols = width;
         genereMaze();

@@ -1,9 +1,11 @@
 package fr.univlille.sae.model;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
+import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
 import java.util.*;
 
+/*
 public class Maze {
     protected Cell[][] maze;
     protected boolean[][] visited;
@@ -142,3 +144,5 @@ public class Maze {
     }
 
 }
+
+ */

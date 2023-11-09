@@ -122,7 +122,7 @@ public class HunterView extends Stage implements Observer {
     @Override
     public void update(Subject subject, Object o) {
         if(o instanceof ICellEvent cell) {
-            mc.setRender(cell.getCoord().getRow(), cell.getCoord().getCol(), Cell.render(cell.getState(), cell.getTurn()));
+            mc.setRender(cell.getCoord().getRow(), cell.getCoord().getCol(), cell.getState(), cell.getTurn());
             tour.setText("Tour du monstre !");
             setWaitScene();
         } else if(o instanceof Cell[][]) {

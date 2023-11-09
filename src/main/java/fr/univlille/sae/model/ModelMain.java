@@ -50,15 +50,19 @@ public class ModelMain extends Subject {
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.maze = null;
-        genereMaze();
+        //genereMaze();
+        importMaze(nbRows, nbCols);
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
         this.deplacementDiag = false;
     }
 
+    /*
     public void genereMaze() {
         this.maze = new Maze(this.nbRows, this.nbCols).maze;
     }
+
+     */
 
     ModelMain(int nbRows, int nbCols) {
         this(DEFAULT_TURN, nbRows, nbCols);
@@ -187,9 +191,8 @@ public class ModelMain extends Subject {
         monster.setCoordinateMonster(newCoord);
         if(fog){
             updateAround(newCoord);
-        }else{
-            monster.update(event);
         }
+        monster.update(event);
         hunter.notify("changerTour");
     }
 
@@ -203,7 +206,7 @@ public class ModelMain extends Subject {
             for(int col=newCol-VISION;col<=newCol+VISION;col++)
             {
                 coord = new Coordinate(lig, col);
-                monster.update(new CellEvent(turn, getCell(coord).getInfo(),coord));
+                monster.update(new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord));
             }
         }
     }
@@ -283,7 +286,8 @@ public class ModelMain extends Subject {
     public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog) {
         this.nbRows = height;
         this.nbCols = width;
-        genereMaze();
+        //genereMaze();
+        importMaze(nbRows, nbCols);
         this.deplacementDiag = depDiag;
         this.fog = fog;
         hunter.setName(hunterName);

@@ -105,8 +105,8 @@ public class Monster extends Subject implements IMonsterStrategy {
             notifyObservers(cellule);
             if(lastShotHunter != null) {
                 Cell cell = get(lastShotHunter);
-                if(cell != null) notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));
-                else notifyObservers(new CellEvent(0, CellInfo.EMPTY, lastShotHunter));
+                if(fog) notifyObservers(new CellEvent(-1, cell.getInfo(), lastShotHunter));
+                else notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));
             }
             lastShotHunter = cellule.getCoord();
         } else {

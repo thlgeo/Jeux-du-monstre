@@ -1,5 +1,6 @@
 package fr.univlille.sae.controller;
 
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
@@ -53,18 +54,28 @@ public class MazeController extends GridPane {
      *
      * @param a abscisse de la case
      * @param o ordonnée de la case
-     * @param text nouvelle valeur de la case
      */
-    public void setRender(int o, int a, String text) {
-        Button b = mazeTable[a][o];
-        b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
-        if(text.equals(Cell.IS_WALL)) {
+    public void setRender(int a, int o, ICellEvent.CellInfo info, int turn) {
+        Button b = mazeTable[o][a];
+        if(turn < 0){
+            b.setStyle("-fx-background-color: #9B9B9B; -fx-border-color: #000000");
+            b.setText(" ");
+        }else if(info == ICellEvent.CellInfo.WALL) {
             b.setStyle("-fx-background-color: #000000; -fx-border-color: #000000");
             b.setText(" ");
-        }else if(!isMonsterMaze && text.equals("X")) {
+        }else if(!isMonsterMaze && info == ICellEvent.CellInfo.EXIT) {
+            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText(" ");
-        } else {
-            b.setText(text);
+        }else if(info == ICellEvent.CellInfo.MONSTER) {
+            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+            b.setText("" + turn);
+        }else if(info == ICellEvent.CellInfo.HUNTER) {
+            b.setText("x");
+        }else if(info == ICellEvent.CellInfo.EXIT) {
+            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+            b.setText("x");
+        }else{
+            b.setText(" ");
         }
     }
 
@@ -76,7 +87,7 @@ public class MazeController extends GridPane {
     public void initMaze(Cell[][] discoveredMaze) {
         for(int i = 0; i < discoveredMaze.length; i++) {
             for(int j = 0; j < discoveredMaze[i].length; j++) {
-                setRender(i, j, Cell.render(discoveredMaze[i][j].getInfo(), discoveredMaze[i][j].getTurn()));
+                setRender(j, i, discoveredMaze[i][j].getInfo(), 1);
             }
         }
     }

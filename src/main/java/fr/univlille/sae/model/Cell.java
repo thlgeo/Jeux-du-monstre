@@ -48,10 +48,6 @@ public class Cell {
         charToInfo.put('X', CellInfo.EXIT);
     }
 
-    public static String render(CellInfo cellInfo, int turn) {
-        return new Cell(cellInfo, turn).getRender();
-    }
-
     public CellInfo getInfo() {
         return info;
     }
@@ -79,31 +75,6 @@ public class Cell {
     @Override
     public int hashCode() {
         return Objects.hash(getInfo(), getTurn());
-    }
-
-    /**
-     * Récupère le rendu de la cellule à partir de son info.
-     *
-     * @return (String) Rendu de la cellule
-     */
-    protected String getRender() {
-        switch(info) {
-            case WALL -> {
-                return IS_WALL;
-            }
-            case MONSTER -> {
-                return String.valueOf(turn);
-            }
-            case HUNTER -> {
-                return "H";
-            }
-            case EXIT -> {
-                return "X";
-            }
-            default -> {
-                return " ";
-            }
-        }
     }
 
 }

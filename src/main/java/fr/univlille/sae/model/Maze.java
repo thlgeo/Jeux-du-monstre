@@ -5,7 +5,6 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
 import java.util.*;
 
-/*
 public class Maze {
     protected Cell[][] maze;
     protected boolean[][] visited;
@@ -144,5 +143,3 @@ public class Maze {
     }
 
 }
-
- */

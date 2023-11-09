@@ -70,11 +70,12 @@ public class MazeController extends GridPane {
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText("" + turn);
         }else if(info == ICellEvent.CellInfo.HUNTER) {
-            b.setText("x");
+            b.setText("h");
         }else if(info == ICellEvent.CellInfo.EXIT) {
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText("x");
         }else{
+            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText(" ");
         }
     }

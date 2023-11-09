@@ -214,7 +214,11 @@ public class Monster extends Subject implements IMonsterStrategy {
      * Notifie les observateurs avec le labyrinthe découvert par le monstre.
      */
     public void notifyDiscoveredMaze() {
-        notifyObservers(discoveredMaze);
+        if(fog){
+            notifyObservers(null);
+        }else{
+            notifyObservers(discoveredMaze);
+        }
     }
 
     /**
@@ -253,5 +257,9 @@ public class Monster extends Subject implements IMonsterStrategy {
             newMaze[i] = Arrays.copyOf(maze[i], maze[i].length);
         }
         return newMaze;
+    }
+
+    public void setFog(boolean fog){
+        this.fog = fog;
     }
 }

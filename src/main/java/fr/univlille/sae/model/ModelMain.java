@@ -43,7 +43,7 @@ public class ModelMain extends Subject {
     protected Monster monster;
     protected Cell[][] maze;
     protected boolean deplacementDiag;
-    protected boolean fog;
+    protected boolean fog = false;
 
     private ModelMain(int turn, int nbRows, int nbCols) {
         this.turn = turn;
@@ -206,7 +206,10 @@ public class ModelMain extends Subject {
             for(int col=newCol-VISION;col<=newCol+VISION;col++)
             {
                 coord = new Coordinate(lig, col);
-                monster.update(new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord));
+                Cell c = getCell(coord);
+                if(c != null){
+                    monster.update(new CellEvent(c.getTurn(), c.getInfo(), coord));
+                }
             }
         }
     }
@@ -290,6 +293,7 @@ public class ModelMain extends Subject {
         importMaze(nbRows, nbCols);
         this.deplacementDiag = depDiag;
         this.fog = fog;
+        monster.setFog(fog);
         hunter.setName(hunterName);
         monster.setName(monsterName);
         hunter.setRowCol(nbRows, nbCols);

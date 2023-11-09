@@ -30,6 +30,7 @@ public class Monster extends Subject implements IMonsterStrategy {
     protected Cell[][] discoveredMaze;
     protected ICoordinate coordinateMonster;
     protected ICoordinate lastShotHunter;
+    protected boolean fog;
 
     public Monster(String name, Cell[][] discoveredMaze) {
         this.name = name;
@@ -37,6 +38,7 @@ public class Monster extends Subject implements IMonsterStrategy {
         this.maze = convert();
         coordinateMonster = null;
         lastShotHunter = null;
+        fog = false;
     }
 
     /**
@@ -60,10 +62,15 @@ public class Monster extends Subject implements IMonsterStrategy {
         boolean[][] mazeB = new boolean[discoveredMaze.length][discoveredMaze[0].length];
         for(int i = 0; i < discoveredMaze.length; i++) {
             for(int j = 0; j < discoveredMaze[0].length; j++) {
-                mazeB[i][j] = discoveredMaze[i][j].getInfo().equals(CellInfo.EMPTY) || discoveredMaze[i][j].getInfo().equals(CellInfo.EXIT) || discoveredMaze[i][j].getInfo().equals(CellInfo.MONSTER);
+                mazeB[i][j] = convertCell(discoveredMaze[i][j]);
             }
         }
         return mazeB;
+    }
+
+    private boolean convertCell(Cell cellule)
+    {
+        return cellule.getInfo().equals(CellInfo.EMPTY) || cellule.getInfo().equals(CellInfo.EXIT) || cellule.getInfo().equals(CellInfo.MONSTER);
     }
 
     /**
@@ -96,6 +103,10 @@ public class Monster extends Subject implements IMonsterStrategy {
             Cell updateCell = this.discoveredMaze[coord.getRow()][coord.getCol()];
             updateCell.setInfo(cellule.getState());
             updateCell.setTurn(cellule.getTurn());
+            if(fog)
+            {
+                maze[coord.getRow()][coord.getCol()] = convertCell(updateCell);
+            }
         }
         notifyObservers(cellule);
     }

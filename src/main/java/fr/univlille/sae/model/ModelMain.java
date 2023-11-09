@@ -49,8 +49,8 @@ public class ModelMain extends Subject {
         this.nbCols = nbCols;
         this.maze = new Cell[nbRows][nbCols];
         importMaze(nbRows, nbCols);
-        this.monster = new RandomMonster("Monster", this.maze, this);
-        this.hunter = new RandomHunter("Hunter", nbRows, nbCols, this);
+        this.monster = new Monster("Monster", this.maze);
+        this.hunter = new Hunter("Hunter", nbRows, nbCols);
         this.deplacementDiag = false;
     }
 
@@ -101,7 +101,7 @@ public class ModelMain extends Subject {
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, false);
     }
 
     /**
@@ -170,11 +170,14 @@ public class ModelMain extends Subject {
             }
         } catch(MonsterNotFoundException e) {
             newCoord = this.initMonsterPosition();
+            /*
             ICoordinate coordExit = getExit();
             while(inRange(newCoord,coordExit))
             {
                 newCoord = this.initMonsterPosition();
             }
+
+             */
         }
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
         monster.update(event);
@@ -255,7 +258,7 @@ public class ModelMain extends Subject {
      * @param width   (int)       largeur du labyrinthe
      * @param depDiag   (boolean)       déplacement en diagonale
      */
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag) {
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog) {
         this.nbRows = height;
         this.nbCols = height;
         this.deplacementDiag = depDiag;

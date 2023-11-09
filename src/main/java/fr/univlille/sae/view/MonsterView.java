@@ -130,7 +130,9 @@ public class MonsterView extends Stage implements Observer {
             setWaitScene();
         } else if(o instanceof Cell[][] discoveredMaze) {
             mc.resize();
-            mc.initMaze(discoveredMaze);
+            if(discoveredMaze!=null){
+                mc.initMaze(discoveredMaze);
+            }
         } else if("cantMove".equals(o)) {
             new Alert(Alert.AlertType.ERROR, "Impossible de vous déplacer sur cette case !").showAndWait();
         } else if("endGame".equals(o)) {

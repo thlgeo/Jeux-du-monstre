@@ -16,15 +16,17 @@ public class ValidationController extends Button {
     private final SizeController height;
     private final SizeController width;
     private final DepDiagController depDiag;
+    private final FogController fog;
     private final ModelMain modelMain;
 
-    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, DepDiagController depDiag, ModelMain modelMain) {
+    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, DepDiagController depDiag, FogController fog, ModelMain modelMain) {
         this.modelMain = modelMain;
         this.nameMonster = nameMonster;
         this.nameHunter = nameHunter;
         this.height = height;
         this.width = width;
         this.depDiag = depDiag;
+        this.fog = fog;
         setText("Enregistrer les parametres");
         setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         setAction();
@@ -43,7 +45,7 @@ public class ValidationController extends Button {
                 new Alert(Alert.AlertType.ERROR, "Veuillez entrer une taille entre " + SizeController.MIN_SIZE + " et " + SizeController.MAX_SIZE + "  !").showAndWait();
                 return;
             }
-            modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected());
+            modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected(), fog.isSelected());
             new Alert(Alert.AlertType.CONFIRMATION, "Les informations ont bien été mises à jour").showAndWait();
         });
     }

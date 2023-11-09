@@ -1,0 +1,130 @@
+@startuml
+!theme vibrant
+
+class Observer {
+    ~ update(Subject) : void
+    ~ update(Subject, Object) : void
+}
+
+abstract class Subject {
+    + attach(Observer) : void
+    + detach(Observer) : void
+    # notifyObservers() : void
+    # notifyObservers(Object) : void
+}
+
+Subject "*" <-- Observer : "#attached"
+
+enum CellInfo {
+    EMPTY
+    WALL
+    MONSTER
+    HUNTER
+    EXIT
+}
+
+class Cell {
+    # {static} charToInfo
+    # int turn
+    ~ Cell(CellInfo, int)
+    ~ Cell(char)
+    + Cell(CellInfo)
+    + Cell()
+    # {static} initialiseCharToInfo() : void
+    + {static} render(CellInfo, int) : String
+    # getRender() : String
+}
+
+Cell +-- CellInfo : # info
+
+interface IStrategy {
+    ~ play() : ICoordinate
+    ~ update(ICellEvent) : void
+}
+
+interface IMonsterStrategy implements IStrategy {
+    ~ initialize(boolean[][]) : void
+}
+
+interface IHunterStrategy implements IStrategy {
+    ~ initialize(int, int) : void
+}
+
+class Monster extends Subject implements IMonsterStrategy {
+    # boolean[][] maze
+    # String name
+
+    + Monster(String, Cell[][])
+    + setMaze(Cell[][]) : void
+    # convert() : boolean[][]
+    + canMove(ICoordinate, boolean) : boolean
+    + notifyDiscoveredMaze() : void
+    + notifyCantMove() : void
+    + notifyEndGame() : void
+    + notifyTurnChange() : void
+    + notifyShow() : void
+    + notifyTurnPlus(int) : void
+    + get(ICoordinate) : Cell
+    + getDiscoveredMaze() : Cell[][]
+}
+
+class Hunter extends Subject implements IHunterStrategy {
+    # int nbRows
+    # int nbCols
+    # String name
+    + Hunter(String, int, int)
+    ~ Hunter()
+    + getCell(ICoordinate) : Cell
+    + canShot(ICoordinate) : boolean
+    + notifyEndGame() : void
+    + notifyTurnChange() : void
+    + notifyShow() : void
+    + notifyDiscoveredMaze() : void
+    + notifyTurnPlus(int) : void
+}
+
+interface ICoordinate {
+    + getRow() : int
+    + getCol() : int
+}
+
+class Coordinate implements ICoordinate {
+    # int row
+    # int col
+    + Coordinate(int, int)
+}
+
+class ModelMain extends Subject {
+    # {static} String FS
+    # int turn
+    # int nbRows
+    # int nbCols
+    # boolean deplacementDiag
+
+    ~ Maze(int, int)
+    + Maze()
+    # importMaze(int, int, int) : void
+    # reset() : void
+    ~ getCell(int, int) : Cell
+    ~ getCell(ICoordinate) : Cell
+    + deplacementMonstre(ICoordinate) : void
+    + tirerChasseur(ICoordinate)
+    # victory(boolean) : void
+    + changerParam(String, String, int) : void
+    ~ update(ICoordinate, CellInfo) : void
+    + attachMonster(Observer) : void
+    + attachHutner(Observer) : void
+    + notifyShowParameter() : void
+    + notifyShowMH() : void
+}
+
+ModelMain "1" <-- Monster : # monster
+ModelMain "1" <-- Hunter : # hunter
+ModelMain "*" <-- Cell : # maze
+
+Monster "*" <-- Cell : # discoveredMaze
+Monster "1" <-- ICoordinate : # coordinateMonster
+Monster "1" <-- ICoordinate : # lastShotHunter
+
+Hunter "*" <-- Cell : # maze
+@enduml

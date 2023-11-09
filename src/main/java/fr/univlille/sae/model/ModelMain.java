@@ -10,8 +10,6 @@ import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
 import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 import fr.univlille.sae.model.players.Hunter;
 import fr.univlille.sae.model.players.Monster;
-import fr.univlille.sae.model.players.RandomHunter;
-import fr.univlille.sae.model.players.RandomMonster;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,19 +48,19 @@ public class ModelMain extends Subject {
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.maze = null;
-        //genereMaze();
+        genereMaze();
         importMaze(nbRows, nbCols);
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
         this.deplacementDiag = false;
     }
 
-    /*
+    
     public void genereMaze() {
         this.maze = new Maze(this.nbRows, this.nbCols).maze;
     }
 
-     */
+    
 
     ModelMain(int nbRows, int nbCols) {
         this(DEFAULT_TURN, nbRows, nbCols);
@@ -292,7 +290,7 @@ public class ModelMain extends Subject {
     public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog) {
         this.nbRows = height;
         this.nbCols = width;
-        //genereMaze();
+        genereMaze();
         importMaze(nbRows, nbCols);
         this.deplacementDiag = depDiag;
         this.fog = fog;

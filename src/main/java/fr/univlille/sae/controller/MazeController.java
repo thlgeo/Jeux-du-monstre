@@ -88,7 +88,7 @@ public class MazeController extends GridPane {
     public void initMaze(Cell[][] discoveredMaze) {
         for(int i = 0; i < discoveredMaze.length; i++) {
             for(int j = 0; j < discoveredMaze[i].length; j++) {
-                setRender(i, j, discoveredMaze[i][j].getInfo(), 1);
+                setRender(i, j, discoveredMaze[i][j].getInfo(), discoveredMaze[i][j].getTurn());
             }
         }
     }

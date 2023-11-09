@@ -166,9 +166,6 @@ public class ModelMain extends Subject {
      * @param newCoord coordonnées choisies
      */
     public void deplacementMonstre(ICoordinate newCoord) {
-        System.out.println(monster.getCoordinateMonster());
-        System.out.println(newCoord);
-        System.out.println(getCell(newCoord).getInfo());
         try {
             if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
             if(!this.monster.canMove(newCoord,deplacementDiag)) {

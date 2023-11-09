@@ -62,6 +62,9 @@ public class Monster extends Subject implements IMonsterStrategy {
                 this.discoveredMaze[i][j] = new Cell(ICellEvent.CellInfo.EMPTY);
             }
         }
+        this.maze = convert();
+        coordinateMonster = null;
+        lastShotHunter = null;
     }
 
     /**
@@ -215,7 +218,15 @@ public class Monster extends Subject implements IMonsterStrategy {
      */
     public void notifyDiscoveredMaze() {
         if(fog){
-            notifyObservers(null);
+            Cell[][] maze = new Cell[discoveredMaze.length][discoveredMaze[0].length];
+            for (Cell[] row : maze) {
+                for(int i = 0; i < row.length; i++){
+                    Cell cell = new Cell(CellInfo.EMPTY);
+                    cell.setTurn(-1);
+                    row[i] = cell;
+                }
+            }
+            notifyObservers(maze);
         }else{
             notifyObservers(discoveredMaze);
         }

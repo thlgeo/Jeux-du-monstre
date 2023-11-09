@@ -289,7 +289,12 @@ public class ModelMain extends Subject {
         hunter.setName(hunterName);
         monster.setName(monsterName);
         hunter.setRowCol(nbRows, nbCols);
-        monster.setMaze(this.maze);
+        if(fog)
+        {
+            monster.setMazeEmpty(nbRows, nbCols);
+        }else{
+            monster.setMaze(this.maze);
+        }
         turn = DEFAULT_TURN;
         notifyObservers("ParamMAJ");
     }

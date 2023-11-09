@@ -53,6 +53,17 @@ public class Monster extends Subject implements IMonsterStrategy {
         lastShotHunter = null;
     }
 
+    public void setMazeEmpty(int nbRow, int nbCol)
+    {
+        this.discoveredMaze = new Cell[nbRow][nbCol];
+        for(int i = 0; i < nbRow; i++) {
+            for(int j = 0; j < nbCol; j++)
+            {
+                this.discoveredMaze[i][j] = new Cell(ICellEvent.CellInfo.EMPTY);
+            }
+        }
+    }
+
     /**
      * Convertie le labyrinthe de type Cell[][] à boolean[][]. Les cellules du nouveau labyrinthe sont égales à true si la cellule est vide ou égale à zéro, sinon false.
      *

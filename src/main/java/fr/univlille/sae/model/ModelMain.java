@@ -98,7 +98,7 @@ public class ModelMain extends Subject {
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag);
     }
 
     /**
@@ -213,11 +213,14 @@ public class ModelMain extends Subject {
      *
      * @param hunterName    (String)    Nom du chasseur
      * @param monsterName   (String)    Nom du monstre
-     * @param size    (int)       Taille du labyrinthe
+     * @param height    (int)       hauteur du labyrinthe
+     * @param width   (int)       largeur du labyrinthe
+     * @param depDiag   (boolean)       déplacement en diagonale
      */
-    public void changerParam(String hunterName, String monsterName, int size) {
-        this.nbRows = size;
-        this.nbCols = size;
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag) {
+        this.nbRows = height;
+        this.nbCols = height;
+        this.deplacementDiag = depDiag;
         importMaze(nbRows, nbCols);
         hunter.setName(hunterName);
         monster.setName(monsterName);

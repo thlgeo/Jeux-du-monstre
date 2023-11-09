@@ -47,11 +47,15 @@ public class ModelMain extends Subject {
         this.turn = turn;
         this.nbRows = nbRows;
         this.nbCols = nbCols;
-        this.maze = new Cell[nbRows][nbCols];
-        importMaze(nbRows, nbCols);
-        this.monster = new RandomMonster("Monster", this.maze, this);
+        this.maze = null;
+        genereMaze();
+        this.monster = new Monster("Monster", this.maze);
         this.hunter = new RandomHunter("Hunter", nbRows, nbCols, this);
         this.deplacementDiag = false;
+    }
+
+    public void genereMaze() {
+        this.maze = new Maze(this.nbRows, this.nbCols).maze;
     }
 
     ModelMain(int nbRows, int nbCols) {
@@ -257,9 +261,9 @@ public class ModelMain extends Subject {
      */
     public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag) {
         this.nbRows = height;
-        this.nbCols = height;
+        this.nbCols = width;
+        genereMaze();
         this.deplacementDiag = depDiag;
-        importMaze(nbRows, nbCols);
         hunter.setName(hunterName);
         monster.setName(monsterName);
         hunter.setRowCol(nbRows, nbCols);

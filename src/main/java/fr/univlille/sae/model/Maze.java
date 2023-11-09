@@ -9,6 +9,7 @@ public class Maze {
     protected boolean[][] visited;
     private final int x;
     private final int y;
+    private static final double PERCENT_WALL = 0.25;
 
     private final Random r = new Random();
 
@@ -17,7 +18,7 @@ public class Maze {
         this.y = y;
         maze = new Cell[x][y];
         visited = new boolean[x][y];
-        makeDefaultMaze();
+        generePrim();
     }
 
     private void makeDefaultMaze() {
@@ -27,54 +28,95 @@ public class Maze {
             }
         }
     }
-    private void generateMazePrim() {
-        Coordinate cord = new Coordinate(r.nextInt(x), r.nextInt(y));
-        maze[cord.getRow()][cord.getCol()].setInfo(ICellEvent.CellInfo.EMPTY);
-        System.out.println(cord);
-        ArrayList<Coordinate> frontier = new ArrayList<>();
-        frontier.add(cord);
-        frontier.addAll(getFrontierCoords(cord));
-        /*
-        for (Coordinate cord: frontier) {
-            maze[cord.getRow()][cord.getCol()].setInfo(ICellEvent.CellInfo.EMPTY);
+
+    protected void generePrim() {
+        makeDefaultMaze();
+        List<ICoordinate> frontier = new ArrayList<>();
+        ICoordinate coord = new Coordinate(r.nextInt(x-1), r.nextInt(y-1));
+        maze[coord.getRow()][coord.getCol()].setInfo(ICellEvent.CellInfo.MONSTER);
+        setVisited(coord);
+        addToFrontier(frontier, getFrontierCoords(coord));
+        Coordinate next = null;
+        while(!frontier.isEmpty()) {
+            next = (Coordinate) frontier.get(r.nextInt(frontier.size()));
+            coord = getOriginCord(next);
+            setVisited(next);
+            frontier.remove(next);
+            setVisited(getGateway(coord, next));
+            addToFrontier(frontier, getFrontierCoords(next));
         }
-        maze[start.getRow()][start.getCol()].setInfo(ICellEvent.CellInfo.EMPTY);
-        */
-        for (int i = 0 ; i < 20 ; i++) {
-            Coordinate chosenCord = frontier.get(r.nextInt(frontier.size()));
-            System.out.println(chosenCord);
-            removeWall(cord, chosenCord);
-            frontier.addAll(getFrontierCoords(chosenCord));
-            System.out.println(frontier);
-            frontier.remove(chosenCord);
+        maze[next.getRow()][next.getCol()].setInfo(ICellEvent.CellInfo.EXIT);
+        genereNotSet();
+    }
+
+    public void genereNotSet() {
+        for(int row = 0; row < this.x; row++) {
+            for(int col = 0; col < this.y; col++) {
+                if(!isVisited(row, col) && r.nextDouble(1) <= PERCENT_WALL) {
+                    this.setVisited(row, col);
+                }
+            }
         }
     }
 
-    private Collection<? extends Coordinate> getFrontierCoords(Coordinate cord) {
-        ArrayList<Coordinate> frontier = new ArrayList<>();
-        Coordinate northFrontier = new Coordinate(cord.getRow()-2, cord.getCol());
-        Coordinate southFrontier = new Coordinate(cord.getRow()+2, cord.getCol());
-        Coordinate westFrontier = new Coordinate(cord.getRow(), cord.getCol()-2);
-        Coordinate eastFrontier = new Coordinate(cord.getRow(), cord.getCol()+2);
-        if (isValid(northFrontier)) {
-            frontier.add(northFrontier);
+    public ICoordinate getGateway(ICoordinate start, ICoordinate end) {
+        Coordinate diff = new Coordinate(start.getRow() - end.getRow(), start.getCol() - end.getCol());
+        if(diff.getCol() < 0) diff.incrementCol();
+        else if(diff.getCol() > 0) diff.decrementCol();
+        else if(diff.getRow() < 0) diff.incrementRow();
+        else if(diff.getRow() > 0) diff.decrementRow();
+        else System.out.println("Erreur: " + diff);
+        return new Coordinate(start.getRow() - diff.getRow(), start.getCol() - diff.getCol());
+    }
+
+    private void setVisited(ICoordinate coord) {
+        setVisited(coord.getRow(), coord.getCol());
+    }
+
+    private void setVisited(int row, int col) {
+        maze[row][col].setInfo(ICellEvent.CellInfo.EMPTY);
+        visited[row][col] = true;
+    }
+    
+    private boolean isVisited(ICoordinate coord) {
+        return isVisited(coord.getRow(), coord.getCol());
+    }
+
+    private boolean isVisited(int row, int col) {
+        return visited[row][col];
+    }
+
+    private ICoordinate getOriginCord(ICoordinate cord) {
+        List<ICoordinate> cordFrontiers = getFrontierCoords(cord);
+        for (ICoordinate cordFrontier : cordFrontiers) {
+            if (isValid(cordFrontier) && isVisited(cordFrontier)) {
+                return cordFrontier;
+            }
         }
-        if (isValid(southFrontier)) {
-            frontier.add(southFrontier);
-        }
-        if (isValid(westFrontier)) {
-            frontier.add(westFrontier);
-        }
-        if (isValid(eastFrontier)) {
-            frontier.add(eastFrontier);
-        }
+        return null;
+    }
+
+    private List<ICoordinate> getFrontierCoords(ICoordinate cord) {
+        Coordinate c = (Coordinate) cord;
+        List<ICoordinate> frontier = new ArrayList<>();
+        Coordinate north = c.north();
+        north.decrementRow();
+        Coordinate east = c.east();
+        east.incrementCol();
+        Coordinate west = c.west();
+        west.decrementCol();
+        Coordinate south = c.south();
+        south.incrementRow();
+        frontier.addAll(List.of(north, south, east, west));
         return frontier;
     }
 
-    private void removeWall(Coordinate firstCord, Coordinate secondCord) {
-        int row = (firstCord.getRow() + secondCord.getRow()) / 2;
-        int col = (firstCord.getCol() + secondCord.getCol()) / 2;
-        maze[row][col].setInfo(ICellEvent.CellInfo.EMPTY);
+    private void addToFrontier(List<ICoordinate> frontier, List<ICoordinate> toAdd) {
+        for (ICoordinate cord: toAdd) {
+            if (isPossibility(cord) && !frontier.contains(cord)) {
+                frontier.add(cord);
+            }
+        }
     }
 
     private boolean isValid(Coordinate cord) {
@@ -87,6 +129,7 @@ public class Maze {
     private boolean isWall(Coordinate cord) {
         return maze[cord.getRow()][cord.getCol()].getInfo() == ICellEvent.CellInfo.WALL;
     }
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Cell[] row: maze) {
@@ -97,9 +140,5 @@ public class Maze {
         }
         return sb.toString();
     }
-    public static void main(String[] args) {
-        Maze maze = new Maze(11, 11);
-        maze.generateMazePrim();
-        System.out.println(maze);
-    }
+
 }

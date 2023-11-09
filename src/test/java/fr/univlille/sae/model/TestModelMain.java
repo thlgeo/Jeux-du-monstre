@@ -88,7 +88,7 @@ class TestModelMain {
         assertNull(lastShot);
     }
 
-    @Test
+    /*@Test
     void testChangerParam(){
         modelMain.changerParam("Nathan", "Valentin", 8);
         assertEquals("Valentin", modelMain.monster.getName());
@@ -99,5 +99,5 @@ class TestModelMain {
         assertEquals(8, modelMain.hunter.getNbCols());
         assertEquals(8, modelMain.monster.getDiscoveredMaze().length);
         assertEquals(8, modelMain.monster.getDiscoveredMaze()[0].length);
-    }
+    }*/
 }

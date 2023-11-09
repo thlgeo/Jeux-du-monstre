@@ -30,31 +30,35 @@ class TestMonster {
         maze[0][0].setInfo(CellInfo.WALL);
         maze[1][1].setInfo(CellInfo.WALL);
         monstre = new Monster("monstre", maze);
-        monstre.setCoordinateMonster(new Coordinate(1,0));
-    }
-
-    @Test 
-    void testCanMoveDiag()
-    {
-        assertTrue(monstre.canMove(new Coordinate(2, 0),true)); // se déplace vers le bas sur une case vide
-        assertTrue(monstre.canMove(new Coordinate(2,1),true)); // se déplace en diagonal
-        assertFalse(monstre.canMove(new Coordinate(1,0),true)); // se déplace sur lui-même
         monstre.setCoordinateMonster(new Coordinate(3,3));
-        assertTrue(monstre.canMove(new Coordinate(3,4),true)); // se déplace à gauche sur une case vide
-        assertTrue(monstre.canMove(new Coordinate(3,4),true)); // se déplace à droite sur une case vide
-        assertTrue(monstre.canMove(new Coordinate(2,3),true)); // se déplace vers le haut sur une case vide
     }
 
     @Test
-    void testCanMoveNotDiag()
+    public void test_deplacement_sans_diagonale()
+    {   
+        assertTrue(monstre.canMove(new Coordinate(3,4),false));
+        assertTrue(monstre.canMove(new Coordinate(3,2),false));
+        assertTrue(monstre.canMove(new Coordinate(4,3),false));
+        assertTrue(monstre.canMove(new Coordinate(2,3),false));
+    }
+
+    @Test
+    public void test_deplacement_avec_diagonale()
     {
-        assertTrue(monstre.canMove(new Coordinate(2, 0),false)); // se déplace vers le bas sur une case vide
-        assertFalse(monstre.canMove(new Coordinate(2,1),false)); // se déplace en diagonal
-        assertFalse(monstre.canMove(new Coordinate(1,0),false)); // se déplace sur lui-même
-        monstre.setCoordinateMonster(new Coordinate(3,3));
-        assertTrue(monstre.canMove(new Coordinate(3,2),false)); // se déplace à gauche sur une case vide
-        assertTrue(monstre.canMove(new Coordinate(3,4),false)); // se déplace à droite sur une case vide
-        assertTrue(monstre.canMove(new Coordinate(2,3),false)); // se déplace vers le haut sur une case vide
+        assertTrue(monstre.canMove(new Coordinate(3,4),true));
+        assertTrue(monstre.canMove(new Coordinate(3,2),true));
+        assertTrue(monstre.canMove(new Coordinate(4,3),true));
+        assertTrue(monstre.canMove(new Coordinate(2,3),true));
+        // déplacement en diagonale
+        assertTrue(monstre.canMove(new Coordinate(4,2),true));
+        assertTrue(monstre.canMove(new Coordinate(2,4),true));
+    }
+
+    @Test
+    public void test_deplacement_mur()
+    {
+        monstre.setCoordinateMonster(new Coordinate(1,0));
+        assertFalse(monstre.canMove(new Coordinate(1, 1), false));
     }
 
     @Test

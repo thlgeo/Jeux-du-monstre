@@ -51,29 +51,45 @@ public class Coordinate implements ICoordinate {
         return col == other.col;
     }
 
+    public void incrementRow() {
+        this.row++;
+    }
+
+    public void incrementCol() {
+        this.col++;
+    }
+
+    public void decrementRow() {
+        this.row--;
+    }
+
+    public void decrementCol() {
+        this.col--;
+    }
+
     @Override
     public String toString() {
         return "Coordinate [row=" + row + ", col=" + col + "]";
     }
 
-    public ICoordinate north() {
+    public Coordinate north() {
         return new Coordinate(row - 1, col);
     }
 
-    public ICoordinate south() {
+    public Coordinate south() {
         return new Coordinate(row + 1, col);
     }
 
-    public ICoordinate east() {
+    public Coordinate east() {
         return new Coordinate(row, col + 1);
     }
 
-    public ICoordinate west() {
+    public Coordinate west() {
         return new Coordinate(row, col - 1);
     }
 
-    public ICoordinate[] around() {
-        return new ICoordinate[] { north(), south(), east(), west() };
+    public Coordinate[] around() {
+        return new Coordinate[] { north(), south(), east(), west() };
     }
 
 }

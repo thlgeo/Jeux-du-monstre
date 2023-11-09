@@ -121,14 +121,14 @@ public class Maze {
         }
     }
 
-    private boolean isValid(Coordinate cord) {
-        return (isInGrid(cord) && isWall(cord));
+    private boolean isPossibility(ICoordinate cord) {
+        return (isValid(cord) && isWall(cord));
     }
 
-    private boolean isInGrid(Coordinate cord) {
+    private boolean isValid(ICoordinate cord) {
         return cord.getRow() >= 0 && cord.getRow() < x && cord.getCol() >= 0 && cord.getCol() < y;
     }
-    private boolean isWall(Coordinate cord) {
+    private boolean isWall(ICoordinate cord) {
         return maze[cord.getRow()][cord.getCol()].getInfo() == ICellEvent.CellInfo.WALL;
     }
     @Override

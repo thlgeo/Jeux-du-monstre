@@ -26,8 +26,8 @@ public class MazeController extends GridPane {
         setAlignment(Pos.CENTER);
     }
 
-    /*
-        * Cette méthode permet de changer le labyrinthe
+    /**
+     * Cette méthode permet de changer le labyrinthe
      */
     public void resize() {
         mazeTable = new Button[modelMain.getNbRows()][modelMain.getNbCols()];

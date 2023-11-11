@@ -7,4 +7,10 @@
 - Ajout de la fonctionnalité de choisir si il y a du brouillard ou non dans la view
 - Modification du système de notification à la view pour se concentrer sur une seule méthode de notification plutôt que plusieurs
 - Mise en place du système de brouillard dans la view du monstre
-- Corrections de bugs liés au brouillard du montre dans la view et dans le modèle
+- Corrections de bugs liés au brouillard du monstre dans la view et dans le modèle
+
+### Théo Lenglart
+
+- Ajout du brouillard pour le monstre
+- Corrections de bug pour la méthode canMove du monstre
+- Modification de la classe de test du monstre

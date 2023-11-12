@@ -14,3 +14,9 @@
 - Ajout du brouillard pour le monstre
 - Corrections de bug pour la méthode canMove du monstre
 - Modification de la classe de test du monstre
+
+
+### Armand SADY  
+
+- Implémentation de l'algorithme de Prim afin de créer des labyrinthes aléatoires  
+- Refactoring des fonctionnalités de création de labyrinthe vers la classe Maze

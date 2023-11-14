@@ -20,3 +20,10 @@
 
 - Implémentation de l'algorithme de Prim afin de créer des labyrinthes aléatoires  
 - Refactoring des fonctionnalités de création de labyrinthe vers la classe Maze
+
+
+### Valentin THUILLIER
+
+- Aide pour l'implémentation de l'agorithm de Prim
+- Ajout des Hunter/Monster Random
+- Modification de l'UML et de l'analyse

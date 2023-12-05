@@ -21,6 +21,7 @@ public class Cell {
     public static final String IS_WALL = "W";
     protected CellInfo info;
     protected int turn;
+    protected boolean visited = false;
 
     Cell(CellInfo info, int turn) {
         if(charToInfo.isEmpty()) initialiseCharToInfo();
@@ -70,6 +71,14 @@ public class Cell {
         if(o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
         return info == cell.info && turn == cell.turn;
+    }
+
+    public void visited() {
+        visited = true;
+    }
+
+    public boolean isVisited() {
+        return visited;
     }
 
     @Override

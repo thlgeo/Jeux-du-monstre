@@ -108,8 +108,11 @@ public class Monster extends Subject implements IMonsterStrategy {
             notifyObservers(cellule);
             if(lastShotHunter != null) {
                 Cell cell = get(lastShotHunter);
-                if(fog) notifyObservers(new CellEvent(-1, cell.getInfo(), lastShotHunter));
-                else notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));
+                if(fog && !cell.isVisited()) {
+                    notifyObservers(new CellEvent(-1, cell.getInfo(), lastShotHunter));
+                } else {
+                    notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));
+                }
             }
             lastShotHunter = cellule.getCoord();
         } else {
@@ -117,6 +120,7 @@ public class Monster extends Subject implements IMonsterStrategy {
             Cell updateCell = this.discoveredMaze[coord.getRow()][coord.getCol()];
             updateCell.setInfo(cellule.getState());
             updateCell.setTurn(cellule.getTurn());
+            updateCell.visited();
             if(fog)
             {
                 maze[coord.getRow()][coord.getCol()] = convertCell(updateCell);

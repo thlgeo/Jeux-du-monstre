@@ -48,7 +48,7 @@ public class ModelMain extends Subject {
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.maze = null;
-        genereMaze();
+        //genereMaze();
         importMaze(nbRows, nbCols);
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
@@ -56,7 +56,7 @@ public class ModelMain extends Subject {
     }
 
     
-    public void genereMaze() {
+    private void genereMaze() {
         this.maze = new Maze(this.nbRows, this.nbCols).maze;
     }
 

@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.ModelMain;
+import fr.univlille.sae.model.ModelMainInterface;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
@@ -19,9 +20,9 @@ public class CellController extends Button {
     private final boolean isMonster;
     private final int a;
     private final int o;
-    private final ModelMain modelMain;
+    private final ModelMainInterface modelMain;
 
-    public CellController(int a, int o, ModelMain modelMain, boolean isMonsterCell){
+    public CellController(int a, int o, ModelMainInterface modelMain, boolean isMonsterCell){
         super(" ");
         this.modelMain = modelMain;
         this.a = a;

@@ -6,6 +6,7 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
 import fr.univlille.sae.controller.SettingButton;
 import fr.univlille.sae.model.ModelMain;
+import fr.univlille.sae.model.ModelMainInterface;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -26,12 +27,12 @@ public class MainView extends Stage implements Observer {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;
     public static final Rectangle2D BOUNDS = Screen.getPrimary().getVisualBounds();
-    private final ModelMain modelMain;
+    private final ModelMainInterface modelMain;
     private Label titre;
     private SettingButton settingButton;
     private LaunchButton launchButton;
 
-    public MainView(ModelMain modelMain) {
+    public MainView(ModelMainInterface modelMain) {
         this.modelMain = modelMain;
         setTitle("S3.02_G1_ChasseAuMonstre");
         setResizable(false);

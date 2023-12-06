@@ -2,6 +2,7 @@ package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
 import fr.univlille.sae.model.ModelMain;
+import fr.univlille.sae.model.ModelMainInterface;
 import javafx.scene.control.Button;
 
 /**
@@ -11,9 +12,9 @@ import javafx.scene.control.Button;
  */
 public class LaunchButton extends Button {
 
-    private final ModelMain modelMain;
+    private final ModelMainInterface modelMain;
 
-    public LaunchButton(ModelMain modelMain) {
+    public LaunchButton(ModelMainInterface modelMain) {
         super("Jouer");
         this.modelMain = modelMain;
         setAction();

@@ -2,6 +2,7 @@ package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
 import fr.univlille.sae.model.ModelMain;
+import fr.univlille.sae.model.ModelMainInterface;
 import javafx.scene.control.Button;
 
 /**
@@ -10,9 +11,9 @@ import javafx.scene.control.Button;
  * @version  1.0
  */
 public class SettingButton extends Button {
-    private final ModelMain modelMain;
+    private final ModelMainInterface modelMain;
 
-    public SettingButton(ModelMain modelMain) {
+    public SettingButton(ModelMainInterface modelMain) {
         super("Changer Parametres");
         this.modelMain = modelMain;
         setAction();

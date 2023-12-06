@@ -8,6 +8,7 @@ import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.ModelMain;
+import fr.univlille.sae.model.ModelMainInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -27,14 +28,14 @@ public class MonsterView extends Stage implements Observer {
     public static final double WIDTH = 150.0d;
     public static final double HEIGHT = 100.0d;
     public static final int MARGIN=150;
-    private final ModelMain modelMain;
+    private final ModelMainInterface modelMain;
     private Label titre;
     private Label tour;
     private MazeController mc;
     private Button ready;
     private Label nbTour;
 
-    public MonsterView(ModelMain modelMain) {
+    public MonsterView(ModelMainInterface modelMain) {
         this.modelMain = modelMain;
         setTitle("S3.02_G1_Monstre");
         setResizable(false);

@@ -33,6 +33,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         nbCols = DEFAULT_DIMENSION;
         hunter = new Hunter("Hunter" , nbRows, nbCols);
         monster = new IAMonster();
+        createMaze();
         setMonster();
     }
 
@@ -143,6 +144,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         hunter.update(hunterEvent);
         turn++;
         hunter.notify(turn);
+        monsterTurn();
     }
 
 private Cell getCell(ICoordinate coord){
@@ -151,13 +153,26 @@ private Cell getCell(ICoordinate coord){
 
     @Override
     public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze) {
-        hunter.setName(hunterName);
-        IAName = monsterName;
-        nbRows = height;
-        nbCols = width;
+        this.nbRows = height;
+        this.nbCols = width;
+        this.generateMaze = generateMaze;
+        createMaze();
         this.deplacementDiag = depDiag;
         this.fog = fog;
-        this.generateMaze = generateMaze;
+        hunter.setName(hunterName);
+        IAName = monsterName;
+        hunter.setRowCol(nbRows, nbCols);
+        setMonster();
+        turn = 1;
+        notifyObservers("ParamMAJ");
+    }
+
+    private void createMaze() {
+        if (generateMaze) {
+            this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();
+        } else {
+            this.maze = new MazeFactory(this.nbRows, this.nbCols).importMaze();
+        }
     }
 
     @Override
@@ -174,6 +189,7 @@ private Cell getCell(ICoordinate coord){
     @Override
     public void notifyDiscoveredMaze() {
         hunter.notifyDiscoveredMaze();
+        deplacementMonstre(null); //on commence la jeu par l'initialisation du monstre
     }
 
     @Override

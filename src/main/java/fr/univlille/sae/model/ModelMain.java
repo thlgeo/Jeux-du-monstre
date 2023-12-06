@@ -55,14 +55,16 @@ public class ModelMain extends Subject implements ModelMainInterface{
         this.deplacementDiag = false;
     }
 
-    private void createMaze() {
-        if (generateMaze) {
-            this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();
-            System.out.println("aleatoire");
-        } else {
-            this.maze = new MazeFactory(this.nbRows, this.nbCols).importMaze();
-            System.out.println("importation");
-        }
+    ModelMain(int turn, int nbRows, int nbCols, boolean generateMaze) {
+        this.generateMaze = generateMaze;
+        this.turn = turn;
+        this.nbRows = nbRows;
+        this.nbCols = nbCols;
+        this.maze = null;
+        createMaze();
+        this.monster = new Monster("Monster", this.maze);
+        this.hunter = new Hunter("Hunter", nbRows, nbCols);
+        this.deplacementDiag = false;
     }
 
     ModelMain(int nbRows, int nbCols) {
@@ -71,6 +73,14 @@ public class ModelMain extends Subject implements ModelMainInterface{
 
     public ModelMain() {
         this(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
+    }
+
+    private void createMaze() {
+        if (generateMaze) {
+            this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();
+        } else {
+            this.maze = new MazeFactory(this.nbRows, this.nbCols).importMaze();
+        }
     }
 
 

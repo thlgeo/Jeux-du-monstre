@@ -12,7 +12,7 @@ class TestModelMain {
 
     @BeforeEach
     void setUp(){
-        modelMain = new ModelMain(3,3);
+        modelMain = new ModelMain(1,3,3, false);
         modelMain.maze[1][1].setTurn(1);
         modelMain.monster.setCoordinateMonster(new Coordinate(1, 1));
     }

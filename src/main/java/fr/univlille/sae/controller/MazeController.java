@@ -47,8 +47,6 @@ public class MazeController extends GridPane {
             for(int j = 0; j < modelMain.getNbCols(); j++) {
                 CellController cell = new CellController(i, j, modelMain, isMonsterMaze);
                 mazeTable[i][j] = cell;
-                System.out.println("i = " + i);
-                System.out.println("j = " + j);
                 add(cell, j, i);
             }
         }

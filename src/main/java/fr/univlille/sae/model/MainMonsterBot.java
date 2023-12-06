@@ -24,6 +24,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
     protected Cell[][] maze;
     protected boolean deplacementDiag = false;
     protected boolean fog = false;
+    protected boolean generateMaze = false;
     protected String IAName = "monster";
 
     public MainMonsterBot(){
@@ -119,7 +120,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
     }
 
     protected void reset() {
-        changerParam(hunter.getName(), IAName, nbRows, nbCols, deplacementDiag, fog);
+        changerParam(hunter.getName(), IAName, nbRows, nbCols, deplacementDiag, fog, generateMaze);
     }
 
     protected void victory(boolean isMonster) {
@@ -149,13 +150,14 @@ private Cell getCell(ICoordinate coord){
     }
 
     @Override
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog) {
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze) {
         hunter.setName(hunterName);
         IAName = monsterName;
         nbRows = height;
         nbCols = width;
         this.deplacementDiag = depDiag;
         this.fog = fog;
+        this.generateMaze = generateMaze;
     }
 
     @Override

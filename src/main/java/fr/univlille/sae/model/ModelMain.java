@@ -48,8 +48,8 @@ public class ModelMain extends Subject implements ModelMainInterface{
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.maze = null;
-        //genereMaze();
-        importMaze(nbRows, nbCols);
+        genereMaze();
+        //importMaze(nbRows, nbCols);
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
         this.deplacementDiag = false;

@@ -182,11 +182,12 @@ public class MainHunterBot extends ModelMain implements ModelMainInterface {
     //     throw new UnsupportedOperationException("Unimplemented method 'notifyShowParameter'");
     // }
 
-    // @Override
-    // public void notifyShowMH() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'notifyShowMH'");
-    // }
+    @Override
+    public void notifyShowMH() {
+        monster.notifyShow();
+        // hunter.notifyShow();
+        notifyObservers("close");
+    }
 
     // @Override
     // public int getNbRows() {

@@ -40,7 +40,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
     }
 
     @Override
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog) {
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze) {
 
     }
 

@@ -6,10 +6,15 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.events.CellEvent;
+import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
 import fr.univlille.sae.model.players.Hunter;
 import fr.univlille.sae.model.players.IAMonster;
 
+import java.util.Random;
+
 public class MainMonsterBot extends Subject implements ModelMainInterface {
+    private static final Random RDM = new Random();
+    private static final int NB_TOUR_MIN = 5;
     private static final int DEFAULT_DIMENSION = 10;
     protected int nbRows;
     protected int nbCols;
@@ -17,31 +22,140 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
     protected IMonsterStrategy monster;
     protected Hunter hunter;
     protected Cell[][] maze;
+    protected boolean deplacementDiag = false;
+    protected boolean fog = false;
+    protected String IAName = "monster";
 
     public MainMonsterBot(){
-        turn = 0;
+        turn = 1;
         nbRows = DEFAULT_DIMENSION;
         nbCols = DEFAULT_DIMENSION;
         hunter = new Hunter("Hunter" , nbRows, nbCols);
         monster = new IAMonster();
-
+        setMonster();
     }
 
     private void setMonster(){
+        boolean[][] booleanMaze = new boolean[nbRows][nbCols];
+        for(int i = 0; i < nbRows; i++){
+            for(int j = 0; j < nbCols; j++){
+                booleanMaze[i][j] = maze[i][j].getInfo() != ICellEvent.CellInfo.WALL;
+            }
+        }
+        monster.initialize(booleanMaze);
+        ICoordinate exit = getExit();
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.EXIT, exit);
+        monster.update(event);
+    }
+
+    private ICoordinate getExit(){
+        for(int i = 0; i < nbRows; i++){
+            for(int j = 0; j < nbCols; j++){
+                if(maze[i][j].getInfo() == ICellEvent.CellInfo.EXIT){
+                    return new Coordinate(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    public void monsterTurn(){
+        ICoordinate coord = monster.play();
+        deplacementMonstre(coord);
+    }
+
+    private ICoordinate initMonsterPosition() {
+        ICoordinate coord = new Coordinate(RDM.nextInt(this.nbRows), RDM.nextInt(this.nbCols));
+        Cell c = getCell(coord);
+        return c.getInfo() != ICellEvent.CellInfo.EMPTY ? initMonsterPosition() : coord;
+    }
+
+    private boolean inRange(ICoordinate coordMonster, ICoordinate coordExit)
+    {
+        int rowM = coordMonster.getRow();
+        int colM = coordMonster.getCol();
+        int rowE = coordExit.getRow();
+        int colE = coordExit.getCol();
+        return (colM < colE+NB_TOUR_MIN && colM > colE-NB_TOUR_MIN) && (rowM < rowE+NB_TOUR_MIN && rowM > rowE-NB_TOUR_MIN);
+    }
+
+    void update(ICoordinate coordinate, ICellEvent.CellInfo cellInfo) {
+        Cell updatedCell = getCell(coordinate);
+        updatedCell.setInfo(cellInfo);
+        updatedCell.setTurn(turn);
     }
 
     @Override
     public void deplacementMonstre(ICoordinate newCoord) {
+        try {
+            if(getCoordinateMonster() == null) throw new MonsterNotFoundException();
+            if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
+                victory(true);
+                return;
+            }
+        } catch(MonsterNotFoundException e) {
+            newCoord = this.initMonsterPosition();
+            ICoordinate coordExit = getExit();
+            while(inRange(newCoord,coordExit))
+            {
+                newCoord = this.initMonsterPosition();
+            }
+        }
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
+        update(newCoord, ICellEvent.CellInfo.MONSTER);
+        monster.update(event);
+        hunter.notify("changerTour");
+    }
 
+    private ICoordinate getCoordinateMonster(){
+        for(int i = 0; i < nbRows; i++){
+            for(int j = 0; j < nbCols; j++){
+                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER && maze[i][j].getTurn() == turn){
+                    return new Coordinate(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    protected void reset() {
+        changerParam(hunter.getName(), IAName, nbRows, nbCols, deplacementDiag, fog);
+    }
+
+    protected void victory(boolean isMonster) {
+        hunter.notify("endGame");
+        reset();
+        notifyObservers(isMonster ? IAName : hunter.getName());
     }
 
     @Override
     public void tirerChasseur(ICoordinate coord) {
+        if(coord.equals(getCoordinateMonster())) {
+            victory(false);
+            return;
+        }
+        if(!hunter.canShoot(coord)) {
+            return;
+        }
+        Cell cell = getCell(coord);
+        ICellEvent hunterEvent = new CellEvent(cell.getTurn(), cell.getInfo(), coord);
+        hunter.update(hunterEvent);
+        turn++;
+        hunter.notify(turn);
+    }
+
+private Cell getCell(ICoordinate coord){
+        return maze[coord.getRow()][coord.getCol()];
     }
 
     @Override
     public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog) {
-
+        hunter.setName(hunterName);
+        IAName = monsterName;
+        nbRows = height;
+        nbCols = width;
+        this.deplacementDiag = depDiag;
+        this.fog = fog;
     }
 
     @Override

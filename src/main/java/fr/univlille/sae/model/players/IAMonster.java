@@ -14,12 +14,7 @@ import fr.univlille.sae.model.Coordinate;
 public class IAMonster implements IMonsterStrategy {
     protected Cell[][] maze;
     protected ICoordinate coordonnee;
-    private Random rd;
-
-    public IAMonster()
-    {
-        rd = new Random();
-    }
+    public static final Random rd = new Random();
 
     @Override
     public ICoordinate play() {

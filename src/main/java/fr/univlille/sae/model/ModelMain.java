@@ -194,7 +194,7 @@ public class ModelMain extends Subject implements ModelMainInterface{
         hunter.notify("changerTour");
     }
 
-    private void updateAround(ICoordinate newCoord)
+    protected void updateAround(ICoordinate newCoord)
     {
         int newRow = newCoord.getRow();
         int newCol = newCoord.getCol();
@@ -219,7 +219,7 @@ public class ModelMain extends Subject implements ModelMainInterface{
      * @param coordExit (ICoordinate) Coordonnée de la sortie
      * @return Vrai si le monstre est à une portée de moins de 5 cases de la sortie, faux sinon
      */
-    private boolean inRange(ICoordinate coordMonster, ICoordinate coordExit)
+    protected boolean inRange(ICoordinate coordMonster, ICoordinate coordExit)
     {
         int rowM = coordMonster.getRow();
         int colM = coordMonster.getCol();
@@ -234,7 +234,7 @@ public class ModelMain extends Subject implements ModelMainInterface{
      *
      * @return ICoorinate, les coordonnées du monstre
      */
-    private ICoordinate initMonsterPosition() {
+    protected ICoordinate initMonsterPosition() {
         ICoordinate coord = new Coordinate(RDM.nextInt(this.nbRows), RDM.nextInt(this.nbCols));
         Cell c = getCell(coord);
         return c.getInfo() != ICellEvent.CellInfo.EMPTY ? initMonsterPosition() : coord;

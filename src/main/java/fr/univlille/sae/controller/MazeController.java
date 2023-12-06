@@ -31,8 +31,6 @@ public class MazeController extends GridPane {
      * Cette méthode permet de changer le labyrinthe
      */
     public void resize() {
-        System.out.println(modelMain.getNbRows());
-        System.out.println(modelMain.getNbCols());
         mazeTable = new Button[modelMain.getNbRows()][modelMain.getNbCols()];
         setDefaultMaze(isMonsterMaze);
     }

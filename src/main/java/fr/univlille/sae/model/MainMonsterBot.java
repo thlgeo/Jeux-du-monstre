@@ -90,7 +90,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
     @Override
     public void deplacementMonstre(ICoordinate newCoord) {
         try {
-            if(getCoordinateMonster() == null) throw new MonsterNotFoundException();
+            if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();
             if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
                 victory(true);
                 return;
@@ -109,10 +109,11 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         hunter.notify("changerTour");
     }
 
-    private ICoordinate getCoordinateMonster(){
+    private ICoordinate getCoordinateMonster(boolean lastTurn){
+        int tour = lastTurn ? turn-1 : turn;
         for(int i = 0; i < nbRows; i++){
             for(int j = 0; j < nbCols; j++){
-                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER && maze[i][j].getTurn() == turn){
+                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER && maze[i][j].getTurn() == tour){
                     return new Coordinate(i, j);
                 }
             }
@@ -132,7 +133,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
 
     @Override
     public void tirerChasseur(ICoordinate coord) {
-        if(coord.equals(getCoordinateMonster())) {
+        if(coord.equals(getCoordinateMonster(false))) {
             victory(false);
             return;
         }

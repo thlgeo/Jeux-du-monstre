@@ -33,6 +33,9 @@ public class MazeFactory {
     }
 
     public Cell[][] importMaze() {
+        if (x != y){
+            return generateMaze();
+        }
         generateImport(this.x, this.y, 0);
         return this.maze;
     }

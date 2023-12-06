@@ -7,6 +7,7 @@ import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.events.CellEvent;
 import fr.univlille.sae.model.players.Hunter;
+import fr.univlille.sae.model.players.IAMonster;
 
 public class MainMonsterBot extends Subject implements ModelMainInterface {
     private static final int DEFAULT_DIMENSION = 10;
@@ -22,6 +23,11 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         nbRows = DEFAULT_DIMENSION;
         nbCols = DEFAULT_DIMENSION;
         hunter = new Hunter("Hunter" , nbRows, nbCols);
+        monster = new IAMonster();
+
+    }
+
+    private void setMonster(){
     }
 
     @Override

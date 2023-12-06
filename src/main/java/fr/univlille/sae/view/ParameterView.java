@@ -32,6 +32,8 @@ public class ParameterView extends Stage implements Observer {
     private SizeController width;
     private ValidationController validation;
     private DepDiagController depDiag;
+
+    private GenerateMazeController generateMaze;
     private FogController fog;
 
     public ParameterView(ModelMainInterface modelMain) {
@@ -55,6 +57,7 @@ public class ParameterView extends Stage implements Observer {
         root.getChildren().addAll(new Spacer(), titreWidth, width);
         root.getChildren().addAll(new Spacer(), depDiag);
         root.getChildren().addAll(new Spacer(), fog);
+        root.getChildren().addAll(new Spacer(), generateMaze);
         root.getChildren().addAll(new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
@@ -79,7 +82,8 @@ public class ParameterView extends Stage implements Observer {
         width = new SizeController();
         depDiag = new DepDiagController();
         fog = new FogController();
-        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, modelMain);
+        generateMaze = new GenerateMazeController();
+        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, modelMain);
     }
 
     /**

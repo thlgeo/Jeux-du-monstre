@@ -2,10 +2,16 @@ package fr.univlille.sae.model;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
-public class Maze {
+public class MazeFactory {
+    protected static final String FS = File.separator;
     protected Cell[][] maze;
     protected boolean[][] visited;
     private final int x;
@@ -14,14 +20,22 @@ public class Maze {
 
     private final Random r = new Random();
 
-    public Maze(int x, int y) {
+    public MazeFactory(int x, int y) {
         this.x = x;
         this.y = y;
         maze = new Cell[x][y];
         visited = new boolean[x][y];
-        generePrim();
     }
 
+    public Cell[][] generateMaze() {
+        generePrim();
+        return this.maze;
+    }
+
+    public Cell[][] importMaze() {
+        generateImport(this.x, this.y, 0);
+        return this.maze;
+    }
     private void makeDefaultMaze() {
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -50,7 +64,7 @@ public class Maze {
         genereNotSet();
     }
 
-    public void genereNotSet() {
+    private void genereNotSet() {
         for(int row = 0; row < this.x; row++) {
             for(int col = 0; col < this.y; col++) {
                 if(!isVisited(row, col) && r.nextDouble(1) <= PERCENT_WALL) {
@@ -60,7 +74,7 @@ public class Maze {
         }
     }
 
-    public ICoordinate getGateway(ICoordinate start, ICoordinate end) {
+    private ICoordinate getGateway(ICoordinate start, ICoordinate end) {
         Coordinate diff = new Coordinate(start.getRow() - end.getRow(), start.getCol() - end.getCol());
         if(diff.getCol() < 0) diff.incrementCol();
         else if(diff.getCol() > 0) diff.decrementCol();
@@ -142,4 +156,50 @@ public class Maze {
         return sb.toString();
     }
 
+    /**
+     * Import un labyrinthe de la taille mise en paramètre.
+     *
+     * @param nbRows nombre de lignes du labyrinthe
+     * @param nbCols nombre de colonnes du labyrinthe
+     * @param id     l'identifiant du labyrinthe
+     */
+    protected void generateImport(int nbRows, int nbCols, int id) {
+        BufferedReader reader = null;
+        new Cell(); // Permet d'initialiser la map charToInfo
+        try {
+            if(nbRows > x && nbCols > y) {
+                throw new UnsupportedMazeException();
+            }
+            this.maze = new Cell[x][y];
+            String filePath = mazefilepath(nbRows, nbCols, id);
+            reader = new BufferedReader(new FileReader(filePath));
+            for(int rowId = 0; rowId < nbRows; rowId++) {
+                String currentLine = reader.readLine();
+                for(int colId = 0; colId < currentLine.length(); colId++) {
+                    maze[rowId][colId] = new Cell(Cell.charToInfo.get(currentLine.charAt(colId)));
+                }
+            }
+        } catch(UnsupportedMazeException | IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                assert reader != null;
+                reader.close();
+            } catch(Exception e) {
+                //Do Nothing
+            }
+        }
+    }
+
+    /**
+     * Prends les coordonnées et l'identifiant du labyrinthe et renvoi le chemin de ce labyrinthe (utilisé dans importMaze)
+     *
+     * @param nbCols Le nombre de colonnes du labyrinthe
+     * @param nbRows Le nombre de lignes du labyrinthe
+     * @param id     Identifiant du labyrinthe
+     * @return String - le chemin du fichier du labyrinthe associé aux paramètres
+     */
+    private String mazefilepath(int nbRows, int nbCols, int id) {
+        return System.getProperty("user.dir") + FS + "res" + FS + "mazes" + FS + "maze-" + nbCols + "-" + nbRows + "-" + id;
+    }
 }

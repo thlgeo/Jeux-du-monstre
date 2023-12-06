@@ -33,6 +33,7 @@ public class ModelMain extends Subject implements ModelMainInterface{
     private static final int DEFAULT_DIMENSION = 10;
     protected static final String FS = File.separator;
     private static final int DEFAULT_TURN = 1;
+    protected boolean generateMaze = true;
     private static final int VISION = 1;
     protected int turn;
     protected int nbRows;
@@ -48,19 +49,21 @@ public class ModelMain extends Subject implements ModelMainInterface{
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.maze = null;
-        //genereMaze();
-        importMaze(nbRows, nbCols);
+        createMaze();
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
         this.deplacementDiag = false;
     }
 
-    
-    private void genereMaze() {
-        this.maze = new Maze(this.nbRows, this.nbCols).maze;
+    private void createMaze() {
+        if (generateMaze) {
+            this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();
+            System.out.println("aleatoire");
+        } else {
+            this.maze = new MazeFactory(this.nbRows, this.nbCols).importMaze();
+            System.out.println("importation");
+        }
     }
-
-    
 
     ModelMain(int nbRows, int nbCols) {
         this(DEFAULT_TURN, nbRows, nbCols);
@@ -70,68 +73,12 @@ public class ModelMain extends Subject implements ModelMainInterface{
         this(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
     }
 
-    /**
-     * Import un labyrinthe de la taille mise en paramètre.
-     *
-     * @param nbRows nombre de lignes du labyrinthe
-     * @param nbCols nombre de colonnes du labyrinthe
-     * @param id     l'identifiant du labyrinthe
-     */
-    protected void importMaze(int nbRows, int nbCols, int id) {
-        BufferedReader reader = null;
-        new Cell(); // Permet d'initialiser la map charToInfo
-        try {
-            if(nbRows > getNbRows() && nbCols > getNbRows()) {
-                throw new UnsupportedMazeException();
-            }
-            this.maze = new Cell[this.getNbRows()][this.getNbCols()];
-            String filePath = mazefilepath(nbRows, nbCols, id);
-            reader = new BufferedReader(new FileReader(filePath));
-            for(int rowId = 0; rowId < nbRows; rowId++) {
-                String currentLine = reader.readLine();
-                for(int colId = 0; colId < currentLine.length(); colId++) {
-                    maze[rowId][colId] = new Cell(Cell.charToInfo.get(currentLine.charAt(colId)));
-                }
-            }
-        } catch(UnsupportedMazeException | IOException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                assert reader != null;
-                reader.close();
-            } catch(Exception e) {
-                //Do Nothing
-            }
-        }
-    }
 
     /**
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog);
-    }
-
-    /**
-     * Prends les coordonnées et l'identifiant du labyrinthe et renvoi le chemin de ce labyrinthe (utilisé dans importMaze)
-     *
-     * @param nbCols Le nombre de colonnes du labyrinthe
-     * @param nbRows Le nombre de lignes du labyrinthe
-     * @param id     Identifiant du labyrinthe
-     * @return String - le chemin du fichier du labyrinthe associé aux paramètres
-     */
-    private String mazefilepath(int nbRows, int nbCols, int id) {
-        return System.getProperty("user.dir") + FS + "res" + FS + "mazes" + FS + "maze-" + nbCols + "-" + nbRows + "-" + id;
-    }
-
-    /**
-     * Importe le labyrinthe par défaut (id=0) de ces paramètres
-     *
-     * @param nbRows    (int)   Nombre de lignes du labyrinthe
-     * @param nbCols    (int)   Nombre de colonnes du labyrinthe
-     */
-    private void importMaze(int nbRows, int nbCols) {
-        importMaze(nbRows, nbCols, 0);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze);
     }
 
     public int getNbRows() {
@@ -284,11 +231,11 @@ public class ModelMain extends Subject implements ModelMainInterface{
      * @param width   (int)       largeur du labyrinthe
      * @param depDiag   (boolean)       déplacement en diagonale
      */
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog) {
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze) {
         this.nbRows = height;
         this.nbCols = width;
-        genereMaze();
-        importMaze(nbRows, nbCols);
+        this.generateMaze = generateMaze;
+        createMaze();
         this.deplacementDiag = depDiag;
         this.fog = fog;
         monster.setFog(fog);

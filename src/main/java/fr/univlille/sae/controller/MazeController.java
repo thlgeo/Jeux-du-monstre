@@ -31,6 +31,8 @@ public class MazeController extends GridPane {
      * Cette méthode permet de changer le labyrinthe
      */
     public void resize() {
+        System.out.println(modelMain.getNbRows());
+        System.out.println(modelMain.getNbCols());
         mazeTable = new Button[modelMain.getNbRows()][modelMain.getNbCols()];
         setDefaultMaze(isMonsterMaze);
     }
@@ -43,9 +45,11 @@ public class MazeController extends GridPane {
         getChildren().clear();
         for(int i = 0; i < modelMain.getNbRows(); i++) {
             for(int j = 0; j < modelMain.getNbCols(); j++) {
-                CellController cell = new CellController(j, i, modelMain, isMonsterMaze);
+                CellController cell = new CellController(i, j, modelMain, isMonsterMaze);
                 mazeTable[i][j] = cell;
-                add(cell, i, j);
+                System.out.println("i = " + i);
+                System.out.println("j = " + j);
+                add(cell, j, i);
             }
         }
     }
@@ -53,11 +57,11 @@ public class MazeController extends GridPane {
     /**
      * Cette méthode permet de changer la valeur d'une case du labyrinthe
      *
-     * @param a abscisse de la case
-     * @param o ordonnée de la case
+     * @param i ordonnee de la case
+     * @param j abscisse de la case
      */
-    public void setRender(int a, int o, ICellEvent.CellInfo info, int turn) {
-        Button b = mazeTable[o][a];
+    public void setRender(int i, int j, ICellEvent.CellInfo info, int turn) {
+        Button b = mazeTable[i][j];
         if(turn < 0){
             b.setStyle("-fx-background-color: #9B9B9B; -fx-border-color: #000000");
             b.setText(" ");

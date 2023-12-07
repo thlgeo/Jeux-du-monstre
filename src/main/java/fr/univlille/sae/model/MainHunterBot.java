@@ -48,6 +48,7 @@ public class MainHunterBot extends ModelMain implements ModelMainInterface {
             }
         } catch(MonsterNotFoundException e) {
             newCoord = this.initMonsterPosition();
+            IAhunter.initialize(nbRows, nbCols);
             ICoordinate coordExit = getExit();
             while(inRange(newCoord,coordExit))
             {

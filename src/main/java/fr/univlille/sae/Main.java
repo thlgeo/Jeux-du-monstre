@@ -59,7 +59,7 @@ public class Main extends Application {
         new MainView(modelMain);
         new ParameterView(modelMain);
         new HunterView(modelMain);
-        //new MonsterView(modelMain);
+        new MonsterView(modelMain);
     }
 
 }

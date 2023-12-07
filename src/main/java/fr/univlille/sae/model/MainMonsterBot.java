@@ -122,7 +122,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
     }
 
     protected void reset() {
-        changerParam(hunter.getName(), IAName, nbRows, nbCols, deplacementDiag, fog, generateMaze);
+        changerParam(hunter.getName(), IAName, nbRows, nbCols, deplacementDiag, fog, generateMaze, false, false);
     }
 
     protected void victory(boolean isMonster) {
@@ -153,7 +153,7 @@ private Cell getCell(ICoordinate coord){
     }
 
     @Override
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze) {
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter) {
         this.nbRows = height;
         this.nbCols = width;
         this.generateMaze = generateMaze;

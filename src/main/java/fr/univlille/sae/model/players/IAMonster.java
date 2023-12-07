@@ -43,7 +43,7 @@ public class IAMonster implements IMonsterStrategy {
     private List<ICoordinate> around()
     {
         List<ICoordinate> l = new ArrayList<>();
-        int row = coordonnee.getRow();
+        int row =   coordonnee.getRow();
         int col = coordonnee.getCol();
         l.add(new Coordinate(row+1, col));
         l.add(new Coordinate(row-1, col));

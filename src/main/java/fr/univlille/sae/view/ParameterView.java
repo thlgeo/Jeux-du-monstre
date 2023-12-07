@@ -20,7 +20,7 @@ import javafx.stage.Stage;
  */
 public class ParameterView extends Stage implements Observer {
     public static final int WIDTH = 500;
-    public static final int HEIGHT = 400;
+    public static final int HEIGHT = 500;
     private final ModelMainInterface modelMain;
     private Label nameMonster;
     private Label nameHunter;
@@ -35,6 +35,8 @@ public class ParameterView extends Stage implements Observer {
 
     private GenerateMazeController generateMaze;
     private FogController fog;
+    private IAMonsterController IAMonstre;
+    private IAHunterController IAHunter;
 
     public ParameterView(ModelMainInterface modelMain) {
         this.modelMain = modelMain;
@@ -58,6 +60,8 @@ public class ParameterView extends Stage implements Observer {
         root.getChildren().addAll(new Spacer(), depDiag);
         root.getChildren().addAll(new Spacer(), fog);
         root.getChildren().addAll(new Spacer(), generateMaze);
+        root.getChildren().addAll(new Spacer(), IAMonstre);
+        root.getChildren().addAll(new Spacer(), IAHunter);
         root.getChildren().addAll(new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
@@ -83,7 +87,9 @@ public class ParameterView extends Stage implements Observer {
         depDiag = new DepDiagController();
         fog = new FogController();
         generateMaze = new GenerateMazeController();
-        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, modelMain);
+        IAMonstre = new IAMonsterController();
+        IAHunter = new IAHunterController();
+        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, IAMonstre, IAHunter, modelMain);
     }
 
     /**

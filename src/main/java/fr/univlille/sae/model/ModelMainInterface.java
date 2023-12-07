@@ -10,7 +10,7 @@ public interface ModelMainInterface{
 
     public void tirerChasseur(ICoordinate coord);
 
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze);
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter);
 
     public void attachMonster(Observer o);
 

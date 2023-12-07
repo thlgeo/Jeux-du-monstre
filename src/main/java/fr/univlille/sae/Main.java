@@ -55,7 +55,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        ModelMainInterface modelMain = new MainMonsterBot();
+        ModelMainInterface modelMain = new MainHunterBot();
         new MainView(modelMain);
         new ParameterView(modelMain);
         new HunterView(modelMain);

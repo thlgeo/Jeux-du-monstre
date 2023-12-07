@@ -6,9 +6,7 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
-import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.ModelMain;
-import fr.univlille.sae.model.ModelMainInterface;
+import fr.univlille.sae.model.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -25,8 +23,6 @@ import javafx.stage.Stage;
  * @version  1.0
  */
 public class MonsterView extends Stage implements Observer {
-    public static final double WIDTH = 150.0d;
-    public static final double HEIGHT = 100.0d;
     public static final int MARGIN=150;
     private final ModelMainInterface modelMain;
     private Label titre;
@@ -40,8 +36,7 @@ public class MonsterView extends Stage implements Observer {
         setTitle("S3.02_G1_Monstre");
         setResizable(false);
         setMonsterNodes();
-        setX(MainView.BOUNDS.getMinX()+WIDTH);
-        setY(MainView.BOUNDS.getMinY()+MARGIN);
+        setPosition();
         modelMain.attachMonster(this);
     }
 
@@ -55,7 +50,7 @@ public class MonsterView extends Stage implements Observer {
         turnBox.getChildren().addAll(tour, nbTour);
         turnBox.setAlignment(Pos.CENTER);
         root.getChildren().addAll(titre, mc, turnBox);
-        setScene(mc.getSize(), root);
+        setScene(modelMain.getNbCols(), modelMain.getNbRows(), root);
         root.setAlignment(Pos.CENTER);
     }
 
@@ -69,7 +64,7 @@ public class MonsterView extends Stage implements Observer {
         turnBox.getChildren().addAll(tour, nbTour);
         turnBox.setAlignment(Pos.CENTER);
         root.getChildren().addAll(turnBox);
-        setScene(mc.getSize(), root);
+        setScene(modelMain.getNbCols(), modelMain.getNbRows(), root);
         root.setAlignment(Pos.CENTER);
     }
 
@@ -81,7 +76,7 @@ public class MonsterView extends Stage implements Observer {
         VBox root = new VBox();
         root.getChildren().addAll(ready);
         ready.setOnAction(e -> setMonsterScene());
-        setScene(mc.getSize(), root);
+        setScene(modelMain.getNbCols(), modelMain.getNbRows(), root);
         root.setAlignment(Pos.CENTER);
     }
 
@@ -147,11 +142,29 @@ public class MonsterView extends Stage implements Observer {
     /**
      * Cette méthode permet de changer la scène de la fenêtre
      *
-     * @param size (int) correspond à la taille du labyrinthe
+     * @param nbCols (int) correspond au nombre de colonnes du labyrinthe
+     * @param nbRows (int) correspond au nombre de lignes du labyrinthe
      * @param pane (Pane) correspond au panneau à afficher
      */
-    private void setScene(int size, Pane pane) {
-        super.setScene(new Scene(pane, size * CellController.SIZE + WIDTH, size * CellController.SIZE + HEIGHT));
+    private void setScene(int nbRows, int nbCols, Pane pane) {
+        super.setScene(new Scene(pane, calcEffectiveSize(nbRows), calcEffectiveSize(nbCols)));
     }
 
+    private double calcEffectiveSize(double size) {
+        return size * CellController.SIZE + MARGIN;
+    }
+
+    private void setPosition() {
+        double effectiveWidth;
+        double effectiveHeight;
+        if (modelMain instanceof MainHunterBot) {
+            effectiveWidth = (MainView.BOUNDS.getMaxX()/2)-calcEffectiveSize(modelMain.getNbCols())/2;
+        } else {
+            effectiveWidth = MainView.BOUNDS.getMinX();
+
+        }
+        effectiveHeight = MainView.BOUNDS.getMinY();
+        setX(effectiveWidth);
+        setY(effectiveHeight);
+    }
 }

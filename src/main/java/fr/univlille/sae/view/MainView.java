@@ -26,7 +26,7 @@ public class MainView extends Stage implements Observer {
 
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;
-    public static final Rectangle2D BOUNDS = Screen.getPrimary().getVisualBounds();
+    public static final Rectangle2D BOUNDS = Screen.getPrimary().getBounds();
     private final ModelMainInterface modelMain;
     private Label titre;
     private SettingButton settingButton;

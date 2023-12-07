@@ -16,7 +16,7 @@ public class MazeFactory {
     protected boolean[][] visited;
     private final int x;
     private final int y;
-    private static final double PERCENT_WALL = 0.25;
+    private static final double PERCENT_WALL = 0.35;
 
     private final Random r = new Random();
 

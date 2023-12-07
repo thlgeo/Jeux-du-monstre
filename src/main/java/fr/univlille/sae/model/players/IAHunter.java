@@ -16,18 +16,16 @@ public class IAHunter implements IHunterStrategy {
     public static final Random rd = new Random();
     protected ICellEvent lastPositionMonster;
     protected int portee;
-
-    public IAHunter()
-    {
-        portee = 1;
-    }
+    protected int turn;
 
     @Override
     public ICoordinate play() {
         ICoordinate coord;
         if(lastPositionMonster != null)
         {
-            List<ICoordinate> around = possibilities(lastPositionMonster.getCoord());
+            List<ICoordinate> around = around(lastPositionMonster.getCoord());
+            System.out.println(portee);
+            System.out.println(around.size());
             coord = around.remove(rd.nextInt(around.size()));
             while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL)
             {
@@ -50,31 +48,33 @@ public class IAHunter implements IHunterStrategy {
         return (coord.getRow() >= 0 && coord.getRow() < maze.length) && (coord.getCol() >= 0 && coord.getCol() < maze[0].length);
     }
 
-    private List<ICoordinate> possibilities(ICoordinate coordinate)
-    {
-        List<ICoordinate> l = new ArrayList<>();
-        for(ICoordinate coord : around(coordinate))
-        {
-            if(inRange(coord))
-            {
-                l.add(coord);
-            }
-        }
-        return l;
-    }
+    // private List<ICoordinate> possibilities(ICoordinate coordinate)
+    // {
+    //     List<ICoordinate> l = new ArrayList<>();
+    //     for(ICoordinate coord : around(coordinate))
+    //     {
+    //         if(inRange(coord))
+    //         {
+    //             l.add(coord);
+    //         }
+    //     }
+    //     return l;
+    // }
 
     private List<ICoordinate> around(ICoordinate coordonnee)
     {
         List<ICoordinate> l = new ArrayList<>();
         int row = coordonnee.getRow();
         int colonne = coordonnee.getCol();
+        ICoordinate coord;
         for(int lig=row-portee;lig<=row+portee;lig++)
         {
             for(int col=colonne-portee;col<=colonne+portee;col++)
             {
-                if(col != colonne && lig != row)
+                coord = new Coordinate(lig, col);
+                if((col != colonne || lig != row) && inRange(coord))
                 {
-                    l.add(new Coordinate(lig, col));
+                    l.add(coord);
                 }
                 
             }
@@ -91,17 +91,23 @@ public class IAHunter implements IHunterStrategy {
         ICoordinate coord = arg0.getCoord();
         Cell updateCell = this.maze[coord.getRow()][coord.getCol()];
         updateCell.setInfo(arg0.getState());
-        if(arg0.getState() == CellInfo.MONSTER && (lastPositionMonster == null || lastPositionMonster.getTurn() > arg0.getTurn()))
+        turn++;
+        if(arg0.getState() == CellInfo.MONSTER && (lastPositionMonster == null || lastPositionMonster.getTurn() < arg0.getTurn()))
         {
             lastPositionMonster = arg0;
+            portee = turn - arg0.getTurn();
         }
-        portee = arg0.getTurn();
+        else if(lastPositionMonster != null)
+        {
+            portee++;
+        }
         updateCell.setTurn(arg0.getTurn());
     }
 
     @Override
     public void initialize(int arg0, int arg1) {
         portee = 1;
+        turn = 1;
         lastPositionMonster = null;
         this.maze = new Cell[arg0][arg1];
         for(int i = 0; i < arg0; i++) {

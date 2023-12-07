@@ -27,3 +27,20 @@
 - Aide pour l'implémentation de l'agorithm de Prim
 - Ajout des Hunter/Monster Random
 - Modification de l'UML et de l'analyse
+
+## Break
+
+```agsl
+Vu notre avance sur les dates de rendu du projet nous 
+n'avons pas eu besoin de travailler sur le projet entre deux
+```
+
+## Semaine du 4/12/2023
+
+### Nathan DESMEE
+
+- Correction du bug qui fait que les cases sont vues en brouillards après avoir été vues par le monstre et par le hunter
+- Ajout d'un nouveau ModelMain qui permet de jouer avec un monstre en intelligence artificielle
+- Correction d'un bug d'affichage lié au javafx
+- Rassemblement des ModelMain en un seul pour décide de jouer avec des IA ou non
+- Ajout d'options de paramétrage pour jouer avec des IA

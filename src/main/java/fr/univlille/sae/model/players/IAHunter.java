@@ -24,14 +24,11 @@ public class IAHunter implements IHunterStrategy {
         if(lastPositionMonster != null)
         {
             List<ICoordinate> around = around(lastPositionMonster.getCoord());
-            System.out.println(portee);
-            System.out.println(around.size());
             coord = around.remove(rd.nextInt(around.size()));
             while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL)
             {
                 coord = around.remove(rd.nextInt(around.size()));
             }
-            System.out.println(lastPositionMonster.getCoord().toString());
         }else{
             coord = new Coordinate(rd.nextInt(maze.length), rd.nextInt(maze[0].length));
             while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL)
@@ -47,19 +44,6 @@ public class IAHunter implements IHunterStrategy {
     {
         return (coord.getRow() >= 0 && coord.getRow() < maze.length) && (coord.getCol() >= 0 && coord.getCol() < maze[0].length);
     }
-
-    // private List<ICoordinate> possibilities(ICoordinate coordinate)
-    // {
-    //     List<ICoordinate> l = new ArrayList<>();
-    //     for(ICoordinate coord : around(coordinate))
-    //     {
-    //         if(inRange(coord))
-    //         {
-    //             l.add(coord);
-    //         }
-    //     }
-    //     return l;
-    // }
 
     private List<ICoordinate> around(ICoordinate coordonnee)
     {
@@ -79,10 +63,6 @@ public class IAHunter implements IHunterStrategy {
                 
             }
         }
-        // l.add(new Coordinate(row+portee, col));
-        // l.add(new Coordinate(row-portee, col));
-        // l.add(new Coordinate(row, col+portee));
-        // l.add(new Coordinate(row, col-portee));
         return l;
     }
 

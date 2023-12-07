@@ -16,6 +16,10 @@ public class IAMonster implements IMonsterStrategy {
     public static final Random rd = new Random();
     protected List<ICoordinate> path = null;
 
+    /**
+     * Cette méthode permet de récupérer la position du monstre généré soit par aStarAlgorithm soit par une position aléatoire
+     * @return  (ICoordinate)   - la position du monstre
+     */
     @Override
     public ICoordinate play() {
         if(path == null) {
@@ -27,11 +31,19 @@ public class IAMonster implements IMonsterStrategy {
         }
     }
 
-    private boolean inRange(ICoordinate coord)
-    {
+    /**
+     * Permet de savoir si la coordonnée est dans le labyrinthe
+     * @param coord (ICoordinate) - la coordonnée à tester
+     * @return  (boolean)   - true si la coordonnée est dans le labyrinthe, false sinon
+     */
+    private boolean inRange(ICoordinate coord) {
         return (coord.getRow() >= 0 && coord.getRow() < maze.length) && (coord.getCol() >= 0 && coord.getCol() < maze[0].length);
     }
 
+    /**
+     * Permet de récupérer les coordonnées autour du monstre si elles sont valides
+     * @return  (List<ICoordinate>)   - la liste des coordonnées autour de la coordonnée passée en paramètre
+     */
     private List<ICoordinate> possibilities()
     {
         List<ICoordinate> l = new ArrayList<>();
@@ -45,6 +57,10 @@ public class IAMonster implements IMonsterStrategy {
         return l;
     }
 
+    /**
+     * Permet de récupérer les coordonnées autour du monstre
+     * @return  (List<ICoordinate>)   - la liste des coordonnées autour de la coordonnée passée en paramètre
+     */
     private List<ICoordinate> around()  {
         List<ICoordinate> l = new ArrayList<>();
         int row = coordonnee.getRow();
@@ -56,44 +72,50 @@ public class IAMonster implements IMonsterStrategy {
         return l;
     }
 
+    /**
+     * Permet de récupérer une événement de la cellule
+     * @param cellEvent (ICellEvent) - l'événement de la cellule
+     */
     @Override
-    public void update(ICellEvent arg0) {
-        if(arg0.getState() == CellInfo.MONSTER) {
+    public void update(ICellEvent cellEvent) {
+        if(cellEvent.getState() == CellInfo.MONSTER) {
             System.out.println("Mise à jour de la position du monstre");
-            this.coordonnee = arg0.getCoord();
+            this.coordonnee = cellEvent.getCoord();
             if(path == null || path.isEmpty()) this.path = aStarAlgorithm();
         }
-        ICoordinate coord = arg0.getCoord();
+        ICoordinate coord = cellEvent.getCoord();
         Cell updateCell = this.maze[coord.getRow()][coord.getCol()];
-        updateCell.setInfo(arg0.getState());
-        updateCell.setTurn(arg0.getTurn());
+        updateCell.setInfo(cellEvent.getState());
+        updateCell.setTurn(cellEvent.getTurn());
         updateCell.visited();
     }
 
+    /**
+     * Permet d'initialiser le labyrinthe
+     * @param tab  (boolean[][])  - le labyrinthe
+     */
     @Override
-    public void initialize(boolean[][] arg0) {
-        maze = new Cell[arg0.length][arg0[0].length];
-        for(int lig=0;lig<arg0.length;lig++)
-        {
-            for(int col=0;col<arg0[lig].length;col++)
-            {
-                if(arg0[lig][col])
-                {
+    public void initialize(boolean[][] tab) {
+        maze = new Cell[tab.length][tab[0].length];
+        for(int lig=0;lig<tab.length;lig++) {
+            for(int col=0;col<tab[lig].length;col++) {
+                if(tab[lig][col]) {
                     maze[lig][col] = new Cell(CellInfo.EMPTY);
-                }else 
-                {
+                } else {
                     maze[lig][col] = new Cell(CellInfo.WALL);
                 }
             }
         }
     }
 
-    public Cell getCell(ICoordinate coord)
-    {
+    public Cell getCell(ICoordinate coord) {
         return maze[coord.getRow()][coord.getCol()];
     }
 
 
+    /**
+     * Classe interne permettant de représenter une cellule du labyrinthe avec des paramètres supplémentaires
+     */
     class Cellule {
         int row;
         int col;
@@ -113,18 +135,24 @@ public class IAMonster implements IMonsterStrategy {
             this(row, col, Integer.MAX_VALUE, Math.abs(row - exit.row) + Math.abs(col - exit.col), parent);
         }
 
-        private int calculateHeuristic(ICoordinate coord) {
-            return Math.abs(row - coord.getRow()) + Math.abs(col - coord.getCol());
+        public int calculateF() {
+            return distance + heuristic;
         }
 
-        public boolean is(Cellule c) {
-            return row == c.row && col == c.col;
-        }
-
+        /**
+         * Permet de savoir si une cellule est valide
+         * @param row   (int)   - la ligne de la cellule
+         * @param col   (int)   - la colonne de la cellule
+         * @return  (boolean)   - true si la cellule est valide, false sinon
+         */
         private boolean valid(int row, int col) {
             return (row >= 0 && row < maze.length) && (col >= 0 && col < maze[0].length);
         }
 
+        /**
+         * Permet de récupérer la cellule au nord de la cellule courante si elle est valide
+         * @return  (Cellule)   - la cellule au nord de la cellule courante
+         */
         private Cellule north() {
             if(valid(row - 1, col)) {
                 return new Cellule(row - 1, col, distance + 1, heuristic, this);
@@ -132,6 +160,10 @@ public class IAMonster implements IMonsterStrategy {
             return null;
         }
 
+        /**
+         * Permet de récupérer la cellule au sud de la cellule courante si elle est valide
+         * @return  (Cellule)   - la cellule au sud de la cellule courante
+         */
         private Cellule south() {
             if(valid(row + 1, col)) {
                 return new Cellule(row + 1, col, distance + 1, heuristic, this);
@@ -139,6 +171,10 @@ public class IAMonster implements IMonsterStrategy {
             return null;
         }
 
+        /**
+         * Permet de récupérer la cellule à l'est de la cellule courante si elle est valide
+         * @return  (Cellule)   - la cellule à l'est de la cellule courante
+         */
         private Cellule east() {
             if(valid(row, col + 1)) {
                 return new Cellule(row, col + 1, distance + 1, heuristic, this);
@@ -146,6 +182,10 @@ public class IAMonster implements IMonsterStrategy {
             return null;
         }
 
+        /**
+         * Permet de récupérer la cellule à l'ouest de la cellule courante si elle est valide
+         * @return  (Cellule)   - la cellule à l'ouest de la cellule courante
+         */
         private Cellule west() {
             if(valid(row, col - 1)) {
                 return new Cellule(row, col - 1, distance + 1, heuristic, this);
@@ -153,6 +193,10 @@ public class IAMonster implements IMonsterStrategy {
             return null;
         }
 
+        /**
+         * Permet de récupérer les cellules autour de la cellule courante
+         * @return  (Cellule[])   - les cellules autour de la cellule courante
+         */
         public Cellule[] around() {
             return new Cellule[] { north(), east(), south(), west() };
         }
@@ -176,12 +220,19 @@ public class IAMonster implements IMonsterStrategy {
         }
     }
 
+    /**
+     * Classe interne permettant de représenter une cellule nulle
+     */
     class NullCellule extends Cellule {
         public NullCellule() {
             super(-1, -1, -1, -1, null);
         }
     }
 
+    /**
+     * Permet de récupérer la cellule de sortie
+     * @return  (Cellule)   - la cellule de sortie
+     */
     public Cellule getExit() {
         for(int lig=0;lig<maze.length;lig++) {
             for(int col=0;col<maze[lig].length;col++) {
@@ -193,16 +244,25 @@ public class IAMonster implements IMonsterStrategy {
         return null;
     }
 
+    /**
+     * Permet de récupérer la cellule du monstre
+     * @return
+     */
     public Cellule getMonster() {
         Cellule m = new Cellule(coordonnee.getRow(), coordonnee.getCol(), getExit(), new NullCellule());
         m.distance = 0;
         return m;
     }
 
+    /**
+     * Permet de récupérer la cellule ayant la distance + heuristique la plus petite
+     * @param set   (Set<Cellule>)  - l'ensemble de cellules
+     * @return  (Cellule)   - la cellule ayant la distance la plus petite
+     */
     public static Cellule getMin(Set<Cellule> set) {
         Cellule min = null;
         for(Cellule cell : set) {
-            if(min == null || cell.distance < min.distance) {
+            if(min == null || cell.calculateF() < min.calculateF()) {
                 min = cell;
             }
         }
@@ -210,10 +270,19 @@ public class IAMonster implements IMonsterStrategy {
         return min;
     }
 
+    /**
+     * Permet de savoir si une cellule est un mur
+     * @param c (Cellule) - la cellule à tester
+     * @return  (boolean)   - true si la cellule est un mur, false sinon
+     */
     private boolean isWall(Cellule c) {
         return maze[c.row][c.col].getInfo() == CellInfo.WALL;
     }
 
+    /**
+     * Permet de récupérer le chemin le plus court entre le monstre et la sortie
+     * @return  (List<ICoordinate>)   - le chemin le plus court entre le monstre et la sortie
+     */
     public List<ICoordinate> aStarAlgorithm() {
         Set<Cellule> open = new HashSet<>();
         Set<Cellule> closed = new HashSet<>();
@@ -225,7 +294,7 @@ public class IAMonster implements IMonsterStrategy {
             current = getMin(open);
             closed.add(current);
             if(current == null) throw new RuntimeException("Current is null !");
-            if(current.is(exit)) {
+            if(current.equals(exit)) {
                 found = true;
             } else {
                 for(Cellule cell : current.around()) {
@@ -241,7 +310,7 @@ public class IAMonster implements IMonsterStrategy {
             throw new RuntimeException("Chemin impossible");
         }
         List<ICoordinate> path = new ArrayList<>();
-        while(current != null && !current.is(new NullCellule())) {
+        while(current != null && !current.equals(new NullCellule())) {
             path.add(new Coordinate(current.row, current.col));
             current = current.parent;
         }

@@ -62,7 +62,7 @@ public class MazeController extends GridPane {
             b.setStyle("-fx-background-color: #9B9B9B; -fx-border-color: #000000");
             b.setText(" ");
         }else if(info == ICellEvent.CellInfo.WALL) {
-            b.setStyle("-fx-background-color: #000000; -fx-border-color: #000000");
+            b.setStyle("-fx-background-color: #000000; -fx-background-position: center center; -fx-background-size: contain; -fx-border-color: #000000");
             b.setText(" ");
         }else if(!isMonsterMaze && info == ICellEvent.CellInfo.EXIT) {
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
@@ -73,8 +73,7 @@ public class MazeController extends GridPane {
         }else if(info == ICellEvent.CellInfo.HUNTER) {
             b.setText("h");
         }else if(info == ICellEvent.CellInfo.EXIT) {
-            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
-            b.setText("x");
+            b.setStyle("-fx-background-image: url('https://minesweeper.online/img/skins/xp/flag.png?v=3'); -fx-background-size:"+CellController.SIZE+"; -fx-background-position: center center; -fx-border-color: #000000");
         }else{
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText(" ");

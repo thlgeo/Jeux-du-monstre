@@ -32,7 +32,7 @@ public class IAMonster implements IMonsterStrategy {
         List<ICoordinate> l = new ArrayList<>();
         for(ICoordinate coord : around())
         {
-            if(inRange(coord))
+            if(inRange(coord) && getCell(coord).getInfo() != CellInfo.WALL)
             {
                 l.add(coord);
             }
@@ -81,6 +81,11 @@ public class IAMonster implements IMonsterStrategy {
                 }
             }
         }
+    }
+
+    public Cell getCell(ICoordinate coord)
+    {
+        return maze[coord.getRow()][coord.getCol()];
     }
     
 }

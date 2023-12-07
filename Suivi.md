@@ -44,3 +44,7 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 - Correction d'un bug d'affichage lié au javafx
 - Rassemblement des ModelMain en un seul pour décide de jouer avec des IA ou non
 - Ajout d'options de paramétrage pour jouer avec des IA
+
+### Valentin THUILLIER
+
+- Introduction de l'algorithme A* pour IAMonster

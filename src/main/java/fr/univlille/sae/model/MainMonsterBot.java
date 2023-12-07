@@ -90,6 +90,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
     @Override
     public void deplacementMonstre(ICoordinate newCoord) {
         try {
+            System.out.println("Tour du monstre =>" + newCoord);
             if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();
             if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
                 victory(true);

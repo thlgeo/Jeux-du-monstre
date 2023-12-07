@@ -18,8 +18,13 @@ public class IAMonster implements IMonsterStrategy {
 
     @Override
     public ICoordinate play() {
-        List<ICoordinate> around = possibilities();
-        return around.get(rd.nextInt(around.size()));
+        if(path == null) {
+            List<ICoordinate> l = possibilities();
+            return l.get(rd.nextInt(l.size()));
+        } else {
+            System.out.println("Chemin =>" + path);
+            return path.remove(0);
+        }
     }
 
     private boolean inRange(ICoordinate coord)
@@ -56,7 +61,7 @@ public class IAMonster implements IMonsterStrategy {
         if(arg0.getState() == CellInfo.MONSTER) {
             System.out.println("Mise à jour de la position du monstre");
             this.coordonnee = arg0.getCoord();
-            this.path = aStarAlgorithm();
+            if(path == null) this.path = aStarAlgorithm();
         }
         ICoordinate coord = arg0.getCoord();
         Cell updateCell = this.maze[coord.getRow()][coord.getCol()];
@@ -152,13 +157,24 @@ public class IAMonster implements IMonsterStrategy {
             return new Cellule[] { north(), east(), south(), west() };
         }
 
+        @Override
+        public String toString() {
+            return "Cellule [row=" + row + ", col=" + col + ", distance=" + distance + ", heuristic=" + heuristic
+                    + ", parent=" + parent + "]";
+        }
+    }
+
+    class NullCellule extends Cellule {
+        public NullCellule() {
+            super(-1, -1, -1, -1, null);
+        }
     }
 
     public Cellule getExit() {
         for(int lig=0;lig<maze.length;lig++) {
             for(int col=0;col<maze[lig].length;col++) {
                 if(maze[lig][col].getInfo() == CellInfo.EXIT) {
-                    return new Cellule(lig, col,null,  null);
+                    return new Cellule(lig, col,new NullCellule(),  new NullCellule());
                 }
             }
         }
@@ -166,7 +182,7 @@ public class IAMonster implements IMonsterStrategy {
     }
 
     public Cellule getMonster() {
-        Cellule m = new Cellule(coordonnee.getRow(), coordonnee.getCol(), null, getExit());
+        Cellule m = new Cellule(coordonnee.getRow(), coordonnee.getCol(), getExit(), new NullCellule());
         m.distance = 0;
         return m;
     }
@@ -178,21 +194,29 @@ public class IAMonster implements IMonsterStrategy {
                 min = cell;
             }
         }
+        set.remove(min);
         return min;
+    }
+
+    private boolean isWall(Cellule c) {
+        return maze[c.row][c.col].getInfo() == CellInfo.WALL;
     }
 
     public List<ICoordinate> aStarAlgorithm() {
         Set<Cellule> open = new HashSet<>();
+        Set<Cellule> closed = new HashSet<>();
         open.add(getMonster());
         Cellule exit = getExit();
         boolean found = false;
+        Cellule current = null;
         while(!open.isEmpty() && !found) {
-            Cellule current = getMin(open);
+            current = getMin(open);
+            closed.add(current);
             if(current.is(exit)) {
                 found = true;
             } else {
                 for(Cellule cell : current.around()) {
-                    if(cell.distance > current.distance + 1) {
+                    if(cell != null && (!open.contains(cell) || cell.distance > current.distance + 1) && !closed.contains(cell) && !isWall(cell)) {
                         cell.distance = current.distance + 1;
                         cell.parent = current;
                         open.add(cell);
@@ -205,12 +229,12 @@ public class IAMonster implements IMonsterStrategy {
         } else {
             System.out.println("Chemin trouvé");
             List<ICoordinate> path = new ArrayList<>();
-            Cellule current = exit;
-            while(current != null) {
+            while(current != null && !current.is(new NullCellule())) {
                 path.add(new Coordinate(current.row, current.col));
                 current = current.parent;
             }
             Collections.reverse(path);
+            System.out.println(path);
             return path;
         }
         return null;

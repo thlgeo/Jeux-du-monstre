@@ -14,7 +14,10 @@ import fr.univlille.sae.model.players.IAHunter;
 import fr.univlille.sae.model.players.IAMonster;
 import fr.univlille.sae.model.players.Monster;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -400,6 +403,10 @@ public class ModelMain extends Subject implements ModelMainInterface{
         IAHunter.update(hunterEvent);
         turn++;
         deplacementMonstre(IAMonster.play());
+    }
+
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze) {
+        //TODO
     }
 
     /**

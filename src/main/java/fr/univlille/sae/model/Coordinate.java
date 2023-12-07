@@ -92,4 +92,8 @@ public class Coordinate implements ICoordinate {
         return new Coordinate[] { north(), south(), east(), west() };
     }
 
+    public int heuristic(ICoordinate coord) {
+        return Math.abs(row - coord.getRow()) + Math.abs(col - coord.getCol());
+    }
+
 }

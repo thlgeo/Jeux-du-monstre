@@ -34,21 +34,30 @@ class TestModelMain {
     @Test
     void testDeplacerMonstre(){
         ICoordinate coordPass = new Coordinate(0, 1);
-        ICoordinate coordNotPass = new Coordinate(0, 0);
         modelMain.deplacementMonstre(coordPass);
-        modelMain.deplacementMonstre(coordNotPass);
         Cell cellMazePass = modelMain.getCell(coordPass);
-        Cell cellMazeNotPass = modelMain.getCell(coordNotPass);
         assertEquals(ICellEvent.CellInfo.MONSTER, cellMazePass.getInfo());
         assertEquals(1, cellMazePass.getTurn());
-        assertEquals(ICellEvent.CellInfo.WALL, cellMazeNotPass.getInfo());
-        assertEquals(0, cellMazeNotPass.getTurn());
         Cell cellMonsterPass = modelMain.monster.get(coordPass);
-        Cell cellMonsterNotPass = modelMain.monster.get(coordNotPass);
         assertEquals(ICellEvent.CellInfo.MONSTER, cellMonsterPass.getInfo());
         assertEquals(1, cellMonsterPass.getTurn());
+    }
+
+    @Test
+    void testDeplacerMonstreMur(){
+        ICoordinate coordNotPass = new Coordinate(0, 0);
+        modelMain.deplacementMonstre(coordNotPass);
+        Cell cellMazeNotPass = modelMain.getCell(coordNotPass);
+        Cell cellMonsterNotPass = modelMain.monster.get(coordNotPass);
+        assertEquals(ICellEvent.CellInfo.WALL, cellMazeNotPass.getInfo());
+        assertEquals(0, cellMazeNotPass.getTurn());
         assertEquals(ICellEvent.CellInfo.WALL, cellMonsterNotPass.getInfo());
         assertEquals(0, cellMonsterNotPass.getTurn());
+    }
+
+    @Test
+    void testDeplacerMonstreVictoire(){
+        ICoordinate coordPass = new Coordinate(0, 1);
         modelMain.deplacementMonstre(new Coordinate(1, 1));
         modelMain.deplacementMonstre(new Coordinate(2, 1)); //victoire donc reset
         Cell reset = modelMain.getCell(coordPass);

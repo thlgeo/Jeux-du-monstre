@@ -20,8 +20,10 @@ public class ValidationController extends Button {
     private final FogController fog;
     private final ModelMainInterface modelMain;
     private final GenerateMazeController generateMaze;
+    private final IAMonsterController IAMonstre;
+    private final IAHunterController IAHunter;
 
-    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, DepDiagController depDiag, FogController fog, GenerateMazeController generateMaze, ModelMainInterface modelMain) {
+    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, DepDiagController depDiag, FogController fog, GenerateMazeController generateMaze, IAMonsterController IAMonstre, IAHunterController IAHunter, ModelMainInterface modelMain) {
         this.modelMain = modelMain;
         this.nameMonster = nameMonster;
         this.nameHunter = nameHunter;
@@ -30,6 +32,8 @@ public class ValidationController extends Button {
         this.depDiag = depDiag;
         this.fog = fog;
         this.generateMaze = generateMaze;
+        this.IAMonstre = IAMonstre;
+        this.IAHunter = IAHunter;
         setText("Enregistrer les parametres");
         setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         setAction();
@@ -48,7 +52,7 @@ public class ValidationController extends Button {
                 new Alert(Alert.AlertType.ERROR, "Veuillez entrer une taille entre " + SizeController.MIN_SIZE + " et " + SizeController.MAX_SIZE + "  !").showAndWait();
                 return;
             }
-            modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected(), fog.isSelected(), generateMaze.isSelected());
+            modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected(), fog.isSelected(), generateMaze.isSelected(), IAMonstre.isSelected(), IAHunter.isSelected());
             new Alert(Alert.AlertType.CONFIRMATION, "Les informations ont bien été mises à jour").showAndWait();
         });
     }

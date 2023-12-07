@@ -61,7 +61,7 @@ public class IAMonster implements IMonsterStrategy {
         if(arg0.getState() == CellInfo.MONSTER) {
             System.out.println("Mise à jour de la position du monstre");
             this.coordonnee = arg0.getCoord();
-            if(path == null) this.path = aStarAlgorithm();
+            if(path == null || path.isEmpty()) this.path = aStarAlgorithm();
         }
         ICoordinate coord = arg0.getCoord();
         Cell updateCell = this.maze[coord.getRow()][coord.getCol()];
@@ -162,6 +162,18 @@ public class IAMonster implements IMonsterStrategy {
             return "Cellule [row=" + row + ", col=" + col + ", distance=" + distance + ", heuristic=" + heuristic
                     + ", parent=" + parent + "]";
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if(this == o) return true;
+            if(!(o instanceof Cellule cellule)) return false;
+            return row == cellule.row && col == cellule.col;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(row, col);
+        }
     }
 
     class NullCellule extends Cellule {
@@ -174,7 +186,7 @@ public class IAMonster implements IMonsterStrategy {
         for(int lig=0;lig<maze.length;lig++) {
             for(int col=0;col<maze[lig].length;col++) {
                 if(maze[lig][col].getInfo() == CellInfo.EXIT) {
-                    return new Cellule(lig, col,new NullCellule(),  new NullCellule());
+                    return new Cellule(lig, col, new NullCellule(), new NullCellule());
                 }
             }
         }
@@ -212,6 +224,7 @@ public class IAMonster implements IMonsterStrategy {
         while(!open.isEmpty() && !found) {
             current = getMin(open);
             closed.add(current);
+            if(current == null) throw new RuntimeException("Current is null !");
             if(current.is(exit)) {
                 found = true;
             } else {
@@ -225,18 +238,14 @@ public class IAMonster implements IMonsterStrategy {
             }
         }
         if(open.isEmpty()) {
-            System.out.println("Pas de chemin trouvé");
-        } else {
-            System.out.println("Chemin trouvé");
-            List<ICoordinate> path = new ArrayList<>();
-            while(current != null && !current.is(new NullCellule())) {
-                path.add(new Coordinate(current.row, current.col));
-                current = current.parent;
-            }
-            Collections.reverse(path);
-            System.out.println(path);
-            return path;
+            throw new RuntimeException("Chemin impossible");
         }
-        return null;
+        List<ICoordinate> path = new ArrayList<>();
+        while(current != null && !current.is(new NullCellule())) {
+            path.add(new Coordinate(current.row, current.col));
+            current = current.parent;
+        }
+        Collections.reverse(path);
+        return path;
     }
 }

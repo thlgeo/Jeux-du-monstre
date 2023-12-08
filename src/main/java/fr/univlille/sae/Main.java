@@ -1,7 +1,5 @@
 package fr.univlille.sae;
 
-import fr.univlille.sae.model.MainHunterBot;
-import fr.univlille.sae.model.MainMonsterBot;
 import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.model.ModelMainInterface;
 import fr.univlille.sae.view.HunterView;
@@ -12,12 +10,15 @@ import javafx.application.Application;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * Cette classe permet de lancer l'application
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class Main extends Application {
     public static final String FONT_DIR = System.getProperty("user.dir") + File.separator + "res" + File.separator + "font" + File.separator;

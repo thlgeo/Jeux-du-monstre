@@ -45,11 +45,11 @@ public class Hunter extends Subject implements IHunterStrategy {
         this.name = name;
     }
 
-    public int getNbRows(){
+    public int getNbRows() {
         return nbRows;
     }
 
-    public int getNbCols(){
+    public int getNbCols() {
         return nbCols;
     }
 
@@ -123,6 +123,7 @@ public class Hunter extends Subject implements IHunterStrategy {
 
     /**
      * Notifie les observateurs avec une data.
+     *
      * @param data data à notifier
      */
     public void notify(Object data) {
@@ -143,7 +144,7 @@ public class Hunter extends Subject implements IHunterStrategy {
         notifyObservers(maze);
     }
 
-    public Cell getCell(ICoordinate coord){
+    public Cell getCell(ICoordinate coord) {
         if(coord == null) {
             return null;
         }

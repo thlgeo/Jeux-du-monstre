@@ -27,20 +27,20 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
     protected boolean generateMaze = false;
     protected String IAName = "monster";
 
-    public MainMonsterBot(){
+    public MainMonsterBot() {
         turn = 1;
         nbRows = DEFAULT_DIMENSION;
         nbCols = DEFAULT_DIMENSION;
-        hunter = new Hunter("Hunter" , nbRows, nbCols);
+        hunter = new Hunter("Hunter", nbRows, nbCols);
         monster = new IAMonster();
         createMaze();
         setMonster();
     }
 
-    private void setMonster(){
+    private void setMonster() {
         boolean[][] booleanMaze = new boolean[nbRows][nbCols];
-        for(int i = 0; i < nbRows; i++){
-            for(int j = 0; j < nbCols; j++){
+        for(int i = 0; i < nbRows; i++) {
+            for(int j = 0; j < nbCols; j++) {
                 booleanMaze[i][j] = maze[i][j].getInfo() != ICellEvent.CellInfo.WALL;
             }
         }
@@ -50,10 +50,10 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         monster.update(event);
     }
 
-    private ICoordinate getExit(){
-        for(int i = 0; i < nbRows; i++){
-            for(int j = 0; j < nbCols; j++){
-                if(maze[i][j].getInfo() == ICellEvent.CellInfo.EXIT){
+    private ICoordinate getExit() {
+        for(int i = 0; i < nbRows; i++) {
+            for(int j = 0; j < nbCols; j++) {
+                if(maze[i][j].getInfo() == ICellEvent.CellInfo.EXIT) {
                     return new Coordinate(i, j);
                 }
             }
@@ -61,7 +61,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         return null;
     }
 
-    public void monsterTurn(){
+    public void monsterTurn() {
         ICoordinate coord = monster.play();
         deplacementMonstre(coord);
     }
@@ -72,13 +72,12 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         return c.getInfo() != ICellEvent.CellInfo.EMPTY ? initMonsterPosition() : coord;
     }
 
-    private boolean inRange(ICoordinate coordMonster, ICoordinate coordExit)
-    {
+    private boolean inRange(ICoordinate coordMonster, ICoordinate coordExit) {
         int rowM = coordMonster.getRow();
         int colM = coordMonster.getCol();
         int rowE = coordExit.getRow();
         int colE = coordExit.getCol();
-        return (colM < colE+NB_TOUR_MIN && colM > colE-NB_TOUR_MIN) && (rowM < rowE+NB_TOUR_MIN && rowM > rowE-NB_TOUR_MIN);
+        return (colM < colE + NB_TOUR_MIN && colM > colE - NB_TOUR_MIN) && (rowM < rowE + NB_TOUR_MIN && rowM > rowE - NB_TOUR_MIN);
     }
 
     void update(ICoordinate coordinate, ICellEvent.CellInfo cellInfo) {
@@ -99,8 +98,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         } catch(MonsterNotFoundException e) {
             newCoord = this.initMonsterPosition();
             ICoordinate coordExit = getExit();
-            while(inRange(newCoord,coordExit))
-            {
+            while(inRange(newCoord, coordExit)) {
                 newCoord = this.initMonsterPosition();
             }
         }
@@ -110,11 +108,11 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         hunter.notify("changerTour");
     }
 
-    private ICoordinate getCoordinateMonster(boolean lastTurn){
-        int tour = lastTurn ? turn-1 : turn;
-        for(int i = 0; i < nbRows; i++){
-            for(int j = 0; j < nbCols; j++){
-                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER && maze[i][j].getTurn() == tour){
+    private ICoordinate getCoordinateMonster(boolean lastTurn) {
+        int tour = lastTurn ? turn - 1 : turn;
+        for(int i = 0; i < nbRows; i++) {
+            for(int j = 0; j < nbCols; j++) {
+                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER && maze[i][j].getTurn() == tour) {
                     return new Coordinate(i, j);
                 }
             }
@@ -149,7 +147,7 @@ public class MainMonsterBot extends Subject implements ModelMainInterface {
         monsterTurn();
     }
 
-private Cell getCell(ICoordinate coord){
+    private Cell getCell(ICoordinate coord) {
         return maze[coord.getRow()][coord.getCol()];
     }
 
@@ -170,7 +168,7 @@ private Cell getCell(ICoordinate coord){
     }
 
     private void createMaze() {
-        if (generateMaze) {
+        if(generateMaze) {
             this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();
         } else {
             this.maze = new MazeFactory(this.nbRows, this.nbCols).importMaze();
@@ -180,7 +178,6 @@ private Cell getCell(ICoordinate coord){
     @Override
     public void attachMonster(Observer o) {
         //Le monstre est une IA, donc pas besoin d'observer car pas de notifications vers sa vue
-        return;
     }
 
     @Override

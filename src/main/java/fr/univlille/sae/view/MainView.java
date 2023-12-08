@@ -5,7 +5,6 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
 import fr.univlille.sae.controller.SettingButton;
-import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.model.ModelMainInterface;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,8 +18,9 @@ import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre principale de l'application
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class MainView extends Stage implements Observer {
 
@@ -96,7 +96,7 @@ public class MainView extends Stage implements Observer {
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      *
      * @param subject correspond au sujet observé
-     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
+     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre
      */
     @Override
     public void update(Subject subject, Object o) {

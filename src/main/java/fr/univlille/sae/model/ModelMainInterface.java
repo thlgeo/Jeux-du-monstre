@@ -2,29 +2,28 @@ package fr.univlille.sae.model;
 
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.utils.Observer;
-import fr.univlille.iutinfo.utils.Subject;
 
-public interface ModelMainInterface{
+public interface ModelMainInterface {
 
-    public void deplacementMonstre(ICoordinate newCoord);
+    void deplacementMonstre(ICoordinate newCoord);
 
-    public void tirerChasseur(ICoordinate coord);
+    void tirerChasseur(ICoordinate coord);
 
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter);
+    void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter);
 
-    public void attachMonster(Observer o);
+    void attachMonster(Observer o);
 
-    public void attachHunter(Observer o);
+    void attachHunter(Observer o);
 
-    public void attach(Observer o);
+    void attach(Observer o);
 
-    public void notifyDiscoveredMaze();
+    void notifyDiscoveredMaze();
 
-    public void notifyShowParameter();
+    void notifyShowParameter();
 
-    public void notifyShowMH();
+    void notifyShowMH();
 
-    public int getNbRows();
+    int getNbRows();
 
-    public int getNbCols();
+    int getNbCols();
 }

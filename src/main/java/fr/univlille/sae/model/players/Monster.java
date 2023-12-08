@@ -53,12 +53,10 @@ public class Monster extends Subject implements IMonsterStrategy {
         lastShotHunter = null;
     }
 
-    public void setMazeEmpty(int nbRow, int nbCol)
-    {
+    public void setMazeEmpty(int nbRow, int nbCol) {
         this.discoveredMaze = new Cell[nbRow][nbCol];
         for(int i = 0; i < nbRow; i++) {
-            for(int j = 0; j < nbCol; j++)
-            {
+            for(int j = 0; j < nbCol; j++) {
                 this.discoveredMaze[i][j] = new Cell(ICellEvent.CellInfo.EMPTY);
             }
         }
@@ -82,8 +80,7 @@ public class Monster extends Subject implements IMonsterStrategy {
         return mazeB;
     }
 
-    private boolean convertCell(Cell cellule)
-    {
+    private boolean convertCell(Cell cellule) {
         return cellule.getInfo().equals(CellInfo.EMPTY) || cellule.getInfo().equals(CellInfo.EXIT) || cellule.getInfo().equals(CellInfo.MONSTER);
     }
 
@@ -121,8 +118,7 @@ public class Monster extends Subject implements IMonsterStrategy {
             updateCell.setInfo(cellule.getState());
             updateCell.setTurn(cellule.getTurn());
             updateCell.visited();
-            if(fog)
-            {
+            if(fog) {
                 maze[coord.getRow()][coord.getCol()] = convertCell(updateCell);
             }
         }
@@ -139,8 +135,7 @@ public class Monster extends Subject implements IMonsterStrategy {
         this.maze = maze;
     }
 
-    public boolean canMove(ICoordinate coord, boolean diag)
-    {
+    public boolean canMove(ICoordinate coord, boolean diag) {
         if(diag) return canMoveDiag(coord);
         return canMoveNotDiag(coord);
     }
@@ -160,29 +155,27 @@ public class Monster extends Subject implements IMonsterStrategy {
 
     /**
      * Vérifie si le monstre peut se déplacer aux coordonnées indiquées (diagonales exclues).
-     * 
+     *
      * @param coord (ICoordinate)  Les coordonnées à verifier
      * @return (boolean)   True si le monstre peut s'y déplacer sinon false
      */
-    private boolean canMoveNotDiag(ICoordinate coord)
-    {
+    private boolean canMoveNotDiag(ICoordinate coord) {
         return around().contains(coord) && (maze[coord.getRow()][coord.getCol()] && !coord.equals(coordinateMonster));
     }
 
     /**
      * Renvoie les coordonnées autour du monstre.
-     * 
-     * @return (List<ICoordinate>) liste des coordonnées atteignables.
+     *
+     * @return (List < ICoordinate >) liste des coordonnées atteignables.
      */
-    private List<ICoordinate> around()
-    {
+    private List<ICoordinate> around() {
         List<ICoordinate> l = new ArrayList<>();
         int row = coordinateMonster.getRow();
         int col = coordinateMonster.getCol();
-        l.add(new Coordinate(row+DEPLACEMENT, col));
-        l.add(new Coordinate(row-DEPLACEMENT, col));
-        l.add(new Coordinate(row, col+DEPLACEMENT));
-        l.add(new Coordinate(row, col-DEPLACEMENT));
+        l.add(new Coordinate(row + DEPLACEMENT, col));
+        l.add(new Coordinate(row - DEPLACEMENT, col));
+        l.add(new Coordinate(row, col + DEPLACEMENT));
+        l.add(new Coordinate(row, col - DEPLACEMENT));
         return l;
     }
 
@@ -198,10 +191,12 @@ public class Monster extends Subject implements IMonsterStrategy {
         return coordinateMonster;
     }
 
-    public ICoordinate getLastShotHunter(){return lastShotHunter;}
-
     public void setCoordinateMonster(ICoordinate coordinateMonster) {
         this.coordinateMonster = coordinateMonster;
+    }
+
+    public ICoordinate getLastShotHunter() {
+        return lastShotHunter;
     }
 
     @Override
@@ -211,6 +206,7 @@ public class Monster extends Subject implements IMonsterStrategy {
 
     /**
      * Notifie les observateurs avec une data.
+     *
      * @param data data à notifier
      */
     public void notify(Object data) {
@@ -221,17 +217,17 @@ public class Monster extends Subject implements IMonsterStrategy {
      * Notifie les observateurs avec le labyrinthe découvert par le monstre.
      */
     public void notifyDiscoveredMaze() {
-        if(fog){
+        if(fog) {
             Cell[][] maze = new Cell[discoveredMaze.length][discoveredMaze[0].length];
-            for (Cell[] row : maze) {
-                for(int i = 0; i < row.length; i++){
+            for(Cell[] row : maze) {
+                for(int i = 0; i < row.length; i++) {
                     Cell cell = new Cell(CellInfo.EMPTY);
                     cell.setTurn(-1);
                     row[i] = cell;
                 }
             }
             notifyObservers(maze);
-        }else{
+        } else {
             notifyObservers(discoveredMaze);
         }
     }
@@ -262,19 +258,19 @@ public class Monster extends Subject implements IMonsterStrategy {
         notifyObservers();
     }
 
-    public Cell[][] getDiscoveredMaze(){
+    public Cell[][] getDiscoveredMaze() {
         return discoveredMaze;
     }
 
-    private Cell[][] copyOf(Cell[][] maze){
+    private Cell[][] copyOf(Cell[][] maze) {
         Cell[][] newMaze = new Cell[maze.length][];
-        for(int i = 0; i < maze.length; i++){
+        for(int i = 0; i < maze.length; i++) {
             newMaze[i] = Arrays.copyOf(maze[i], maze[i].length);
         }
         return newMaze;
     }
 
-    public void setFog(boolean fog){
+    public void setFog(boolean fog) {
         this.fog = fog;
     }
 }

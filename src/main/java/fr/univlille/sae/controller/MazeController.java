@@ -2,7 +2,6 @@ package fr.univlille.sae.controller;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.model.ModelMainInterface;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -10,6 +9,7 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Cette classe correspond GridPane représentant le labyrinthe du jeu
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
  * @version 1.0
  */
@@ -37,6 +37,7 @@ public class MazeController extends GridPane {
 
     /**
      * Cette méthode permet de créer le labyrinthe par défaut
+     *
      * @param isMonsterMaze (boolean) Si le labyrinthe est celui du monstre
      */
     private void setDefaultMaze(boolean isMonsterMaze) {
@@ -58,24 +59,24 @@ public class MazeController extends GridPane {
      */
     public void setRender(int i, int j, ICellEvent.CellInfo info, int turn) {
         Button b = mazeTable[i][j];
-        if(turn < 0){
+        if(turn < 0) {
             b.setStyle("-fx-background-color: #9B9B9B; -fx-border-color: #000000");
             b.setText(" ");
-        }else if(info == ICellEvent.CellInfo.WALL) {
+        } else if(info == ICellEvent.CellInfo.WALL) {
             b.setStyle("-fx-background-color: #000000; -fx-border-color: #000000");
             b.setText(" ");
-        }else if(!isMonsterMaze && info == ICellEvent.CellInfo.EXIT) {
+        } else if(!isMonsterMaze && info == ICellEvent.CellInfo.EXIT) {
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText(" ");
-        }else if(info == ICellEvent.CellInfo.MONSTER) {
+        } else if(info == ICellEvent.CellInfo.MONSTER) {
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText("" + turn);
-        }else if(info == ICellEvent.CellInfo.HUNTER) {
+        } else if(info == ICellEvent.CellInfo.HUNTER) {
             b.setText("h");
-        }else if(info == ICellEvent.CellInfo.EXIT) {
+        } else if(info == ICellEvent.CellInfo.EXIT) {
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText("x");
-        }else{
+        } else {
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText(" ");
         }

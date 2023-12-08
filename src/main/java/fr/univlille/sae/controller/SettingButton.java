@@ -1,14 +1,14 @@
 package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
-import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.model.ModelMainInterface;
 import javafx.scene.control.Button;
 
 /**
  * Cette classe correspond au bouton de lancement de la page de paramètres
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class SettingButton extends Button {
     private final ModelMainInterface modelMain;

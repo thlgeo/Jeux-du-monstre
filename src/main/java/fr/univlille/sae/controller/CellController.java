@@ -3,7 +3,6 @@ package fr.univlille.sae.controller;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.model.Coordinate;
-import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.model.ModelMainInterface;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,8 +11,9 @@ import java.io.File;
 
 /**
  * Cette classe coorespond au bouton d'une cellule du labyrinthe
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class CellController extends Button {
     public static final int SIZE = 40;
@@ -22,7 +22,7 @@ public class CellController extends Button {
     private final int o;
     private final ModelMainInterface modelMain;
 
-    public CellController(int a, int o, ModelMainInterface modelMain, boolean isMonsterCell){
+    public CellController(int a, int o, ModelMainInterface modelMain, boolean isMonsterCell) {
         super(" ");
         this.modelMain = modelMain;
         this.a = a;

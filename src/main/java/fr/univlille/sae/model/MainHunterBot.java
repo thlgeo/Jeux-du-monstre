@@ -1,28 +1,27 @@
 package fr.univlille.sae.model;
 
-import java.util.Random;
-
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
-import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import fr.univlille.iutinfo.utils.Observer;
+import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.model.events.CellEvent;
 import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
 import fr.univlille.sae.model.players.IAHunter;
 
+import java.util.Random;
+
 public class MainHunterBot extends ModelMain implements ModelMainInterface {
+    // protected boolean deplacementDiag;
+    // protected Cell[][] maze;
+    // protected boolean fog = false;
+    public static final Random RDM = new Random();
     // private static final int DEFAULT_DIMENSION = 10;
     // protected int nbRows;
     // protected int nbCols;
     // protected int turn;
     // protected Monster monster;
     protected IAHunter IAhunter;
-    // protected boolean deplacementDiag;
-    // protected Cell[][] maze;
-    // protected boolean fog = false;
-    public static final Random RDM = new Random();
 
-    public MainHunterBot(){
+    public MainHunterBot() {
         super();
         // turn = 0;
         // nbRows = DEFAULT_DIMENSION;
@@ -38,7 +37,7 @@ public class MainHunterBot extends ModelMain implements ModelMainInterface {
     public void deplacementMonstre(ICoordinate newCoord) {
         try {
             if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
-            if(!this.monster.canMove(newCoord,deplacementDiag)) {
+            if(!this.monster.canMove(newCoord, deplacementDiag)) {
                 monster.notify("cantMove");
                 return;
             }
@@ -50,15 +49,14 @@ public class MainHunterBot extends ModelMain implements ModelMainInterface {
             newCoord = this.initMonsterPosition();
             IAhunter.initialize(nbRows, nbCols);
             ICoordinate coordExit = getExit();
-            while(inRange(newCoord,coordExit))
-            {
+            while(inRange(newCoord, coordExit)) {
                 newCoord = this.initMonsterPosition();
             }
         }
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
         update(newCoord, ICellEvent.CellInfo.MONSTER);
         monster.setCoordinateMonster(newCoord);
-        if(fog){
+        if(fog) {
             updateAround(newCoord);
         }
         monster.update(event);
@@ -77,7 +75,7 @@ public class MainHunterBot extends ModelMain implements ModelMainInterface {
     //     }
     //     return null;
     // }
-    
+
     // private ICoordinate initMonsterPosition() {
     //     ICoordinate coord = new Coordinate(RDM.nextInt(this.nbRows), RDM.nextInt(this.nbCols));
     //     Cell c = getCell(coord);
@@ -201,5 +199,5 @@ public class MainHunterBot extends ModelMain implements ModelMainInterface {
     //     // TODO Auto-generated method stub
     //     throw new UnsupportedOperationException("Unimplemented method 'getNbCols'");
     // }
-    
+
 }

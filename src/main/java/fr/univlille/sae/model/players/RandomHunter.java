@@ -6,10 +6,10 @@ import fr.univlille.sae.model.ModelMain;
 
 import java.util.Random;
 
-public class RandomHunter extends Hunter{
+public class RandomHunter extends Hunter {
 
-    protected ModelMain modelMain;
     private static final Random RDM = new Random();
+    protected ModelMain modelMain;
 
     public RandomHunter(String name, int nbRows, int nbCols, ModelMain modelMain) {
         super(name, nbRows, nbCols);

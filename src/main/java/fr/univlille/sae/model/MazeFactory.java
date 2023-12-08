@@ -8,17 +8,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MazeFactory {
     protected static final String FS = File.separator;
-    protected Cell[][] maze;
-    protected boolean[][] visited;
+    private static final double PERCENT_WALL = 0.35;
     private final int x;
     private final int y;
-    private static final double PERCENT_WALL = 0.35;
-
     private final Random r = new Random();
+    protected Cell[][] maze;
+    protected boolean[][] visited;
 
     public MazeFactory(int x, int y) {
         this.x = x;
@@ -33,15 +34,16 @@ public class MazeFactory {
     }
 
     public Cell[][] importMaze() {
-        if (x != y){
+        if(x != y) {
             return generateMaze();
         }
         generateImport(this.x, this.y, 0);
         return this.maze;
     }
+
     private void makeDefaultMaze() {
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
+        for(int i = 0; i < x; i++) {
+            for(int j = 0; j < y; j++) {
                 maze[i][j] = new Cell(ICellEvent.CellInfo.WALL);
             }
         }
@@ -50,7 +52,7 @@ public class MazeFactory {
     protected void generePrim() {
         makeDefaultMaze();
         List<ICoordinate> frontier = new ArrayList<>();
-        ICoordinate coord = new Coordinate(r.nextInt(x-1), r.nextInt(y-1));
+        ICoordinate coord = new Coordinate(r.nextInt(x - 1), r.nextInt(y - 1));
         maze[coord.getRow()][coord.getCol()].setInfo(ICellEvent.CellInfo.MONSTER);
         setVisited(coord);
         addToFrontier(frontier, getFrontierCoords(coord));
@@ -95,7 +97,7 @@ public class MazeFactory {
         maze[row][col].setInfo(ICellEvent.CellInfo.EMPTY);
         visited[row][col] = true;
     }
-    
+
     private boolean isVisited(ICoordinate coord) {
         return isVisited(coord.getRow(), coord.getCol());
     }
@@ -106,8 +108,8 @@ public class MazeFactory {
 
     private ICoordinate getOriginCord(ICoordinate cord) {
         List<ICoordinate> cordFrontiers = getFrontierCoords(cord);
-        for (ICoordinate cordFrontier : cordFrontiers) {
-            if (isValid(cordFrontier) && isVisited(cordFrontier)) {
+        for(ICoordinate cordFrontier : cordFrontiers) {
+            if(isValid(cordFrontier) && isVisited(cordFrontier)) {
                 return cordFrontier;
             }
         }
@@ -130,8 +132,8 @@ public class MazeFactory {
     }
 
     private void addToFrontier(List<ICoordinate> frontier, List<ICoordinate> toAdd) {
-        for (ICoordinate cord: toAdd) {
-            if (isPossibility(cord) && !frontier.contains(cord)) {
+        for(ICoordinate cord : toAdd) {
+            if(isPossibility(cord) && !frontier.contains(cord)) {
                 frontier.add(cord);
             }
         }
@@ -144,14 +146,16 @@ public class MazeFactory {
     private boolean isValid(ICoordinate cord) {
         return cord.getRow() >= 0 && cord.getRow() < x && cord.getCol() >= 0 && cord.getCol() < y;
     }
+
     private boolean isWall(ICoordinate cord) {
         return maze[cord.getRow()][cord.getCol()].getInfo() == ICellEvent.CellInfo.WALL;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Cell[] row: maze) {
-            for (Cell cell : row) {
+        for(Cell[] row : maze) {
+            for(Cell cell : row) {
                 sb.append(cell.getInfo().name().charAt(0) + " ");
             }
             sb.append("\n");

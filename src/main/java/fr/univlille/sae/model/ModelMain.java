@@ -14,7 +14,6 @@ import fr.univlille.sae.model.players.IAHunter;
 import fr.univlille.sae.model.players.IAMonster;
 import fr.univlille.sae.model.players.Monster;
 
-import java.io.File;
 import java.util.Random;
 
 /**
@@ -28,12 +27,12 @@ import java.util.Random;
  */
 public class ModelMain extends Subject implements ModelMainInterface {
 
-    protected static final String FS = File.separator;
     private static final int NB_TOUR_MIN = 5;
     private static final Random RDM = new Random();
     private static final int DEFAULT_DIMENSION = 10;
     private static final int DEFAULT_TURN = 1;
     private static final int VISION = 1;
+    public static final String CHANGER_TOUR = "changerTour";
     protected boolean generateMaze = true;
     protected int turn;
     protected int nbRows;
@@ -129,7 +128,7 @@ public class ModelMain extends Subject implements ModelMainInterface {
     }
 
     protected ICoordinate getExit() {
-        Cell c = null;
+        Cell c;
         for(int i = 0; i < nbRows; i++) {
             for(int j = 0; j < nbCols; j++) {
                 c = getCell(i, j);
@@ -181,7 +180,7 @@ public class ModelMain extends Subject implements ModelMainInterface {
             updateAround(coord);
         }
         monster.update(event);
-        hunter.notify("changerTour");
+        hunter.notify(CHANGER_TOUR);
     }
 
     private void deplacementIAChasseur(ICoordinate coord) {
@@ -229,7 +228,7 @@ public class ModelMain extends Subject implements ModelMainInterface {
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
         update(coord, ICellEvent.CellInfo.MONSTER);
         IAMonster.update(event);
-        hunter.notify("changerTour");
+        hunter.notify(CHANGER_TOUR);
     }
 
     private void deplacementIA(ICoordinate coord) {
@@ -351,7 +350,7 @@ public class ModelMain extends Subject implements ModelMainInterface {
         turn++;
         hunter.notify(turn);
         monster.notify(turn);
-        monster.notify("changerTour");
+        monster.notify(CHANGER_TOUR);
     }
 
     private void tirerIAChasseur(ICoordinate coord) {
@@ -365,7 +364,7 @@ public class ModelMain extends Subject implements ModelMainInterface {
         IAHunter.update(hunterEvent);
         turn++;
         monster.notify(turn);
-        monster.notify("changerTour");
+        monster.notify(CHANGER_TOUR);
     }
 
     private void tirerIAMonster(ICoordinate coord) {
@@ -389,10 +388,6 @@ public class ModelMain extends Subject implements ModelMainInterface {
         IAHunter.update(hunterEvent);
         turn++;
         deplacementMonstre(IAMonster.play());
-    }
-
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze) {
-        //TODO
     }
 
     /**

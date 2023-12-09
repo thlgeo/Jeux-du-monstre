@@ -22,7 +22,7 @@ public class IAMonster implements IMonsterStrategy {
      * @param set (Set<Cellule>)  - l'ensemble de cellules
      * @return (Cellule)   - la cellule ayant la distance la plus petite
      */
-    public static Cellule getMin(Set<Cellule> set) {
+    private static Cellule getMin(Set<Cellule> set) {
         Cellule min = null;
         for(Cellule cell : set) {
             if(min == null || cell.calculateF() < min.calculateF()) {
@@ -44,7 +44,6 @@ public class IAMonster implements IMonsterStrategy {
             List<ICoordinate> l = possibilities();
             return l.get(rd.nextInt(l.size()));
         } else {
-            System.out.println("Chemin =>" + path);
             return path.remove(0);
         }
     }
@@ -98,9 +97,8 @@ public class IAMonster implements IMonsterStrategy {
     @Override
     public void update(ICellEvent cellEvent) {
         if(cellEvent.getState() == CellInfo.MONSTER) {
-            System.out.println("Mise à jour de la position du monstre");
             this.coordonnee = cellEvent.getCoord();
-            if(path == null || path.isEmpty()) this.path = aStarAlgorithm();
+            if(path == null || path.isEmpty()) aStarAlgorithm();
         }
         ICoordinate coord = cellEvent.getCoord();
         Cell updateCell = this.maze[coord.getRow()][coord.getCol()];
@@ -138,7 +136,7 @@ public class IAMonster implements IMonsterStrategy {
      *
      * @return (Cellule)   - la cellule de sortie
      */
-    public Cellule getExit() {
+    private Cellule getExit() {
         for(int lig = 0; lig < maze.length; lig++) {
             for(int col = 0; col < maze[lig].length; col++) {
                 if(maze[lig][col].getInfo() == CellInfo.EXIT) {
@@ -152,10 +150,10 @@ public class IAMonster implements IMonsterStrategy {
     /**
      * Permet de récupérer la cellule du monstre
      *
-     * @return
+     * @return  (Cellule)   - la cellule du monstre
      */
-    public Cellule getMonster() {
-        Cellule m = new Cellule(coordonnee.getRow(), coordonnee.getCol(), getExit(), new NullCellule());
+    private Cellule getMonster() {
+        Cellule m = new Cellule(coordonnee.getRow(), coordonnee.getCol(), Objects.requireNonNull(getExit()), new NullCellule());
         m.distance = 0;
         return m;
     }
@@ -172,10 +170,8 @@ public class IAMonster implements IMonsterStrategy {
 
     /**
      * Permet de récupérer le chemin le plus court entre le monstre et la sortie
-     *
-     * @return (List < ICoordinate >)   - le chemin le plus court entre le monstre et la sortie
      */
-    public List<ICoordinate> aStarAlgorithm() {
+    public void aStarAlgorithm() {
         Set<Cellule> open = new HashSet<>();
         Set<Cellule> closed = new HashSet<>();
         open.add(getMonster());
@@ -190,7 +186,7 @@ public class IAMonster implements IMonsterStrategy {
                 found = true;
             } else {
                 for(Cellule cell : current.around()) {
-                    if(cell != null && (!open.contains(cell) || cell.distance > current.distance + 1) && !closed.contains(cell) && !isWall(cell)) {
+                    if(isValidChild(cell, open, current, closed)) {
                         cell.distance = current.distance + 1;
                         cell.parent = current;
                         open.add(cell);
@@ -201,13 +197,24 @@ public class IAMonster implements IMonsterStrategy {
         if(open.isEmpty() && !found) {
             throw new RuntimeException("Chemin impossible");
         }
-        List<ICoordinate> path = new ArrayList<>();
+        path = new ArrayList<>();
         while(current != null && !current.equals(new NullCellule())) {
             path.add(new Coordinate(current.row, current.col));
             current = current.parent;
         }
         Collections.reverse(path);
-        return path;
+    }
+
+    /**
+     * Permet de savoir si une celulle peut être explorée
+     * @param cell  - la cellule à tester
+     * @param open  - l'ensemble des cellules ouvertes
+     * @param current   - la cellule courante
+     * @param closed    - l'ensemble des cellules fermées
+     * @return  - true si la cellule peut être explorée, false sinon
+     */
+    private boolean isValidChild(Cellule cell, Set<Cellule> open, Cellule current, Set<Cellule> closed) {
+        return cell != null && (!open.contains(cell) || cell.distance > current.distance + 1) && !closed.contains(cell) && !isWall(cell);
     }
 
     /**

@@ -218,15 +218,15 @@ public class Monster extends Subject implements IMonsterStrategy {
      */
     public void notifyDiscoveredMaze() {
         if(fog) {
-            Cell[][] maze = new Cell[discoveredMaze.length][discoveredMaze[0].length];
-            for(Cell[] row : maze) {
+            Cell[][] mazeTemps = new Cell[discoveredMaze.length][discoveredMaze[0].length];
+            for(Cell[] row : mazeTemps) {
                 for(int i = 0; i < row.length; i++) {
                     Cell cell = new Cell(CellInfo.EMPTY);
                     cell.setTurn(-1);
                     row[i] = cell;
                 }
             }
-            notifyObservers(maze);
+            notifyObservers(mazeTemps);
         } else {
             notifyObservers(discoveredMaze);
         }
@@ -257,11 +257,6 @@ public class Monster extends Subject implements IMonsterStrategy {
     public void notifyShow() {
         notifyObservers();
     }
-
-    public Cell[][] getDiscoveredMaze() {
-        return discoveredMaze;
-    }
-
     private Cell[][] copyOf(Cell[][] maze) {
         Cell[][] newMaze = new Cell[maze.length][];
         for(int i = 0; i < maze.length; i++) {

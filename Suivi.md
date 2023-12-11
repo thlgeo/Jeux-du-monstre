@@ -48,3 +48,9 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 ### Valentin THUILLIER
 
 - Introduction de l'algorithme A* pour IAMonster
+### Armand SADY
+
+- Correction bug de taille de la maze
+- Changement de l'affichage si on joue contre une IA ou contre un Humain
+- Ajout du paramètre "Generation / Import" pour choisir le labyrinthe
+- Refactoring de la classe Maze -> MazeFactory & correction des bugs que cela a engendré

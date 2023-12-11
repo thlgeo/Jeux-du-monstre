@@ -2,7 +2,7 @@ package fr.univlille.sae.controller;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.ModelMainInterface;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -15,11 +15,11 @@ import javafx.scene.layout.GridPane;
  */
 public class MazeController extends GridPane {
 
-    private final ModelMainInterface modelMain;
+    private final ModelMain modelMain;
     private final boolean isMonsterMaze;
     Button[][] mazeTable;
 
-    public MazeController(ModelMainInterface modelMain, boolean isMonsterMaze) {
+    public MazeController(ModelMain modelMain, boolean isMonsterMaze) {
         this.modelMain = modelMain;
         mazeTable = new Button[modelMain.getNbRows()][modelMain.getNbCols()];
         this.isMonsterMaze = isMonsterMaze;

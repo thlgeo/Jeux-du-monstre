@@ -1,7 +1,7 @@
 package fr.univlille.sae.controller;
 
 import fr.univlille.sae.Main;
-import fr.univlille.sae.model.ModelMainInterface;
+import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
@@ -18,12 +18,12 @@ public class ValidationController extends Button {
     private final SizeController width;
     private final DepDiagController depDiag;
     private final FogController fog;
-    private final ModelMainInterface modelMain;
+    private final ModelMain modelMain;
     private final GenerateMazeController generateMaze;
     private final IAMonsterController IAMonstre;
     private final IAHunterController IAHunter;
 
-    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, DepDiagController depDiag, FogController fog, GenerateMazeController generateMaze, IAMonsterController IAMonstre, IAHunterController IAHunter, ModelMainInterface modelMain) {
+    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, DepDiagController depDiag, FogController fog, GenerateMazeController generateMaze, IAMonsterController IAMonstre, IAHunterController IAHunter, ModelMain modelMain) {
         this.modelMain = modelMain;
         this.nameMonster = nameMonster;
         this.nameHunter = nameHunter;

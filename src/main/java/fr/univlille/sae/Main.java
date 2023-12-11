@@ -1,7 +1,6 @@
 package fr.univlille.sae;
 
 import fr.univlille.sae.model.ModelMain;
-import fr.univlille.sae.model.ModelMainInterface;
 import fr.univlille.sae.view.HunterView;
 import fr.univlille.sae.view.MainView;
 import fr.univlille.sae.view.MonsterView;
@@ -56,7 +55,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        ModelMainInterface modelMain = new ModelMain();
+        ModelMain modelMain = new ModelMain();
         new MainView(modelMain);
         new ParameterView(modelMain);
         new HunterView(modelMain);

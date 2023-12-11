@@ -4,7 +4,7 @@ import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.*;
-import fr.univlille.sae.model.ModelMainInterface;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 public class ParameterView extends Stage implements Observer {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 500;
-    private final ModelMainInterface modelMain;
+    private final ModelMain modelMain;
     private Label nameMonster;
     private Label nameHunter;
     private Label titreHeight;
@@ -37,7 +37,7 @@ public class ParameterView extends Stage implements Observer {
     private IAMonsterController IAMonstre;
     private IAHunterController IAHunter;
 
-    public ParameterView(ModelMainInterface modelMain) {
+    public ParameterView(ModelMain modelMain) {
         this.modelMain = modelMain;
         setTitle("S3.02_G1_Parametres");
         setParameterNodes();

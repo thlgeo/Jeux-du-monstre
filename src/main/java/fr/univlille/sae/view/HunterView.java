@@ -7,8 +7,7 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
 import fr.univlille.sae.model.Cell;
-import fr.univlille.sae.model.MainMonsterBot;
-import fr.univlille.sae.model.ModelMainInterface;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,14 +27,14 @@ import javafx.stage.Stage;
 public class HunterView extends Stage implements Observer {
     public static final int MARGIN = 150;
 
-    private final ModelMainInterface modelMain;
+    private final ModelMain modelMain;
     private Label titre;
     private Label tour;
     private MazeController mc;
     private Button ready;
     private Label nbTour;
 
-    public HunterView(ModelMainInterface modelMain) {
+    public HunterView(ModelMain modelMain) {
         this.modelMain = modelMain;
         setTitle("S3.02_G1_Chasseur");
         setResizable(false);
@@ -155,11 +154,14 @@ public class HunterView extends Stage implements Observer {
     private void setPosition() {
         double effectiveWidth;
         double effectiveHeight;
-        if(modelMain instanceof MainMonsterBot) {
+        /*
+        if(modelMain.MonsterIsIA()) {
             effectiveWidth = (MainView.BOUNDS.getMaxX() / 2) - calcEffectiveSize(modelMain.getNbCols()) / 2;
         } else {
             effectiveWidth = MainView.BOUNDS.getMaxX();
         }
+        */
+        effectiveWidth = MainView.BOUNDS.getMaxX();
         effectiveHeight = MainView.BOUNDS.getMinY();
         setX(effectiveWidth);
         setY(effectiveHeight);

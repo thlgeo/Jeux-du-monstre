@@ -25,7 +25,7 @@ import java.util.Random;
  * @see Hunter
  * @see Cell
  */
-public class ModelMain extends Subject implements ModelMainInterface {
+public class ModelMain extends Subject{
 
     private static final int NB_TOUR_MIN = 5;
     private static final Random RDM = new Random();
@@ -44,8 +44,8 @@ public class ModelMain extends Subject implements ModelMainInterface {
     protected Cell[][] maze;
     protected boolean deplacementDiag = false;
     protected boolean fog = false;
-    protected boolean monsterIA = false;
-    protected boolean hunterIA = false;
+    protected boolean monsterIsIA = false;
+    protected boolean hunterIsIA = false;
     protected String IAMonsterName = "IA Monster";
     protected String IAHunterName = "IA Hunter";
 
@@ -86,6 +86,9 @@ public class ModelMain extends Subject implements ModelMainInterface {
         this(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
     }
 
+    /**
+     * Initialise un tableau de boolean pour l'IA du monstre et lui transmet l'emplacement de la sortie
+     */
     private void setMonsterIA() {
         boolean[][] booleanMaze = new boolean[nbRows][nbCols];
         for(int i = 0; i < nbRows; i++) {
@@ -99,6 +102,9 @@ public class ModelMain extends Subject implements ModelMainInterface {
         IAMonster.update(event);
     }
 
+    /**
+     * Permet créer un labyrinthe soit importé, soit généré en fonction de la valeur de generateMaze
+     */
     private void createMaze() {
         if(generateMaze) {
             this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();
@@ -112,7 +118,7 @@ public class ModelMain extends Subject implements ModelMainInterface {
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIA, hunterIA);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA);
     }
 
     public int getNbRows() {
@@ -127,6 +133,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
         return maze[row][col];
     }
 
+    /**
+     * Renvoie les coordonnées de la sortie
+     *
+     * @return (ICoordinate) Coordonnées de la sortie
+     */
     protected ICoordinate getExit() {
         Cell c;
         for(int i = 0; i < nbRows; i++) {
@@ -144,17 +155,22 @@ public class ModelMain extends Subject implements ModelMainInterface {
      * @param coord coordonnées choisies
      */
     public void deplacementMonstre(ICoordinate coord) {
-        if(hunterIA && monsterIA) {
+        if(hunterIsIA && monsterIsIA) {
             deplacementIA(coord);
-        } else if(hunterIA) {
+        } else if(hunterIsIA) {
             deplacementIAChasseur(coord);
-        } else if(monsterIA) {
+        } else if(monsterIsIA) {
             deplacementIAMonster(coord);
         } else {
             deplacementHumain(coord);
         }
     }
 
+    /**
+     * c'est la version de deplacementMonstre pour le mode humain vs humain
+     *
+     * @param coord coordonnées choisies
+     */
     private void deplacementHumain(ICoordinate coord) {
         try {
             if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
@@ -183,6 +199,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
         hunter.notify(CHANGER_TOUR);
     }
 
+    /**
+     * c'est la version de deplacementMonstre pour le mode humain vs IA Chasseur
+     *
+     * @param coord coordonnées choisies
+     */
     private void deplacementIAChasseur(ICoordinate coord) {
         try {
             if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
@@ -211,6 +232,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
         tirerChasseur(IAHunter.play());
     }
 
+    /**
+     * c'est la version de deplacementMonstre pour le mode humain vs IA Monstre
+     *
+     * @param coord coordonnées choisies
+     */
     private void deplacementIAMonster(ICoordinate coord) {
         try {
             if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();
@@ -231,6 +257,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
         hunter.notify(CHANGER_TOUR);
     }
 
+    /**
+     * c'est la version de deplacementMonstre pour le mode IA Monstre vs IA Chasseur
+     *
+     * @param coord coordonnées choisies
+     */
     private void deplacementIA(ICoordinate coord) {
         try {
             if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();
@@ -251,6 +282,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
         tirerChasseur(IAHunter.play());
     }
 
+    /**
+     * Mets à jour les cellules autour du monstre pour le mode brouillard
+     *
+     * @param newCoord (ICoordinate) Nouvelles coordonnées du monstre
+     */
     protected void updateAround(ICoordinate newCoord) {
         int newRow = newCoord.getRow();
         int newCol = newCoord.getCol();
@@ -293,6 +329,12 @@ public class ModelMain extends Subject implements ModelMainInterface {
         return c.getInfo() != ICellEvent.CellInfo.EMPTY ? initMonsterPosition() : coord;
     }
 
+    /**
+     * Renvoie les coordonnées du monstre
+     *
+     * @param lastTurn (boolean) Si on veut les coordonnées du monstre du dernier tour ou non
+     * @return (ICoordinate) Coordonnées du monstre
+     */
     private ICoordinate getCoordinateMonster(boolean lastTurn) {
         int tour = lastTurn ? turn - 1 : turn;
         for(int i = 0; i < nbRows; i++) {
@@ -315,9 +357,9 @@ public class ModelMain extends Subject implements ModelMainInterface {
         hunter.notify("endGame");
         reset();
         if(isMonster) {
-            notifyObservers(monsterIA ? IAMonsterName : monster.getName());
+            notifyObservers(monsterIsIA ? IAMonsterName : monster.getName());
         } else {
-            notifyObservers(hunterIA ? IAHunterName : hunter.getName());
+            notifyObservers(hunterIsIA ? IAHunterName : hunter.getName());
         }
     }
 
@@ -327,17 +369,22 @@ public class ModelMain extends Subject implements ModelMainInterface {
      * @param coord coordonnées choisies
      */
     public void tirerChasseur(ICoordinate coord) {
-        if(hunterIA && monsterIA) {
+        if(hunterIsIA && monsterIsIA) {
             tirerIA(coord);
-        } else if(hunterIA) {
+        } else if(hunterIsIA) {
             tirerIAChasseur(coord);
-        } else if(monsterIA) {
+        } else if(monsterIsIA) {
             tirerIAMonster(coord);
         } else {
             tirerHumain(coord);
         }
     }
 
+    /**
+     * c'est la version de tirerChasseur pour le mode humain vs humain
+     *
+     * @param coord coordonnées choisies
+     */
     private void tirerHumain(ICoordinate coord) {
         if(coord.equals(monster.getCoordinateMonster())) {
             victory(false);
@@ -353,6 +400,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
         monster.notify(CHANGER_TOUR);
     }
 
+    /**
+     * c'est la version de tirerChasseur pour le mode humain vs IA Chasseur
+     *
+     * @param coord coordonnées choisies
+     */
     private void tirerIAChasseur(ICoordinate coord) {
         if(coord.equals(monster.getCoordinateMonster())) {
             victory(false);
@@ -367,6 +419,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
         monster.notify(CHANGER_TOUR);
     }
 
+    /**
+     * c'est la version de tirerChasseur pour le mode humain vs IA Monstre
+     *
+     * @param coord coordonnées choisies
+     */
     private void tirerIAMonster(ICoordinate coord) {
         if(coord.equals(getCoordinateMonster(false))) {
             victory(false);
@@ -379,6 +436,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
         deplacementMonstre(IAMonster.play());
     }
 
+    /**
+     * c'est la version de tirerChasseur pour le mode IA Monstre vs IA Chasseur
+     *
+     * @param coord coordonnées choisies
+     */
     private void tirerIA(ICoordinate coord) {
         if(coord.equals(getCoordinateMonster(false))) {
             victory(false);
@@ -397,7 +459,11 @@ public class ModelMain extends Subject implements ModelMainInterface {
      * @param monsterName (String)    Nom du monstre
      * @param height      (int)       hauteur du labyrinthe
      * @param width       (int)       largeur du labyrinthe
-     * @param depDiag     (boolean)       déplacement en diagonale
+     * @param depDiag     (boolean)   déplacement en diagonale
+     * @param fog         (boolean)   brouillard
+     * @param generateMaze (boolean)  génération du labyrinthe
+     * @param IAMonster   (boolean)   le monster est une IA
+     * @param IAHunter    (boolean)   le chasseur est une IA
      */
     public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter) {
         this.nbRows = height;
@@ -419,8 +485,8 @@ public class ModelMain extends Subject implements ModelMainInterface {
         IAHunterName = hunterName;
         setMonsterIA();
         this.IAHunter.initialize(nbRows, nbCols);
-        monsterIA = IAMonster;
-        hunterIA = IAHunter;
+        monsterIsIA = IAMonster;
+        hunterIsIA = IAHunter;
         turn = DEFAULT_TURN;
         notifyObservers("ParamMAJ");
     }
@@ -464,7 +530,7 @@ public class ModelMain extends Subject implements ModelMainInterface {
     public void notifyDiscoveredMaze() {
         monster.notifyDiscoveredMaze();
         hunter.notifyDiscoveredMaze();
-        if(monsterIA) deplacementMonstre(null); //on commence la jeu par l'initialisation du monstre
+        if(monsterIsIA) deplacementMonstre(null); //on commence la jeu par l'initialisation du monstre
     }
 
     /**
@@ -478,8 +544,8 @@ public class ModelMain extends Subject implements ModelMainInterface {
      * Notifie aux observers d'afficher les pages monstre et le chasseur
      */
     public void notifyShowMH() {
-        if(!monsterIA) monster.notifyShow();
-        if(!hunterIA) hunter.notifyShow();
+        if(!monsterIsIA) monster.notifyShow();
+        if(!hunterIsIA) hunter.notifyShow();
         notifyObservers("close");
     }
 }

@@ -58,4 +58,4 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 ### Théo Lenglart
 
 - Implémentation d'une IA random pour le Monster
-- Implémentation d'une IA random pour le Hunter mais lorsqu'il trouve une cellule ou le monstre est passé, réduit sa portée de tir à (tour actuel - tour où le monstre est passé)
+- Implémentation d'une IA random pour le Hunter mais lorsqu'il trouve une cellule où le monstre est passé, réduit sa portée de tir à (tour actuel - tour où le monstre est passé)

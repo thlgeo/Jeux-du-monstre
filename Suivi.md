@@ -26,4 +26,4 @@
 
 - Aide pour l'implémentation de l'agorithm de Prim
 - Ajout des Hunter/Monster Random
-- Modification de l'UML et de l'analyse
+- Modification de l'UML et de l'analyse 

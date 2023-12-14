@@ -109,7 +109,6 @@ public class HunterView extends Stage implements Observer {
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         nbTour = new Label("  Tour 1");
         nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        System.out.println("je wait la");
         setWaitScene();
 
     }

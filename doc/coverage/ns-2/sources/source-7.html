@@ -1,0 +1,138 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > LaunchButton</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: LaunchButton (fr.univlille.sae.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LaunchButton</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.controller;
+&nbsp;
+&nbsp;import fr.univlille.sae.Main;
+&nbsp;import fr.univlille.sae.model.ModelMain;
+&nbsp;import javafx.scene.control.Button;
+&nbsp;
+&nbsp;/**
+&nbsp; * Cette classe correspond au bouton de lancement du jeu
+&nbsp; *
+&nbsp; * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+&nbsp; * @version 1.0
+&nbsp; */
+&nbsp;public class LaunchButton extends Button {
+&nbsp;
+&nbsp;    private final ModelMain modelMain;
+&nbsp;
+&nbsp;    public LaunchButton(ModelMain modelMain) {
+<b class="nc">&nbsp;        super(&quot;Jouer&quot;);</b>
+<b class="nc">&nbsp;        this.modelMain = modelMain;</b>
+<b class="nc">&nbsp;        setAction();</b>
+<b class="nc">&nbsp;        setMinSize(200, 30);</b>
+<b class="nc">&nbsp;        setFont(Main.loadFont(Main.ARCADE_FONT, 20));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet de paramétrer les actions du bouton, c&#39;est-à-dire afficher et initialiser les pages Monster et Hunter
+&nbsp;     */
+&nbsp;    private void setAction() {
+<b class="nc">&nbsp;        setOnAction(event -&gt; {</b>
+<b class="nc">&nbsp;            modelMain.notifyShowMH();</b>
+<b class="nc">&nbsp;            modelMain.notifyDiscoveredMaze();</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

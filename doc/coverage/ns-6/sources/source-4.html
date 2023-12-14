@@ -1,0 +1,379 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Monster</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.model.players</a>
+</div>
+
+<h1>Coverage Summary for Class: Monster (fr.univlille.sae.model.players)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Monster</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    76%
+  </span>
+  <span class="absValue">
+    (19/25)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    65.5%
+  </span>
+  <span class="absValue">
+    (57/87)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.model.players;
+&nbsp;
+&nbsp;import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+&nbsp;import fr.univlille.iutinfo.utils.Subject;
+&nbsp;import fr.univlille.sae.model.Cell;
+&nbsp;import fr.univlille.sae.model.Coordinate;
+&nbsp;import fr.univlille.sae.model.events.CellEvent;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe Monster - Un monstre est un joueur humain qui peut se déplacer sur une cellule (si la cellule peut être atteinte).
+&nbsp; *
+&nbsp; * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+&nbsp; * @version 1.0.0
+&nbsp; * @see IMonsterStrategy
+&nbsp; * @see ICellEvent
+&nbsp; * @see ICoordinate
+&nbsp; * @see Cell
+&nbsp; */
+&nbsp;public class Monster extends Subject implements IMonsterStrategy {
+&nbsp;    private static final int DEPLACEMENT = 1;
+&nbsp;    protected boolean[][] maze;
+&nbsp;    protected String name;
+&nbsp;    protected Cell[][] discoveredMaze;
+&nbsp;    protected ICoordinate coordinateMonster;
+&nbsp;    protected ICoordinate lastShotHunter;
+&nbsp;    protected boolean fog;
+&nbsp;
+<b class="fc">&nbsp;    public Monster(String name, Cell[][] discoveredMaze) {</b>
+<b class="fc">&nbsp;        this.name = name;</b>
+<b class="fc">&nbsp;        this.discoveredMaze = copyOf(discoveredMaze);</b>
+<b class="fc">&nbsp;        this.maze = convert();</b>
+<b class="fc">&nbsp;        coordinateMonster = null;</b>
+<b class="fc">&nbsp;        lastShotHunter = null;</b>
+<b class="fc">&nbsp;        fog = false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Définie le labyrinthe du monstre.
+&nbsp;     *
+&nbsp;     * @param maze (Cell[][])   Le labyrinthe
+&nbsp;     */
+&nbsp;    public void setMaze(Cell[][] maze) {
+<b class="fc">&nbsp;        discoveredMaze = copyOf(maze);</b>
+<b class="fc">&nbsp;        this.maze = convert();</b>
+<b class="fc">&nbsp;        coordinateMonster = null;</b>
+<b class="fc">&nbsp;        lastShotHunter = null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMazeEmpty(int nbRow, int nbCol) {
+<b class="nc">&nbsp;        this.discoveredMaze = new Cell[nbRow][nbCol];</b>
+<b class="nc">&nbsp;        for(int i = 0; i &lt; nbRow; i++) {</b>
+<b class="nc">&nbsp;            for(int j = 0; j &lt; nbCol; j++) {</b>
+<b class="nc">&nbsp;                this.discoveredMaze[i][j] = new Cell(ICellEvent.CellInfo.EMPTY);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        this.maze = convert();</b>
+<b class="nc">&nbsp;        coordinateMonster = null;</b>
+<b class="nc">&nbsp;        lastShotHunter = null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Convertie le labyrinthe de type Cell[][] à boolean[][]. Les cellules du nouveau labyrinthe sont égales à true si la cellule est vide ou égale à zéro, sinon false.
+&nbsp;     *
+&nbsp;     * @return (boolean[][])   Le labyrinthe converti
+&nbsp;     */
+&nbsp;    protected boolean[][] convert() {
+<b class="fc">&nbsp;        boolean[][] mazeB = new boolean[discoveredMaze.length][discoveredMaze[0].length];</b>
+<b class="fc">&nbsp;        for(int i = 0; i &lt; discoveredMaze.length; i++) {</b>
+<b class="fc">&nbsp;            for(int j = 0; j &lt; discoveredMaze[0].length; j++) {</b>
+<b class="fc">&nbsp;                mazeB[i][j] = convertCell(discoveredMaze[i][j]);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return mazeB;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean convertCell(Cell cellule) {
+<b class="fc">&nbsp;        return cellule.getInfo().equals(CellInfo.EMPTY) || cellule.getInfo().equals(CellInfo.EXIT) || cellule.getInfo().equals(CellInfo.MONSTER);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * La fonction play n&#39;est pas implémentée pour le monstre.
+&nbsp;     *
+&nbsp;     * @throws UnsupportedOperationException Exception levée si la fonction est appelée
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public ICoordinate play() {
+<b class="nc">&nbsp;        throw new UnsupportedOperationException(&quot;Unimplemented method &#39;play&#39;&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Met à jour le labyrinthe découvert avec l&#39;information reçu.
+&nbsp;     *
+&nbsp;     * @param cellule (ICellEvent)    Information reçu à mettre à jour
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update(ICellEvent cellule) {
+<b class="fc">&nbsp;        if(cellule.getState() == CellInfo.HUNTER) {</b>
+<b class="fc">&nbsp;            notifyObservers(cellule);</b>
+<b class="fc">&nbsp;            if(lastShotHunter != null) {</b>
+<b class="nc">&nbsp;                Cell cell = get(lastShotHunter);</b>
+<b class="nc">&nbsp;                if(fog &amp;&amp; !cell.isVisited()) {</b>
+<b class="nc">&nbsp;                    notifyObservers(new CellEvent(-1, cell.getInfo(), lastShotHunter));</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    notifyObservers(new CellEvent(cell.getTurn(), cell.getInfo(), lastShotHunter));</b>
+&nbsp;                }
+&nbsp;            }
+<b class="fc">&nbsp;            lastShotHunter = cellule.getCoord();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            ICoordinate coord = cellule.getCoord();</b>
+<b class="fc">&nbsp;            Cell updateCell = this.discoveredMaze[coord.getRow()][coord.getCol()];</b>
+<b class="fc">&nbsp;            updateCell.setInfo(cellule.getState());</b>
+<b class="fc">&nbsp;            updateCell.setTurn(cellule.getTurn());</b>
+<b class="fc">&nbsp;            updateCell.visited();</b>
+<b class="fc">&nbsp;            if(fog) {</b>
+<b class="nc">&nbsp;                maze[coord.getRow()][coord.getCol()] = convertCell(updateCell);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        notifyObservers(cellule);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialise le labyrinthe avec un tableau à deux dimensions de booléen.
+&nbsp;     *
+&nbsp;     * @param maze (boolean[][])  Le labyrinthe.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(boolean[][] maze) {
+<b class="nc">&nbsp;        this.maze = maze;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean canMove(ICoordinate coord, boolean diag) {
+<b class="fc">&nbsp;        if(diag) return canMoveDiag(coord);</b>
+<b class="fc">&nbsp;        return canMoveNotDiag(coord);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Vérifie si le monstre peut se déplacer aux coordonnées indiquées (diagonales incluses).
+&nbsp;     *
+&nbsp;     * @param coord (ICoordinate)  Les coordonnées à verifier
+&nbsp;     * @return (boolean)   True si le monstre peut s&#39;y déplacer sinon false
+&nbsp;     */
+&nbsp;    private boolean canMoveDiag(ICoordinate coord) {
+<b class="fc">&nbsp;        if((coord.getCol() &lt;= coordinateMonster.getCol() + DEPLACEMENT &amp;&amp; coord.getCol() &gt;= coordinateMonster.getCol() - DEPLACEMENT) &amp;&amp; (coord.getRow() &lt;= coordinateMonster.getRow() + DEPLACEMENT &amp;&amp; coord.getRow() &gt;= coordinateMonster.getRow() - DEPLACEMENT)) {</b>
+<b class="fc">&nbsp;            return maze[coord.getRow()][coord.getCol()] &amp;&amp; !coord.equals(coordinateMonster);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Vérifie si le monstre peut se déplacer aux coordonnées indiquées (diagonales exclues).
+&nbsp;     *
+&nbsp;     * @param coord (ICoordinate)  Les coordonnées à verifier
+&nbsp;     * @return (boolean)   True si le monstre peut s&#39;y déplacer sinon false
+&nbsp;     */
+&nbsp;    private boolean canMoveNotDiag(ICoordinate coord) {
+<b class="fc">&nbsp;        return around().contains(coord) &amp;&amp; (maze[coord.getRow()][coord.getCol()] &amp;&amp; !coord.equals(coordinateMonster));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renvoie les coordonnées autour du monstre.
+&nbsp;     *
+&nbsp;     * @return (List &lt; ICoordinate &gt;) liste des coordonnées atteignables.
+&nbsp;     */
+&nbsp;    private List&lt;ICoordinate&gt; around() {
+<b class="fc">&nbsp;        List&lt;ICoordinate&gt; l = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        int row = coordinateMonster.getRow();</b>
+<b class="fc">&nbsp;        int col = coordinateMonster.getCol();</b>
+<b class="fc">&nbsp;        l.add(new Coordinate(row + DEPLACEMENT, col));</b>
+<b class="fc">&nbsp;        l.add(new Coordinate(row - DEPLACEMENT, col));</b>
+<b class="fc">&nbsp;        l.add(new Coordinate(row, col + DEPLACEMENT));</b>
+<b class="fc">&nbsp;        l.add(new Coordinate(row, col - DEPLACEMENT));</b>
+<b class="fc">&nbsp;        return l;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getName() {
+<b class="fc">&nbsp;        return name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setName(String name) {
+<b class="fc">&nbsp;        this.name = name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ICoordinate getCoordinateMonster() {
+<b class="fc">&nbsp;        return coordinateMonster;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCoordinateMonster(ICoordinate coordinateMonster) {
+<b class="fc">&nbsp;        this.coordinateMonster = coordinateMonster;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ICoordinate getLastShotHunter() {
+<b class="fc">&nbsp;        return lastShotHunter;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="nc">&nbsp;        return &quot;Monster &quot; + this.name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie les observateurs avec une data.
+&nbsp;     *
+&nbsp;     * @param data data à notifier
+&nbsp;     */
+&nbsp;    public void notify(Object data) {
+<b class="fc">&nbsp;        notifyObservers(data);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie les observateurs avec le labyrinthe découvert par le monstre.
+&nbsp;     */
+&nbsp;    public void notifyDiscoveredMaze() {
+<b class="nc">&nbsp;        if(fog) {</b>
+<b class="nc">&nbsp;            Cell[][] mazeTemps = new Cell[discoveredMaze.length][discoveredMaze[0].length];</b>
+<b class="nc">&nbsp;            for(Cell[] row : mazeTemps) {</b>
+<b class="nc">&nbsp;                for(int i = 0; i &lt; row.length; i++) {</b>
+<b class="nc">&nbsp;                    Cell cell = new Cell(CellInfo.EMPTY);</b>
+<b class="nc">&nbsp;                    cell.setTurn(-1);</b>
+<b class="nc">&nbsp;                    row[i] = cell;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            notifyObservers(mazeTemps);</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            notifyObservers(discoveredMaze);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Récupère la cellule à la coordonnée spécifiée en paramètre.
+&nbsp;     *
+&nbsp;     * @param coord (ICoordinate)   Coordonnée
+&nbsp;     * @return (Cell)  Cellule à la coordonnée
+&nbsp;     */
+&nbsp;    public Cell get(ICoordinate coord) {
+<b class="fc">&nbsp;        if(coord == null) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(coord.getRow() &lt; 0 || coord.getRow() &gt;= discoveredMaze.length) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(coord.getCol() &lt; 0 || coord.getCol() &gt;= discoveredMaze[0].length) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return discoveredMaze[coord.getRow()][coord.getCol()];</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie les observateurs que la partie est en cours.
+&nbsp;     */
+&nbsp;    public void notifyShow() {
+<b class="nc">&nbsp;        notifyObservers();</b>
+&nbsp;    }
+&nbsp;    private Cell[][] copyOf(Cell[][] maze) {
+<b class="fc">&nbsp;        Cell[][] newMaze = new Cell[maze.length][];</b>
+<b class="fc">&nbsp;        for(int i = 0; i &lt; maze.length; i++) {</b>
+<b class="fc">&nbsp;            newMaze[i] = Arrays.copyOf(maze[i], maze[i].length);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return newMaze;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setFog(boolean fog) {
+<b class="fc">&nbsp;        this.fog = fog;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Cell[][] getDiscoveredMaze() {
+<b class="fc">&nbsp;        return discoveredMaze;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

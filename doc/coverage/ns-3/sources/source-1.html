@@ -1,0 +1,193 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Cell</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Cell (fr.univlille.sae.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Cell</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (12/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92%
+  </span>
+  <span class="absValue">
+    (23/25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.model;
+&nbsp;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe représentant une cellule de la grille.
+&nbsp; * Une cellule est caractérisée une coordonnée, son type et le tour auquel elle a été découverte.
+&nbsp; *
+&nbsp; * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+&nbsp; * @version 1.0.0
+&nbsp; * @see ICoordinate
+&nbsp; * @see CellInfo
+&nbsp; */
+&nbsp;public class Cell {
+&nbsp;    public static final String IS_WALL = &quot;W&quot;;
+<b class="fc">&nbsp;    protected static Map&lt;Character, CellInfo&gt; charToInfo = new HashMap&lt;&gt;();</b>
+&nbsp;    protected CellInfo info;
+&nbsp;    protected int turn;
+<b class="fc">&nbsp;    protected boolean visited = false;</b>
+&nbsp;
+<b class="fc">&nbsp;    Cell(CellInfo info, int turn) {</b>
+<b class="fc">&nbsp;        if(charToInfo.isEmpty()) initialiseCharToInfo();</b>
+<b class="fc">&nbsp;        this.info = info;</b>
+<b class="fc">&nbsp;        this.turn = turn;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    Cell(char car) {
+<b class="fc">&nbsp;        this(charToInfo.get(car));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Cell(CellInfo info) {
+<b class="fc">&nbsp;        this(info, 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Cell() {
+<b class="fc">&nbsp;        this(null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected static void initialiseCharToInfo() {
+<b class="fc">&nbsp;        charToInfo.put(&#39;W&#39;, CellInfo.WALL);</b>
+<b class="fc">&nbsp;        charToInfo.put(&#39;E&#39;, CellInfo.EMPTY);</b>
+<b class="fc">&nbsp;        charToInfo.put(&#39;H&#39;, CellInfo.HUNTER);</b>
+<b class="fc">&nbsp;        charToInfo.put(&#39;M&#39;, CellInfo.MONSTER);</b>
+<b class="fc">&nbsp;        charToInfo.put(&#39;X&#39;, CellInfo.EXIT);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CellInfo getInfo() {
+<b class="fc">&nbsp;        return info;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setInfo(CellInfo info) {
+<b class="fc">&nbsp;        this.info = info;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getTurn() {
+<b class="fc">&nbsp;        return turn;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTurn(int turn) {
+<b class="fc">&nbsp;        this.turn = turn;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object o) {
+<b class="fc">&nbsp;        if(this == o) return true;</b>
+<b class="fc">&nbsp;        if(o == null || getClass() != o.getClass()) return false;</b>
+<b class="fc">&nbsp;        Cell cell = (Cell) o;</b>
+<b class="fc">&nbsp;        return info == cell.info &amp;&amp; turn == cell.turn;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void visited() {
+<b class="fc">&nbsp;        visited = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isVisited() {
+<b class="nc">&nbsp;        return visited;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int hashCode() {
+<b class="nc">&nbsp;        return Objects.hash(getInfo(), getTurn());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

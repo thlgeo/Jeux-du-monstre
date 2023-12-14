@@ -1,0 +1,659 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ModelMain</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.model</a>
+</div>
+
+<h1>Coverage Summary for Class: ModelMain (fr.univlille.sae.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ModelMain</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58.3%
+  </span>
+  <span class="absValue">
+    (21/36)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50.4%
+  </span>
+  <span class="absValue">
+    (116/230)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.model;
+&nbsp;
+&nbsp;import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
+&nbsp;import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+&nbsp;import fr.univlille.iutinfo.utils.Observer;
+&nbsp;import fr.univlille.iutinfo.utils.Subject;
+&nbsp;import fr.univlille.sae.model.events.CellEvent;
+&nbsp;import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
+&nbsp;import fr.univlille.sae.model.players.Hunter;
+&nbsp;import fr.univlille.sae.model.players.IAHunter;
+&nbsp;import fr.univlille.sae.model.players.IAMonster;
+&nbsp;import fr.univlille.sae.model.players.Monster;
+&nbsp;
+&nbsp;import java.util.Random;
+&nbsp;
+&nbsp;/**
+&nbsp; * Classe Maze - La classe contient un tableau à deux dimensions de cellules permettant le lancement du jeu et son bon déroulement.
+&nbsp; *
+&nbsp; * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+&nbsp; * @version 1.0.0
+&nbsp; * @see Monster
+&nbsp; * @see Hunter
+&nbsp; * @see Cell
+&nbsp; */
+&nbsp;public class ModelMain extends Subject{
+&nbsp;
+<b class="fc">&nbsp;    private static int NB_TOUR_MIN = 5;</b>
+<b class="fc">&nbsp;    private static final Random RDM = new Random();</b>
+&nbsp;    private static final int DEFAULT_DIMENSION = 10;
+&nbsp;    private static final int DEFAULT_TURN = 1;
+&nbsp;    private static final int VISION = 1;
+&nbsp;    public static final String CHANGER_TOUR = &quot;changerTour&quot;;
+<b class="fc">&nbsp;    protected boolean generateMaze = true;</b>
+&nbsp;    protected int turn;
+&nbsp;    protected int nbRows;
+&nbsp;    protected int nbCols;
+&nbsp;    protected Hunter hunter;
+&nbsp;    protected Monster monster;
+&nbsp;    protected IMonsterStrategy IAMonster;
+&nbsp;    protected IHunterStrategy IAHunter;
+&nbsp;    protected Cell[][] maze;
+<b class="fc">&nbsp;    protected boolean deplacementDiag = false;</b>
+<b class="fc">&nbsp;    protected boolean fog = false;</b>
+<b class="fc">&nbsp;    protected boolean monsterIsIA = false;</b>
+<b class="fc">&nbsp;    protected boolean hunterIsIA = false;</b>
+<b class="fc">&nbsp;    protected String IAMonsterName = &quot;IA Monster&quot;;</b>
+<b class="fc">&nbsp;    protected String IAHunterName = &quot;IA Hunter&quot;;</b>
+&nbsp;
+<b class="nc">&nbsp;    private ModelMain(int turn, int nbRows, int nbCols) {</b>
+<b class="nc">&nbsp;        this.turn = turn;</b>
+<b class="nc">&nbsp;        this.nbRows = nbRows;</b>
+<b class="nc">&nbsp;        this.nbCols = nbCols;</b>
+<b class="nc">&nbsp;        this.maze = null;</b>
+<b class="nc">&nbsp;        createMaze();</b>
+<b class="nc">&nbsp;        this.monster = new Monster(&quot;Monster&quot;, this.maze);</b>
+<b class="nc">&nbsp;        this.hunter = new Hunter(&quot;Hunter&quot;, nbRows, nbCols);</b>
+<b class="nc">&nbsp;        this.IAMonster = new IAMonster();</b>
+<b class="nc">&nbsp;        this.IAHunter = new IAHunter();</b>
+<b class="nc">&nbsp;        setMonsterIA();</b>
+<b class="nc">&nbsp;        IAHunter.initialize(nbRows, nbCols);</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    ModelMain(int turn, int nbRows, int nbCols, boolean generateMaze) {</b>
+<b class="fc">&nbsp;        this.generateMaze = generateMaze;</b>
+<b class="fc">&nbsp;        this.turn = turn;</b>
+<b class="fc">&nbsp;        this.nbRows = nbRows;</b>
+<b class="fc">&nbsp;        this.nbCols = nbCols;</b>
+<b class="fc">&nbsp;        this.maze = null;</b>
+<b class="fc">&nbsp;        createMaze();</b>
+<b class="fc">&nbsp;        this.monster = new Monster(&quot;Monster&quot;, this.maze);</b>
+<b class="fc">&nbsp;        this.hunter = new Hunter(&quot;Hunter&quot;, nbRows, nbCols);</b>
+<b class="fc">&nbsp;        this.IAMonster = new IAMonster();</b>
+<b class="fc">&nbsp;        this.IAHunter = new IAHunter();</b>
+<b class="fc">&nbsp;        setMonsterIA();</b>
+<b class="fc">&nbsp;        IAHunter.initialize(nbRows, nbCols);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    ModelMain(int nbRows, int nbCols) {
+<b class="nc">&nbsp;        this(DEFAULT_TURN, nbRows, nbCols);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ModelMain() {
+<b class="nc">&nbsp;        this(DEFAULT_DIMENSION, DEFAULT_DIMENSION);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialise un tableau de boolean pour l&#39;IA du monstre et lui transmet l&#39;emplacement de la sortie
+&nbsp;     */
+&nbsp;    private void setMonsterIA() {
+<b class="fc">&nbsp;        boolean[][] booleanMaze = new boolean[nbRows][nbCols];</b>
+<b class="fc">&nbsp;        for(int i = 0; i &lt; nbRows; i++) {</b>
+<b class="fc">&nbsp;            for(int j = 0; j &lt; nbCols; j++) {</b>
+<b class="fc">&nbsp;                booleanMaze[i][j] = maze[i][j].getInfo() != ICellEvent.CellInfo.WALL;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        IAMonster.initialize(booleanMaze);</b>
+<b class="fc">&nbsp;        ICoordinate exit = getExit();</b>
+<b class="fc">&nbsp;        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.EXIT, exit);</b>
+<b class="fc">&nbsp;        IAMonster.update(event);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet créer un labyrinthe soit importé, soit généré en fonction de la valeur de generateMaze
+&nbsp;     */
+&nbsp;    private void createMaze() {
+<b class="fc">&nbsp;        if(generateMaze) {</b>
+<b class="fc">&nbsp;            this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            this.maze = new MazeFactory(this.nbRows, this.nbCols).importMaze();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Reinitialise le labyrinthe avec les paramètres déjà définis
+&nbsp;     */
+&nbsp;    protected void reset() {
+<b class="fc">&nbsp;        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getNbRows() {
+<b class="fc">&nbsp;        return nbRows;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getNbCols() {
+<b class="fc">&nbsp;        return nbCols;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected Cell getCell(int row, int col) {
+<b class="fc">&nbsp;        return maze[row][col];</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renvoie les coordonnées de la sortie
+&nbsp;     *
+&nbsp;     * @return (ICoordinate) Coordonnées de la sortie
+&nbsp;     */
+&nbsp;    protected ICoordinate getExit() {
+&nbsp;        Cell c;
+<b class="fc">&nbsp;        for(int i = 0; i &lt; nbRows; i++) {</b>
+<b class="fc">&nbsp;            for(int j = 0; j &lt; nbCols; j++) {</b>
+<b class="fc">&nbsp;                c = getCell(i, j);</b>
+<b class="fc">&nbsp;                if(c.getInfo() == CellInfo.EXIT) return new Coordinate(i, j);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie aux observers si le monstre a bougé ou non, ou s&#39;il a gagné.
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    public void deplacementMonstre(ICoordinate coord) {
+<b class="fc">&nbsp;        if(hunterIsIA &amp;&amp; monsterIsIA) {</b>
+<b class="nc">&nbsp;            deplacementIA(coord);</b>
+<b class="fc">&nbsp;        } else if(hunterIsIA) {</b>
+<b class="nc">&nbsp;            deplacementIAChasseur(coord);</b>
+<b class="fc">&nbsp;        } else if(monsterIsIA) {</b>
+<b class="nc">&nbsp;            deplacementIAMonster(coord);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            deplacementHumain(coord);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * c&#39;est la version de deplacementMonstre pour le mode humain vs humain
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    private void deplacementHumain(ICoordinate coord) {
+&nbsp;        try {
+<b class="fc">&nbsp;            if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();</b>
+<b class="fc">&nbsp;            if(!this.monster.canMove(coord, deplacementDiag)) {</b>
+<b class="fc">&nbsp;                monster.notify(&quot;cantMove&quot;);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="fc">&nbsp;            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {</b>
+<b class="fc">&nbsp;                victory(true);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="fc">&nbsp;        } catch(MonsterNotFoundException e) {</b>
+<b class="fc">&nbsp;            coord = this.initMonsterPosition();</b>
+<b class="fc">&nbsp;            ICoordinate coordExit = getExit();</b>
+<b class="fc">&nbsp;            while(inRange(coord, coordExit)) {</b>
+<b class="nc">&nbsp;                coord = this.initMonsterPosition();</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);</b>
+<b class="fc">&nbsp;        update(coord, ICellEvent.CellInfo.MONSTER);</b>
+<b class="fc">&nbsp;        monster.setCoordinateMonster(coord);</b>
+<b class="fc">&nbsp;        if(fog) {</b>
+<b class="nc">&nbsp;            updateAround(coord);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        monster.update(event);</b>
+<b class="fc">&nbsp;        hunter.notify(CHANGER_TOUR);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * c&#39;est la version de deplacementMonstre pour le mode humain vs IA Chasseur
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    private void deplacementIAChasseur(ICoordinate coord) {
+&nbsp;        try {
+<b class="nc">&nbsp;            if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();</b>
+<b class="nc">&nbsp;            if(!this.monster.canMove(coord, deplacementDiag)) {</b>
+<b class="nc">&nbsp;                monster.notify(&quot;cantMove&quot;);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="nc">&nbsp;            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {</b>
+<b class="nc">&nbsp;                victory(true);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="nc">&nbsp;        } catch(MonsterNotFoundException e) {</b>
+<b class="nc">&nbsp;            coord = this.initMonsterPosition();</b>
+<b class="nc">&nbsp;            ICoordinate coordExit = getExit();</b>
+<b class="nc">&nbsp;            while(inRange(coord, coordExit)) {</b>
+<b class="nc">&nbsp;                coord = this.initMonsterPosition();</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);</b>
+<b class="nc">&nbsp;        update(coord, ICellEvent.CellInfo.MONSTER);</b>
+<b class="nc">&nbsp;        monster.setCoordinateMonster(coord);</b>
+<b class="nc">&nbsp;        if(fog) {</b>
+<b class="nc">&nbsp;            updateAround(coord);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        monster.update(event);</b>
+<b class="nc">&nbsp;        tirerChasseur(IAHunter.play());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * c&#39;est la version de deplacementMonstre pour le mode humain vs IA Monstre
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    private void deplacementIAMonster(ICoordinate coord) {
+&nbsp;        try {
+<b class="nc">&nbsp;            if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();</b>
+<b class="nc">&nbsp;            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {</b>
+<b class="nc">&nbsp;                victory(true);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="nc">&nbsp;        } catch(MonsterNotFoundException e) {</b>
+<b class="nc">&nbsp;            coord = this.initMonsterPosition();</b>
+<b class="nc">&nbsp;            ICoordinate coordExit = getExit();</b>
+<b class="nc">&nbsp;            while(inRange(coord, coordExit)) {</b>
+<b class="nc">&nbsp;                coord = this.initMonsterPosition();</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);</b>
+<b class="nc">&nbsp;        update(coord, ICellEvent.CellInfo.MONSTER);</b>
+<b class="nc">&nbsp;        IAMonster.update(event);</b>
+<b class="nc">&nbsp;        hunter.notify(CHANGER_TOUR);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * c&#39;est la version de deplacementMonstre pour le mode IA Monstre vs IA Chasseur
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    private void deplacementIA(ICoordinate coord) {
+&nbsp;        try {
+<b class="nc">&nbsp;            if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();</b>
+<b class="nc">&nbsp;            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {</b>
+<b class="nc">&nbsp;                victory(true);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="nc">&nbsp;        } catch(MonsterNotFoundException e) {</b>
+<b class="nc">&nbsp;            coord = this.initMonsterPosition();</b>
+<b class="nc">&nbsp;            ICoordinate coordExit = getExit();</b>
+<b class="nc">&nbsp;            while(inRange(coord, coordExit)) {</b>
+<b class="nc">&nbsp;                coord = this.initMonsterPosition();</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);</b>
+<b class="nc">&nbsp;        update(coord, ICellEvent.CellInfo.MONSTER);</b>
+<b class="nc">&nbsp;        IAMonster.update(event);</b>
+<b class="nc">&nbsp;        tirerChasseur(IAHunter.play());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Mets à jour les cellules autour du monstre pour le mode brouillard
+&nbsp;     *
+&nbsp;     * @param newCoord (ICoordinate) Nouvelles coordonnées du monstre
+&nbsp;     */
+&nbsp;    protected void updateAround(ICoordinate newCoord) {
+<b class="nc">&nbsp;        int newRow = newCoord.getRow();</b>
+<b class="nc">&nbsp;        int newCol = newCoord.getCol();</b>
+&nbsp;        ICoordinate coord;
+<b class="nc">&nbsp;        for(int lig = newRow - VISION; lig &lt;= newRow + VISION; lig++) {</b>
+<b class="nc">&nbsp;            for(int col = newCol - VISION; col &lt;= newCol + VISION; col++) {</b>
+<b class="nc">&nbsp;                coord = new Coordinate(lig, col);</b>
+<b class="nc">&nbsp;                Cell c = getCell(coord);</b>
+<b class="nc">&nbsp;                if(c != null) {</b>
+<b class="nc">&nbsp;                    monster.update(new CellEvent(c.getTurn(), c.getInfo(), coord));</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Vérifie si les coordonnées du monstre sont à une portée de 5 cases ou moins de la sortie.
+&nbsp;     *
+&nbsp;     * @param coordMonster (ICoordinate) Coordonnée du monstre
+&nbsp;     * @param coordExit    (ICoordinate) Coordonnée de la sortie
+&nbsp;     * @return Vrai si le monstre est à une portée de moins de 5 cases de la sortie, faux sinon
+&nbsp;     */
+&nbsp;    protected boolean inRange(ICoordinate coordMonster, ICoordinate coordExit) {
+<b class="fc">&nbsp;        int rowM = coordMonster.getRow();</b>
+<b class="fc">&nbsp;        int colM = coordMonster.getCol();</b>
+<b class="fc">&nbsp;        int rowE = coordExit.getRow();</b>
+<b class="fc">&nbsp;        int colE = coordExit.getCol();</b>
+<b class="fc">&nbsp;        return (colM &lt; colE + NB_TOUR_MIN &amp;&amp; colM &gt; colE - NB_TOUR_MIN) &amp;&amp; (rowM &lt; rowE + NB_TOUR_MIN &amp;&amp; rowM &gt; rowE - NB_TOUR_MIN);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Fonction récursive initialisant le monstre sur la maze. On prend des coordonnées aléatoires puis on regarde si la cellule associée est bien vide.
+&nbsp;     * Si elle ne l&#39;est pas, on réessaye.
+&nbsp;     *
+&nbsp;     * @return ICoorinate, les coordonnées du monstre
+&nbsp;     */
+&nbsp;    protected ICoordinate initMonsterPosition() {
+<b class="fc">&nbsp;        ICoordinate coord = new Coordinate(RDM.nextInt(this.nbRows), RDM.nextInt(this.nbCols));</b>
+<b class="fc">&nbsp;        Cell c = getCell(coord);</b>
+<b class="fc">&nbsp;        return c.getInfo() != ICellEvent.CellInfo.EMPTY ? initMonsterPosition() : coord;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renvoie les coordonnées du monstre
+&nbsp;     *
+&nbsp;     * @param lastTurn (boolean) Si on veut les coordonnées du monstre du dernier tour ou non
+&nbsp;     * @return (ICoordinate) Coordonnées du monstre
+&nbsp;     */
+&nbsp;    private ICoordinate getCoordinateMonster(boolean lastTurn) {
+<b class="nc">&nbsp;        int tour = lastTurn ? turn - 1 : turn;</b>
+<b class="nc">&nbsp;        for(int i = 0; i &lt; nbRows; i++) {</b>
+<b class="nc">&nbsp;            for(int j = 0; j &lt; nbCols; j++) {</b>
+<b class="nc">&nbsp;                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER &amp;&amp; maze[i][j].getTurn() == tour) {</b>
+<b class="nc">&nbsp;                    return new Coordinate(i, j);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Demande à indiquer la fin de la partie à monstre à joueur, puis envois le nom du vainqueur a la MainView pour afficher la fin de partie
+&nbsp;     *
+&nbsp;     * @param isMonster booléen indiquant qui a gagné (true = monstre, false = hunter)
+&nbsp;     */
+&nbsp;    protected void victory(boolean isMonster) {
+<b class="fc">&nbsp;        monster.notify(&quot;endGame&quot;);</b>
+<b class="fc">&nbsp;        hunter.notify(&quot;endGame&quot;);</b>
+<b class="fc">&nbsp;        reset();</b>
+<b class="fc">&nbsp;        if(isMonster) {</b>
+<b class="fc">&nbsp;            notifyObservers(monsterIsIA ? IAMonsterName : monster.getName());</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            notifyObservers(hunterIsIA ? IAHunterName : hunter.getName());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie aux observers si le chasseur a tiré sur le monstre (victoire), sinon informe le monstre des coordonnées du tir et informe le chasseur du type de la cellule choisie.
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    public void tirerChasseur(ICoordinate coord) {
+<b class="fc">&nbsp;        if(hunterIsIA &amp;&amp; monsterIsIA) {</b>
+<b class="nc">&nbsp;            tirerIA(coord);</b>
+<b class="fc">&nbsp;        } else if(hunterIsIA) {</b>
+<b class="nc">&nbsp;            tirerIAChasseur(coord);</b>
+<b class="fc">&nbsp;        } else if(monsterIsIA) {</b>
+<b class="nc">&nbsp;            tirerIAMonster(coord);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            tirerHumain(coord);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * c&#39;est la version de tirerChasseur pour le mode humain vs humain
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    private void tirerHumain(ICoordinate coord) {
+<b class="fc">&nbsp;        if(coord.equals(monster.getCoordinateMonster())) {</b>
+<b class="fc">&nbsp;            victory(false);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="fc">&nbsp;        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);</b>
+<b class="fc">&nbsp;        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);</b>
+<b class="fc">&nbsp;        monster.update(monsterEvent);</b>
+<b class="fc">&nbsp;        hunter.update(hunterEvent);</b>
+<b class="fc">&nbsp;        turn++;</b>
+<b class="fc">&nbsp;        hunter.notify(turn);</b>
+<b class="fc">&nbsp;        monster.notify(turn);</b>
+<b class="fc">&nbsp;        monster.notify(CHANGER_TOUR);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * c&#39;est la version de tirerChasseur pour le mode humain vs IA Chasseur
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    private void tirerIAChasseur(ICoordinate coord) {
+<b class="nc">&nbsp;        if(coord.equals(monster.getCoordinateMonster())) {</b>
+<b class="nc">&nbsp;            victory(false);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);</b>
+<b class="nc">&nbsp;        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);</b>
+<b class="nc">&nbsp;        monster.update(monsterEvent);</b>
+<b class="nc">&nbsp;        IAHunter.update(hunterEvent);</b>
+<b class="nc">&nbsp;        turn++;</b>
+<b class="nc">&nbsp;        monster.notify(turn);</b>
+<b class="nc">&nbsp;        monster.notify(CHANGER_TOUR);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * c&#39;est la version de tirerChasseur pour le mode humain vs IA Monstre
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    private void tirerIAMonster(ICoordinate coord) {
+<b class="nc">&nbsp;        if(coord.equals(getCoordinateMonster(false))) {</b>
+<b class="nc">&nbsp;            victory(false);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);</b>
+<b class="nc">&nbsp;        hunter.update(hunterEvent);</b>
+<b class="nc">&nbsp;        turn++;</b>
+<b class="nc">&nbsp;        hunter.notify(turn);</b>
+<b class="nc">&nbsp;        deplacementMonstre(IAMonster.play());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * c&#39;est la version de tirerChasseur pour le mode IA Monstre vs IA Chasseur
+&nbsp;     *
+&nbsp;     * @param coord coordonnées choisies
+&nbsp;     */
+&nbsp;    private void tirerIA(ICoordinate coord) {
+<b class="nc">&nbsp;        if(coord.equals(getCoordinateMonster(false))) {</b>
+<b class="nc">&nbsp;            victory(false);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);</b>
+<b class="nc">&nbsp;        IAHunter.update(hunterEvent);</b>
+<b class="nc">&nbsp;        turn++;</b>
+<b class="nc">&nbsp;        deplacementMonstre(IAMonster.play());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Fonction permettant de changer les paramètre de la partie
+&nbsp;     *
+&nbsp;     * @param hunterName  (String)    Nom du chasseur
+&nbsp;     * @param monsterName (String)    Nom du monstre
+&nbsp;     * @param height      (int)       hauteur du labyrinthe
+&nbsp;     * @param width       (int)       largeur du labyrinthe
+&nbsp;     * @param depDiag     (boolean)   déplacement en diagonale
+&nbsp;     * @param fog         (boolean)   brouillard
+&nbsp;     * @param generateMaze (boolean)  génération du labyrinthe
+&nbsp;     * @param IAMonster   (boolean)   le monster est une IA
+&nbsp;     * @param IAHunter    (boolean)   le chasseur est une IA
+&nbsp;     */
+&nbsp;    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter) {
+<b class="fc">&nbsp;        this.nbRows = height;</b>
+<b class="fc">&nbsp;        this.nbCols = width;</b>
+<b class="fc">&nbsp;        this.generateMaze = generateMaze;</b>
+<b class="fc">&nbsp;        createMaze();</b>
+<b class="fc">&nbsp;        this.deplacementDiag = depDiag;</b>
+<b class="fc">&nbsp;        this.fog = fog;</b>
+<b class="fc">&nbsp;        monster.setFog(fog);</b>
+<b class="fc">&nbsp;        hunter.setName(hunterName);</b>
+<b class="fc">&nbsp;        monster.setName(monsterName);</b>
+<b class="fc">&nbsp;        hunter.setRowCol(nbRows, nbCols);</b>
+<b class="fc">&nbsp;        if(fog) {</b>
+<b class="nc">&nbsp;            monster.setMazeEmpty(nbRows, nbCols);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            monster.setMaze(this.maze);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        IAMonsterName = monsterName;</b>
+<b class="fc">&nbsp;        IAHunterName = hunterName;</b>
+<b class="fc">&nbsp;        setMonsterIA();</b>
+<b class="fc">&nbsp;        this.IAHunter.initialize(nbRows, nbCols);</b>
+<b class="fc">&nbsp;        monsterIsIA = IAMonster;</b>
+<b class="fc">&nbsp;        hunterIsIA = IAHunter;</b>
+<b class="fc">&nbsp;        turn = DEFAULT_TURN;</b>
+<b class="fc">&nbsp;        notifyObservers(&quot;ParamMAJ&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Renvoie la cellule associée aux coordonnées
+&nbsp;     *
+&nbsp;     * @param coordinate (ICoordinate)   Coordonnées de la cellule
+&nbsp;     * @return (Cell)  Cellule associée aux coordonnées
+&nbsp;     */
+&nbsp;    Cell getCell(ICoordinate coordinate) {
+<b class="fc">&nbsp;        if(coordinate == null) return null;</b>
+<b class="fc">&nbsp;        if(coordinate.getRow() &lt; 0 || coordinate.getRow() &gt;= nbRows || coordinate.getCol() &lt; 0 || coordinate.getCol() &gt;= nbCols)</b>
+<b class="nc">&nbsp;            return null;</b>
+<b class="fc">&nbsp;        return maze[coordinate.getRow()][coordinate.getCol()];</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Mets à jour une cellule avec les informations de l&#39;évènement
+&nbsp;     *
+&nbsp;     * @param coordinate (ICoordinate)   Coordonnées de la cellule
+&nbsp;     * @param cellInfo   (CellInfo)  Informations de la cellule
+&nbsp;     */
+&nbsp;    void update(ICoordinate coordinate, ICellEvent.CellInfo cellInfo) {
+<b class="fc">&nbsp;        Cell updatedCell = getCell(coordinate);</b>
+<b class="fc">&nbsp;        updatedCell.setInfo(cellInfo);</b>
+<b class="fc">&nbsp;        updatedCell.setTurn(turn);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void attachMonster(Observer o) {
+<b class="nc">&nbsp;        monster.attach(o);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void attachHunter(Observer o) {
+<b class="nc">&nbsp;        hunter.attach(o);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie aux observers le labyrinthe déjà découvert
+&nbsp;     */
+&nbsp;    public void notifyDiscoveredMaze() {
+<b class="nc">&nbsp;        monster.notifyDiscoveredMaze();</b>
+<b class="nc">&nbsp;        hunter.notifyDiscoveredMaze();</b>
+<b class="nc">&nbsp;        if(monsterIsIA) deplacementMonstre(null); //on commence la jeu par l&#39;initialisation du monstre</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie aux observers d&#39;afficher les paramètres
+&nbsp;     */
+&nbsp;    public void notifyShowParameter() {
+<b class="nc">&nbsp;        notifyObservers();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifie aux observers d&#39;afficher les pages monstre et le chasseur
+&nbsp;     */
+&nbsp;    public void notifyShowMH() {
+<b class="nc">&nbsp;        if(!monsterIsIA) monster.notifyShow();</b>
+<b class="nc">&nbsp;        if(!hunterIsIA) hunter.notifyShow();</b>
+<b class="nc">&nbsp;        notifyObservers(&quot;close&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNbTourMin(int nbTourMin) {
+<b class="fc">&nbsp;        NB_TOUR_MIN = nbTourMin;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

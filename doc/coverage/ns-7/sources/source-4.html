@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ParameterView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.view</a>
+</div>
+
+<h1>Coverage Summary for Class: ParameterView (fr.univlille.sae.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParameterView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.view;
+&nbsp;
+&nbsp;import fr.univlille.iutinfo.utils.Observer;
+&nbsp;import fr.univlille.iutinfo.utils.Subject;
+&nbsp;import fr.univlille.sae.Main;
+&nbsp;import fr.univlille.sae.controller.*;
+&nbsp;import fr.univlille.sae.model.ModelMain;
+&nbsp;import javafx.geometry.Pos;
+&nbsp;import javafx.scene.Scene;
+&nbsp;import javafx.scene.control.Label;
+&nbsp;import javafx.scene.layout.VBox;
+&nbsp;import javafx.stage.Stage;
+&nbsp;
+&nbsp;/**
+&nbsp; * Cette classe est la fenêtre où l&#39;utilisateur peut changer les paramètres
+&nbsp; *
+&nbsp; * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+&nbsp; * @version 1.0
+&nbsp; */
+&nbsp;public class ParameterView extends Stage implements Observer {
+&nbsp;    public static final int WIDTH = 500;
+&nbsp;    public static final int HEIGHT = 500;
+&nbsp;    private final ModelMain modelMain;
+&nbsp;    private Label nameMonster;
+&nbsp;    private Label nameHunter;
+&nbsp;    private Label titreHeight;
+&nbsp;    private Label titreWidth;
+&nbsp;    private NameController monsterName;
+&nbsp;    private NameController hunterName;
+&nbsp;    private SizeController heigth;
+&nbsp;    private SizeController width;
+&nbsp;    private ValidationController validation;
+&nbsp;    private DepDiagController depDiag;
+&nbsp;
+&nbsp;    private GenerateMazeController generateMaze;
+&nbsp;    private FogController fog;
+&nbsp;    private IAMonsterController IAMonstre;
+&nbsp;    private IAHunterController IAHunter;
+&nbsp;
+<b class="nc">&nbsp;    public ParameterView(ModelMain modelMain) {</b>
+<b class="nc">&nbsp;        this.modelMain = modelMain;</b>
+<b class="nc">&nbsp;        setTitle(&quot;S3.02_G1_Parametres&quot;);</b>
+<b class="nc">&nbsp;        setParameterNodes();</b>
+<b class="nc">&nbsp;        setParameterScene();</b>
+<b class="nc">&nbsp;        setResizable(false);</b>
+<b class="nc">&nbsp;        modelMain.attach(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet de changer la scène de la fenêtre à la scène principale de la page de paramétrage
+&nbsp;     */
+&nbsp;    private void setParameterScene() {
+<b class="nc">&nbsp;        VBox root = new VBox();</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(nameMonster, monsterName);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), nameHunter, hunterName);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), titreHeight, heigth);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), titreWidth, width);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), depDiag);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), fog);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), generateMaze);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), IAMonstre);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), IAHunter);</b>
+<b class="nc">&nbsp;        root.getChildren().addAll(new Spacer(), validation);</b>
+<b class="nc">&nbsp;        root.setAlignment(Pos.CENTER);</b>
+<b class="nc">&nbsp;        setScene(new Scene(root, WIDTH, HEIGHT));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet d&#39;initialiser les éléments de la scène principale de la page de paramétrage
+&nbsp;     */
+&nbsp;    private void setParameterNodes() {
+<b class="nc">&nbsp;        nameMonster = new Label(&quot;Nom du Monstre&quot;);</b>
+<b class="nc">&nbsp;        nameMonster.setFont(Main.loadFont(Main.ARCADE_FONT, 20));</b>
+<b class="nc">&nbsp;        nameHunter = new Label(&quot;Nom du Chasseur&quot;);</b>
+<b class="nc">&nbsp;        nameHunter.setFont(Main.loadFont(Main.ARCADE_FONT, 20));</b>
+<b class="nc">&nbsp;        titreHeight = new Label(&quot;hauteur du labyrinthe&quot;);</b>
+<b class="nc">&nbsp;        titreHeight.setFont(Main.loadFont(Main.ARCADE_FONT, 20));</b>
+<b class="nc">&nbsp;        titreWidth = new Label(&quot;largeur du labyrinthe&quot;);</b>
+<b class="nc">&nbsp;        titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));</b>
+<b class="nc">&nbsp;        monsterName = new NameController(true);</b>
+<b class="nc">&nbsp;        hunterName = new NameController(false);</b>
+<b class="nc">&nbsp;        heigth = new SizeController();</b>
+<b class="nc">&nbsp;        width = new SizeController();</b>
+<b class="nc">&nbsp;        depDiag = new DepDiagController();</b>
+<b class="nc">&nbsp;        fog = new FogController();</b>
+<b class="nc">&nbsp;        generateMaze = new GenerateMazeController();</b>
+<b class="nc">&nbsp;        IAMonstre = new IAMonsterController();</b>
+<b class="nc">&nbsp;        IAHunter = new IAHunterController();</b>
+<b class="nc">&nbsp;        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, IAMonstre, IAHunter, modelMain);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet de mettre à jour la fenêtre
+&nbsp;     *
+&nbsp;     * @param subject correspond au sujet observé
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update(Subject subject) {
+<b class="nc">&nbsp;        show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet de mettre à jour la fenêtre à partir d&#39;une donnée
+&nbsp;     *
+&nbsp;     * @param subject correspond au sujet observé
+&nbsp;     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update(Subject subject, Object o) {
+<b class="nc">&nbsp;        close();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

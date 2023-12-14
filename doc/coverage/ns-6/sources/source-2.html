@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > IAHunter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.model.players</a>
+</div>
+
+<h1>Coverage Summary for Class: IAHunter (fr.univlille.sae.model.players)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IAHunter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    42.9%
+  </span>
+  <span class="absValue">
+    (3/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23.1%
+  </span>
+  <span class="absValue">
+    (9/39)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.model.players;
+&nbsp;
+&nbsp;import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+&nbsp;import fr.univlille.sae.model.Cell;
+&nbsp;import fr.univlille.sae.model.Coordinate;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Random;
+&nbsp;
+<b class="fc">&nbsp;public class IAHunter implements IHunterStrategy {</b>
+<b class="fc">&nbsp;    public static final Random rd = new Random();</b>
+&nbsp;    protected Cell[][] maze;
+&nbsp;    protected ICellEvent lastPositionMonster;
+&nbsp;    protected int portee;
+&nbsp;    protected int turn;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public ICoordinate play() {
+&nbsp;        ICoordinate coord;
+<b class="nc">&nbsp;        if(lastPositionMonster != null) {</b>
+<b class="nc">&nbsp;            List&lt;ICoordinate&gt; around = around(lastPositionMonster.getCoord());</b>
+<b class="nc">&nbsp;            coord = around.remove(rd.nextInt(around.size()));</b>
+<b class="nc">&nbsp;            while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL) {</b>
+<b class="nc">&nbsp;                coord = around.remove(rd.nextInt(around.size()));</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            coord = new Coordinate(rd.nextInt(maze.length), rd.nextInt(maze[0].length));</b>
+<b class="nc">&nbsp;            while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL) {</b>
+<b class="nc">&nbsp;                coord = new Coordinate(rd.nextInt(maze.length), rd.nextInt(maze[0].length));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return coord;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean inRange(ICoordinate coord) {
+<b class="nc">&nbsp;        return (coord.getRow() &gt;= 0 &amp;&amp; coord.getRow() &lt; maze.length) &amp;&amp; (coord.getCol() &gt;= 0 &amp;&amp; coord.getCol() &lt; maze[0].length);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private List&lt;ICoordinate&gt; around(ICoordinate coordonnee) {
+<b class="nc">&nbsp;        List&lt;ICoordinate&gt; l = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        int row = coordonnee.getRow();</b>
+<b class="nc">&nbsp;        int colonne = coordonnee.getCol();</b>
+&nbsp;        ICoordinate coord;
+<b class="nc">&nbsp;        for(int lig = row - portee; lig &lt;= row + portee; lig++) {</b>
+<b class="nc">&nbsp;            for(int col = colonne - portee; col &lt;= colonne + portee; col++) {</b>
+<b class="nc">&nbsp;                coord = new Coordinate(lig, col);</b>
+<b class="nc">&nbsp;                if((col != colonne || lig != row) &amp;&amp; inRange(coord)) {</b>
+<b class="nc">&nbsp;                    l.add(coord);</b>
+&nbsp;                }
+&nbsp;
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return l;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void update(ICellEvent arg0) {
+<b class="nc">&nbsp;        ICoordinate coord = arg0.getCoord();</b>
+<b class="nc">&nbsp;        Cell updateCell = this.maze[coord.getRow()][coord.getCol()];</b>
+<b class="nc">&nbsp;        updateCell.setInfo(arg0.getState());</b>
+<b class="nc">&nbsp;        turn++;</b>
+<b class="nc">&nbsp;        if(arg0.getState() == CellInfo.MONSTER &amp;&amp; (lastPositionMonster == null || lastPositionMonster.getTurn() &lt; arg0.getTurn())) {</b>
+<b class="nc">&nbsp;            lastPositionMonster = arg0;</b>
+<b class="nc">&nbsp;            portee = turn - arg0.getTurn();</b>
+<b class="nc">&nbsp;        } else if(lastPositionMonster != null) {</b>
+<b class="nc">&nbsp;            portee++;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        updateCell.setTurn(arg0.getTurn());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void initialize(int arg0, int arg1) {
+<b class="fc">&nbsp;        portee = 1;</b>
+<b class="fc">&nbsp;        turn = 1;</b>
+<b class="fc">&nbsp;        lastPositionMonster = null;</b>
+<b class="fc">&nbsp;        this.maze = new Cell[arg0][arg1];</b>
+<b class="fc">&nbsp;        for(int i = 0; i &lt; arg0; i++) {</b>
+<b class="fc">&nbsp;            for(int j = 0; j &lt; arg1; j++) {</b>
+<b class="fc">&nbsp;                this.maze[i][j] = new Cell(ICellEvent.CellInfo.EMPTY);</b>
+&nbsp;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

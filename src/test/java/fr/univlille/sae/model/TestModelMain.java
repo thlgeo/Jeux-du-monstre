@@ -5,8 +5,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class TestModelMain {
@@ -67,16 +66,16 @@ class TestModelMain {
         assertEquals(0, reset.getTurn());
     }
 
-    /*@Test
-    //inéficace dû à la distance à laquelle le monstre doit être initialisé par rapport à la sortie
+    @Test
     void testInitMonster() {
+        modelMain.setNbTourMin(0);
         modelMain.monster.setCoordinateMonster(null);
         modelMain.deplacementMonstre(new Coordinate(0, 0));
         Cell c1 = modelMain.getCell(new Coordinate(0, 1));
         Cell c2 = modelMain.getCell(new Coordinate(1, 2));
         assertTrue(ICellEvent.CellInfo.MONSTER == c1.getInfo() || ICellEvent.CellInfo.MONSTER == c2.getInfo());
         assertTrue(1 == c1.getTurn() || 1 == c2.getTurn());
-    }*/
+    }
 
     @Test
     void testTirerChasseur(){
@@ -100,9 +99,9 @@ class TestModelMain {
         assertNull(lastShot);
     }
 
-    /*@Test
+    @Test
     void testChangerParam(){
-        modelMain.changerParam("Nathan", "Valentin", 8);
+        modelMain.changerParam("Nathan", "Valentin", 8, 8, true, false, true, true, false);
         assertEquals("Valentin", modelMain.monster.getName());
         assertEquals("Nathan", modelMain.hunter.getName());
         assertEquals(8, modelMain.getNbRows());
@@ -111,5 +110,5 @@ class TestModelMain {
         assertEquals(8, modelMain.hunter.getNbCols());
         assertEquals(8, modelMain.monster.getDiscoveredMaze().length);
         assertEquals(8, modelMain.monster.getDiscoveredMaze()[0].length);
-    }*/
+    }
 }

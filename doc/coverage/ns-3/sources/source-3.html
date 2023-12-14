@@ -1,0 +1,316 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MazeFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.model</a>
+</div>
+
+<h1>Coverage Summary for Class: MazeFactory (fr.univlille.sae.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MazeFactory</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.2%
+  </span>
+  <span class="absValue">
+    (20/21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85%
+  </span>
+  <span class="absValue">
+    (85/100)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.model;
+&nbsp;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+&nbsp;import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
+&nbsp;
+&nbsp;import java.io.BufferedReader;
+&nbsp;import java.io.File;
+&nbsp;import java.io.FileReader;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Random;
+&nbsp;
+<b class="fc">&nbsp;public class MazeFactory {</b>
+<b class="fc">&nbsp;    protected static final String FS = File.separator;</b>
+&nbsp;    private static final double PERCENT_WALL = 0.35;
+&nbsp;    private final int x;
+&nbsp;    private final int y;
+<b class="fc">&nbsp;    private final Random r = new Random();</b>
+&nbsp;    protected Cell[][] maze;
+&nbsp;    protected boolean[][] visited;
+&nbsp;
+<b class="fc">&nbsp;    public MazeFactory(int x, int y) {</b>
+<b class="fc">&nbsp;        this.x = x;</b>
+<b class="fc">&nbsp;        this.y = y;</b>
+<b class="fc">&nbsp;        maze = new Cell[x][y];</b>
+<b class="fc">&nbsp;        visited = new boolean[x][y];</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Cell[][] generateMaze() {
+<b class="fc">&nbsp;        generePrim();</b>
+<b class="fc">&nbsp;        return this.maze;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Cell[][] importMaze() {
+<b class="fc">&nbsp;        if(x != y) {</b>
+<b class="nc">&nbsp;            return generateMaze();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        generateImport(this.x, this.y, 0);</b>
+<b class="fc">&nbsp;        return this.maze;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void makeDefaultMaze() {
+<b class="fc">&nbsp;        for(int i = 0; i &lt; x; i++) {</b>
+<b class="fc">&nbsp;            for(int j = 0; j &lt; y; j++) {</b>
+<b class="fc">&nbsp;                maze[i][j] = new Cell(ICellEvent.CellInfo.WALL);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    protected void generePrim() {
+<b class="fc">&nbsp;        makeDefaultMaze();</b>
+<b class="fc">&nbsp;        List&lt;ICoordinate&gt; frontier = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        ICoordinate coord = new Coordinate(r.nextInt(x - 1), r.nextInt(y - 1));</b>
+<b class="fc">&nbsp;        maze[coord.getRow()][coord.getCol()].setInfo(ICellEvent.CellInfo.MONSTER);</b>
+<b class="fc">&nbsp;        setVisited(coord);</b>
+<b class="fc">&nbsp;        addToFrontier(frontier, getFrontierCoords(coord));</b>
+<b class="fc">&nbsp;        Coordinate next = null;</b>
+<b class="fc">&nbsp;        while(!frontier.isEmpty()) {</b>
+<b class="fc">&nbsp;            next = (Coordinate) frontier.get(r.nextInt(frontier.size()));</b>
+<b class="fc">&nbsp;            coord = getOriginCord(next);</b>
+<b class="fc">&nbsp;            setVisited(next);</b>
+<b class="fc">&nbsp;            frontier.remove(next);</b>
+<b class="fc">&nbsp;            setVisited(getGateway(coord, next));</b>
+<b class="fc">&nbsp;            addToFrontier(frontier, getFrontierCoords(next));</b>
+&nbsp;        }
+<b class="fc">&nbsp;        maze[next.getRow()][next.getCol()].setInfo(ICellEvent.CellInfo.EXIT);</b>
+<b class="fc">&nbsp;        genereNotSet();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void genereNotSet() {
+<b class="fc">&nbsp;        for(int row = 0; row &lt; this.x; row++) {</b>
+<b class="fc">&nbsp;            for(int col = 0; col &lt; this.y; col++) {</b>
+<b class="fc">&nbsp;                if(!isVisited(row, col) &amp;&amp; r.nextDouble(1) &lt;= PERCENT_WALL) {</b>
+<b class="fc">&nbsp;                    this.setVisited(row, col);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private ICoordinate getGateway(ICoordinate start, ICoordinate end) {
+<b class="fc">&nbsp;        Coordinate diff = new Coordinate(start.getRow() - end.getRow(), start.getCol() - end.getCol());</b>
+<b class="fc">&nbsp;        if(diff.getCol() &lt; 0) diff.incrementCol();</b>
+<b class="fc">&nbsp;        else if(diff.getCol() &gt; 0) diff.decrementCol();</b>
+<b class="fc">&nbsp;        else if(diff.getRow() &lt; 0) diff.incrementRow();</b>
+<b class="fc">&nbsp;        else if(diff.getRow() &gt; 0) diff.decrementRow();</b>
+<b class="nc">&nbsp;        else System.out.println(&quot;Erreur: &quot; + diff);</b>
+<b class="fc">&nbsp;        return new Coordinate(start.getRow() - diff.getRow(), start.getCol() - diff.getCol());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void setVisited(ICoordinate coord) {
+<b class="fc">&nbsp;        setVisited(coord.getRow(), coord.getCol());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void setVisited(int row, int col) {
+<b class="fc">&nbsp;        maze[row][col].setInfo(ICellEvent.CellInfo.EMPTY);</b>
+<b class="fc">&nbsp;        visited[row][col] = true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean isVisited(ICoordinate coord) {
+<b class="fc">&nbsp;        return isVisited(coord.getRow(), coord.getCol());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean isVisited(int row, int col) {
+<b class="fc">&nbsp;        return visited[row][col];</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ICoordinate getOriginCord(ICoordinate cord) {
+<b class="fc">&nbsp;        List&lt;ICoordinate&gt; cordFrontiers = getFrontierCoords(cord);</b>
+<b class="fc">&nbsp;        for(ICoordinate cordFrontier : cordFrontiers) {</b>
+<b class="fc">&nbsp;            if(isValid(cordFrontier) &amp;&amp; isVisited(cordFrontier)) {</b>
+<b class="fc">&nbsp;                return cordFrontier;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private List&lt;ICoordinate&gt; getFrontierCoords(ICoordinate cord) {
+<b class="fc">&nbsp;        Coordinate c = (Coordinate) cord;</b>
+<b class="fc">&nbsp;        List&lt;ICoordinate&gt; frontier = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        Coordinate north = c.north();</b>
+<b class="fc">&nbsp;        north.decrementRow();</b>
+<b class="fc">&nbsp;        Coordinate east = c.east();</b>
+<b class="fc">&nbsp;        east.incrementCol();</b>
+<b class="fc">&nbsp;        Coordinate west = c.west();</b>
+<b class="fc">&nbsp;        west.decrementCol();</b>
+<b class="fc">&nbsp;        Coordinate south = c.south();</b>
+<b class="fc">&nbsp;        south.incrementRow();</b>
+<b class="fc">&nbsp;        frontier.addAll(List.of(north, south, east, west));</b>
+<b class="fc">&nbsp;        return frontier;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void addToFrontier(List&lt;ICoordinate&gt; frontier, List&lt;ICoordinate&gt; toAdd) {
+<b class="fc">&nbsp;        for(ICoordinate cord : toAdd) {</b>
+<b class="fc">&nbsp;            if(isPossibility(cord) &amp;&amp; !frontier.contains(cord)) {</b>
+<b class="fc">&nbsp;                frontier.add(cord);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean isPossibility(ICoordinate cord) {
+<b class="fc">&nbsp;        return (isValid(cord) &amp;&amp; isWall(cord));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean isValid(ICoordinate cord) {
+<b class="fc">&nbsp;        return cord.getRow() &gt;= 0 &amp;&amp; cord.getRow() &lt; x &amp;&amp; cord.getCol() &gt;= 0 &amp;&amp; cord.getCol() &lt; y;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean isWall(ICoordinate cord) {
+<b class="fc">&nbsp;        return maze[cord.getRow()][cord.getCol()].getInfo() == ICellEvent.CellInfo.WALL;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="nc">&nbsp;        StringBuilder sb = new StringBuilder();</b>
+<b class="nc">&nbsp;        for(Cell[] row : maze) {</b>
+<b class="nc">&nbsp;            for(Cell cell : row) {</b>
+<b class="nc">&nbsp;                sb.append(cell.getInfo().name().charAt(0) + &quot; &quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            sb.append(&quot;\n&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return sb.toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Import un labyrinthe de la taille mise en paramètre.
+&nbsp;     *
+&nbsp;     * @param nbRows nombre de lignes du labyrinthe
+&nbsp;     * @param nbCols nombre de colonnes du labyrinthe
+&nbsp;     * @param id     l&#39;identifiant du labyrinthe
+&nbsp;     */
+&nbsp;    protected void generateImport(int nbRows, int nbCols, int id) {
+<b class="fc">&nbsp;        BufferedReader reader = null;</b>
+<b class="fc">&nbsp;        new Cell(); // Permet d&#39;initialiser la map charToInfo</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            if(nbRows &gt; x &amp;&amp; nbCols &gt; y) {</b>
+<b class="nc">&nbsp;                throw new UnsupportedMazeException();</b>
+&nbsp;            }
+<b class="fc">&nbsp;            this.maze = new Cell[x][y];</b>
+<b class="fc">&nbsp;            String filePath = mazefilepath(nbRows, nbCols, id);</b>
+<b class="fc">&nbsp;            reader = new BufferedReader(new FileReader(filePath));</b>
+<b class="fc">&nbsp;            for(int rowId = 0; rowId &lt; nbRows; rowId++) {</b>
+<b class="fc">&nbsp;                String currentLine = reader.readLine();</b>
+<b class="fc">&nbsp;                for(int colId = 0; colId &lt; currentLine.length(); colId++) {</b>
+<b class="fc">&nbsp;                    maze[rowId][colId] = new Cell(Cell.charToInfo.get(currentLine.charAt(colId)));</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        } catch(UnsupportedMazeException | IOException e) {</b>
+<b class="nc">&nbsp;            System.out.println(e.getMessage());</b>
+&nbsp;        } finally {
+<b class="nc">&nbsp;            try {</b>
+<b class="fc">&nbsp;                assert reader != null;</b>
+<b class="fc">&nbsp;                reader.close();</b>
+<b class="nc">&nbsp;            } catch(Exception e) {</b>
+&nbsp;                //Do Nothing
+<b class="fc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prends les coordonnées et l&#39;identifiant du labyrinthe et renvoi le chemin de ce labyrinthe (utilisé dans importMaze)
+&nbsp;     *
+&nbsp;     * @param nbCols Le nombre de colonnes du labyrinthe
+&nbsp;     * @param nbRows Le nombre de lignes du labyrinthe
+&nbsp;     * @param id     Identifiant du labyrinthe
+&nbsp;     * @return String - le chemin du fichier du labyrinthe associé aux paramètres
+&nbsp;     */
+&nbsp;    private String mazefilepath(int nbRows, int nbCols, int id) {
+<b class="fc">&nbsp;        return System.getProperty(&quot;user.dir&quot;) + FS + &quot;res&quot; + FS + &quot;mazes&quot; + FS + &quot;maze-&quot; + nbCols + &quot;-&quot; + nbRows + &quot;-&quot; + id;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

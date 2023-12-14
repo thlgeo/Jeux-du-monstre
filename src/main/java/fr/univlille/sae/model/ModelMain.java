@@ -27,7 +27,7 @@ import java.util.Random;
  */
 public class ModelMain extends Subject{
 
-    private static final int NB_TOUR_MIN = 5;
+    private static int NB_TOUR_MIN = 5;
     private static final Random RDM = new Random();
     private static final int DEFAULT_DIMENSION = 10;
     private static final int DEFAULT_TURN = 1;
@@ -547,5 +547,9 @@ public class ModelMain extends Subject{
         if(!monsterIsIA) monster.notifyShow();
         if(!hunterIsIA) hunter.notifyShow();
         notifyObservers("close");
+    }
+
+    public void setNbTourMin(int nbTourMin) {
+        NB_TOUR_MIN = nbTourMin;
     }
 }

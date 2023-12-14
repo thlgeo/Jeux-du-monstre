@@ -1,0 +1,490 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > IAMonster</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.model.players</a>
+</div>
+
+<h1>Coverage Summary for Class: IAMonster (fr.univlille.sae.model.players)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IAMonster</td>
+<td class="coverageStat">
+  <span class="percent">
+    26.7%
+  </span>
+  <span class="absValue">
+    (4/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    20.3%
+  </span>
+  <span class="absValue">
+    (16/79)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">IAMonster$Cellule</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">IAMonster$NullCellule</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (4/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    15%
+  </span>
+  <span class="absValue">
+    (16/107)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.model.players;
+&nbsp;
+&nbsp;import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+&nbsp;import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+&nbsp;import fr.univlille.sae.model.Cell;
+&nbsp;import fr.univlille.sae.model.Coordinate;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+<b class="fc">&nbsp;public class IAMonster implements IMonsterStrategy {</b>
+&nbsp;
+<b class="fc">&nbsp;    public static final Random rd = new Random();</b>
+&nbsp;    protected Cell[][] maze;
+&nbsp;    protected ICoordinate coordonnee;
+<b class="fc">&nbsp;    protected List&lt;ICoordinate&gt; path = null;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de récupérer la cellule ayant la distance + heuristique la plus petite
+&nbsp;     *
+&nbsp;     * @param set (Set&lt;Cellule&gt;)  - l&#39;ensemble de cellules
+&nbsp;     * @return (Cellule)   - la cellule ayant la distance la plus petite
+&nbsp;     */
+&nbsp;    private static Cellule getMin(Set&lt;Cellule&gt; set) {
+<b class="nc">&nbsp;        Cellule min = null;</b>
+<b class="nc">&nbsp;        for(Cellule cell : set) {</b>
+<b class="nc">&nbsp;            if(min == null || cell.calculateF() &lt; min.calculateF()) {</b>
+<b class="nc">&nbsp;                min = cell;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        set.remove(min);</b>
+<b class="nc">&nbsp;        return min;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet de récupérer la position du monstre généré soit par aStarAlgorithm soit par une position aléatoire
+&nbsp;     *
+&nbsp;     * @return (ICoordinate)   - la position du monstre
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public ICoordinate play() {
+<b class="nc">&nbsp;        if(path == null) {</b>
+<b class="nc">&nbsp;            List&lt;ICoordinate&gt; l = possibilities();</b>
+<b class="nc">&nbsp;            return l.get(rd.nextInt(l.size()));</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return path.remove(0);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de savoir si la coordonnée est dans le labyrinthe
+&nbsp;     *
+&nbsp;     * @param coord (ICoordinate) - la coordonnée à tester
+&nbsp;     * @return (boolean)   - true si la coordonnée est dans le labyrinthe, false sinon
+&nbsp;     */
+&nbsp;    private boolean inRange(ICoordinate coord) {
+<b class="nc">&nbsp;        return (coord.getRow() &gt;= 0 &amp;&amp; coord.getRow() &lt; maze.length) &amp;&amp; (coord.getCol() &gt;= 0 &amp;&amp; coord.getCol() &lt; maze[0].length);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de récupérer les coordonnées autour du monstre si elles sont valides
+&nbsp;     *
+&nbsp;     * @return (List &lt; ICoordinate &gt;)   - la liste des coordonnées autour de la coordonnée passée en paramètre
+&nbsp;     */
+&nbsp;    private List&lt;ICoordinate&gt; possibilities() {
+<b class="nc">&nbsp;        List&lt;ICoordinate&gt; l = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for(ICoordinate coord : around()) {</b>
+<b class="nc">&nbsp;            if(inRange(coord) &amp;&amp; getCell(coord).getInfo() != CellInfo.WALL) {</b>
+<b class="nc">&nbsp;                l.add(coord);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return l;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de récupérer les coordonnées autour du monstre
+&nbsp;     *
+&nbsp;     * @return (List &lt; ICoordinate &gt;)   - la liste des coordonnées autour de la coordonnée passée en paramètre
+&nbsp;     */
+&nbsp;    private List&lt;ICoordinate&gt; around() {
+<b class="nc">&nbsp;        List&lt;ICoordinate&gt; l = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        int row = coordonnee.getRow();</b>
+<b class="nc">&nbsp;        int col = coordonnee.getCol();</b>
+<b class="nc">&nbsp;        l.add(new Coordinate(row + 1, col));</b>
+<b class="nc">&nbsp;        l.add(new Coordinate(row - 1, col));</b>
+<b class="nc">&nbsp;        l.add(new Coordinate(row, col + 1));</b>
+<b class="nc">&nbsp;        l.add(new Coordinate(row, col - 1));</b>
+<b class="nc">&nbsp;        return l;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de récupérer une événement de la cellule
+&nbsp;     *
+&nbsp;     * @param cellEvent (ICellEvent) - l&#39;événement de la cellule
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void update(ICellEvent cellEvent) {
+<b class="fc">&nbsp;        if(cellEvent.getState() == CellInfo.MONSTER) {</b>
+<b class="nc">&nbsp;            this.coordonnee = cellEvent.getCoord();</b>
+<b class="nc">&nbsp;            if(path == null || path.isEmpty()) aStarAlgorithm();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        ICoordinate coord = cellEvent.getCoord();</b>
+<b class="fc">&nbsp;        Cell updateCell = this.maze[coord.getRow()][coord.getCol()];</b>
+<b class="fc">&nbsp;        updateCell.setInfo(cellEvent.getState());</b>
+<b class="fc">&nbsp;        updateCell.setTurn(cellEvent.getTurn());</b>
+<b class="fc">&nbsp;        updateCell.visited();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet d&#39;initialiser le labyrinthe
+&nbsp;     *
+&nbsp;     * @param tab (boolean[][])  - le labyrinthe
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(boolean[][] tab) {
+<b class="fc">&nbsp;        maze = new Cell[tab.length][tab[0].length];</b>
+<b class="fc">&nbsp;        this.path = null;</b>
+<b class="fc">&nbsp;        for(int lig = 0; lig &lt; tab.length; lig++) {</b>
+<b class="fc">&nbsp;            for(int col = 0; col &lt; tab[lig].length; col++) {</b>
+<b class="fc">&nbsp;                if(tab[lig][col]) {</b>
+<b class="fc">&nbsp;                    maze[lig][col] = new Cell(CellInfo.EMPTY);</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    maze[lig][col] = new Cell(CellInfo.WALL);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public Cell getCell(ICoordinate coord) {
+<b class="nc">&nbsp;        return maze[coord.getRow()][coord.getCol()];</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de récupérer la cellule de sortie
+&nbsp;     *
+&nbsp;     * @return (Cellule)   - la cellule de sortie
+&nbsp;     */
+&nbsp;    private Cellule getExit() {
+<b class="nc">&nbsp;        for(int lig = 0; lig &lt; maze.length; lig++) {</b>
+<b class="nc">&nbsp;            for(int col = 0; col &lt; maze[lig].length; col++) {</b>
+<b class="nc">&nbsp;                if(maze[lig][col].getInfo() == CellInfo.EXIT) {</b>
+<b class="nc">&nbsp;                    return new Cellule(lig, col, new NullCellule(), new NullCellule());</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de récupérer la cellule du monstre
+&nbsp;     *
+&nbsp;     * @return  (Cellule)   - la cellule du monstre
+&nbsp;     */
+&nbsp;    private Cellule getMonster() {
+<b class="nc">&nbsp;        Cellule m = new Cellule(coordonnee.getRow(), coordonnee.getCol(), Objects.requireNonNull(getExit()), new NullCellule());</b>
+<b class="nc">&nbsp;        m.distance = 0;</b>
+<b class="nc">&nbsp;        return m;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de savoir si une cellule est un mur
+&nbsp;     *
+&nbsp;     * @param c (Cellule) - la cellule à tester
+&nbsp;     * @return (boolean)   - true si la cellule est un mur, false sinon
+&nbsp;     */
+&nbsp;    private boolean isWall(Cellule c) {
+<b class="nc">&nbsp;        return maze[c.row][c.col].getInfo() == CellInfo.WALL;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de récupérer le chemin le plus court entre le monstre et la sortie
+&nbsp;     */
+&nbsp;    public void aStarAlgorithm() {
+<b class="nc">&nbsp;        Set&lt;Cellule&gt; open = new HashSet&lt;&gt;();</b>
+<b class="nc">&nbsp;        Set&lt;Cellule&gt; closed = new HashSet&lt;&gt;();</b>
+<b class="nc">&nbsp;        open.add(getMonster());</b>
+<b class="nc">&nbsp;        Cellule exit = getExit();</b>
+<b class="nc">&nbsp;        boolean found = false;</b>
+<b class="nc">&nbsp;        Cellule current = null;</b>
+<b class="nc">&nbsp;        while(!open.isEmpty() &amp;&amp; !found) {</b>
+<b class="nc">&nbsp;            current = getMin(open);</b>
+<b class="nc">&nbsp;            closed.add(current);</b>
+<b class="nc">&nbsp;            if(current == null) throw new RuntimeException(&quot;Current is null !&quot;);</b>
+<b class="nc">&nbsp;            if(current.equals(exit)) {</b>
+<b class="nc">&nbsp;                found = true;</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                for(Cellule cell : current.around()) {</b>
+<b class="nc">&nbsp;                    if(isValidChild(cell, open, current, closed)) {</b>
+<b class="nc">&nbsp;                        cell.distance = current.distance + 1;</b>
+<b class="nc">&nbsp;                        cell.parent = current;</b>
+<b class="nc">&nbsp;                        open.add(cell);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        if(open.isEmpty() &amp;&amp; !found) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Chemin impossible&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        path = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        while(current != null &amp;&amp; !current.equals(new NullCellule())) {</b>
+<b class="nc">&nbsp;            path.add(new Coordinate(current.row, current.col));</b>
+<b class="nc">&nbsp;            current = current.parent;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        Collections.reverse(path);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Permet de savoir si une celulle peut être explorée
+&nbsp;     * @param cell  - la cellule à tester
+&nbsp;     * @param open  - l&#39;ensemble des cellules ouvertes
+&nbsp;     * @param current   - la cellule courante
+&nbsp;     * @param closed    - l&#39;ensemble des cellules fermées
+&nbsp;     * @return  - true si la cellule peut être explorée, false sinon
+&nbsp;     */
+&nbsp;    private boolean isValidChild(Cellule cell, Set&lt;Cellule&gt; open, Cellule current, Set&lt;Cellule&gt; closed) {
+<b class="nc">&nbsp;        return cell != null &amp;&amp; (!open.contains(cell) || cell.distance &gt; current.distance + 1) &amp;&amp; !closed.contains(cell) &amp;&amp; !isWall(cell);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Classe interne permettant de représenter une cellule du labyrinthe avec des paramètres supplémentaires
+&nbsp;     */
+&nbsp;    class Cellule {
+&nbsp;        int row;
+&nbsp;        int col;
+&nbsp;        int distance;
+&nbsp;        int heuristic;
+&nbsp;        Cellule parent;
+&nbsp;
+<b class="nc">&nbsp;        public Cellule(int row, int col, int distance, int heuristic, Cellule parent) {</b>
+<b class="nc">&nbsp;            this.row = row;</b>
+<b class="nc">&nbsp;            this.col = col;</b>
+<b class="nc">&nbsp;            this.distance = distance;</b>
+<b class="nc">&nbsp;            this.heuristic = heuristic;</b>
+<b class="nc">&nbsp;            this.parent = parent;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        public Cellule(int row, int col, Cellule exit, Cellule parent) {
+<b class="nc">&nbsp;            this(row, col, Integer.MAX_VALUE, Math.abs(row - exit.row) + Math.abs(col - exit.col), parent);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        public int calculateF() {
+<b class="nc">&nbsp;            return distance + heuristic;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Permet de savoir si une cellule est valide
+&nbsp;         *
+&nbsp;         * @param row (int)   - la ligne de la cellule
+&nbsp;         * @param col (int)   - la colonne de la cellule
+&nbsp;         * @return (boolean)   - true si la cellule est valide, false sinon
+&nbsp;         */
+&nbsp;        private boolean valid(int row, int col) {
+<b class="nc">&nbsp;            return (row &gt;= 0 &amp;&amp; row &lt; maze.length) &amp;&amp; (col &gt;= 0 &amp;&amp; col &lt; maze[0].length);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Permet de récupérer la cellule au nord de la cellule courante si elle est valide
+&nbsp;         *
+&nbsp;         * @return (Cellule)   - la cellule au nord de la cellule courante
+&nbsp;         */
+&nbsp;        private Cellule north() {
+<b class="nc">&nbsp;            if(valid(row - 1, col)) {</b>
+<b class="nc">&nbsp;                return new Cellule(row - 1, col, distance + 1, heuristic, this);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Permet de récupérer la cellule au sud de la cellule courante si elle est valide
+&nbsp;         *
+&nbsp;         * @return (Cellule)   - la cellule au sud de la cellule courante
+&nbsp;         */
+&nbsp;        private Cellule south() {
+<b class="nc">&nbsp;            if(valid(row + 1, col)) {</b>
+<b class="nc">&nbsp;                return new Cellule(row + 1, col, distance + 1, heuristic, this);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Permet de récupérer la cellule à l&#39;est de la cellule courante si elle est valide
+&nbsp;         *
+&nbsp;         * @return (Cellule)   - la cellule à l&#39;est de la cellule courante
+&nbsp;         */
+&nbsp;        private Cellule east() {
+<b class="nc">&nbsp;            if(valid(row, col + 1)) {</b>
+<b class="nc">&nbsp;                return new Cellule(row, col + 1, distance + 1, heuristic, this);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Permet de récupérer la cellule à l&#39;ouest de la cellule courante si elle est valide
+&nbsp;         *
+&nbsp;         * @return (Cellule)   - la cellule à l&#39;ouest de la cellule courante
+&nbsp;         */
+&nbsp;        private Cellule west() {
+<b class="nc">&nbsp;            if(valid(row, col - 1)) {</b>
+<b class="nc">&nbsp;                return new Cellule(row, col - 1, distance + 1, heuristic, this);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Permet de récupérer les cellules autour de la cellule courante
+&nbsp;         *
+&nbsp;         * @return (Cellule[])   - les cellules autour de la cellule courante
+&nbsp;         */
+&nbsp;        public Cellule[] around() {
+<b class="nc">&nbsp;            return new Cellule[]{north(), east(), south(), west()};</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public String toString() {
+<b class="nc">&nbsp;            return &quot;Cellule [row=&quot; + row + &quot;, col=&quot; + col + &quot;, distance=&quot; + distance + &quot;, heuristic=&quot; + heuristic</b>
+&nbsp;                    + &quot;, parent=&quot; + parent + &quot;]&quot;;
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public boolean equals(Object o) {
+<b class="nc">&nbsp;            if(this == o) return true;</b>
+<b class="nc">&nbsp;            if(!(o instanceof Cellule cellule)) return false;</b>
+<b class="nc">&nbsp;            return row == cellule.row &amp;&amp; col == cellule.col;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        @Override
+&nbsp;        public int hashCode() {
+<b class="nc">&nbsp;            return Objects.hash(row, col);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Classe interne permettant de représenter une cellule nulle
+&nbsp;     */
+&nbsp;    class NullCellule extends Cellule {
+&nbsp;        public NullCellule() {
+<b class="nc">&nbsp;            super(-1, -1, -1, -1, null);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

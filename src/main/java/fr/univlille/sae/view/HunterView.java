@@ -6,7 +6,8 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
-import fr.univlille.sae.model.*;
+import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,20 +20,21 @@ import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre de jeu du chasseur
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class HunterView extends Stage implements Observer {
-    public static final int MARGIN=150;
+    public static final int MARGIN = 150;
 
-    private final ModelMainInterface modelMain;
+    private final ModelMain modelMain;
     private Label titre;
     private Label tour;
     private MazeController mc;
     private Button ready;
     private Label nbTour;
 
-    public HunterView(ModelMainInterface modelMain) {
+    public HunterView(ModelMain modelMain) {
         this.modelMain = modelMain;
         setTitle("S3.02_G1_Chasseur");
         setResizable(false);
@@ -113,8 +115,8 @@ public class HunterView extends Stage implements Observer {
     /**
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      *
-      * @param subject correspond au sujet observé
-     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
+     * @param subject correspond au sujet observé
+     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre
      */
     @Override
     public void update(Subject subject, Object o) {
@@ -129,8 +131,8 @@ public class HunterView extends Stage implements Observer {
         } else if(o.equals("changerTour")) {
             tour.setText("Tour du chasseur !");
             setReadyScene();
-        }else if(o instanceof Integer turn){
-            nbTour.setText("  Tour "+turn);
+        } else if(o instanceof Integer turn) {
+            nbTour.setText("  Tour " + turn);
         }
     }
 
@@ -139,7 +141,7 @@ public class HunterView extends Stage implements Observer {
      *
      * @param nbCols (int) correspond au nombre de colonnes du labyrinthe
      * @param nbRows (int) correspond au nombre de lignes du labyrinthe
-     * @param pane (Pane) correspond au panneau à afficher
+     * @param pane   (Pane) correspond au panneau à afficher
      */
     private void setScene(int nbCols, int nbRows, Pane pane) {
         super.setScene(new Scene(pane, calcEffectiveSize(nbCols), calcEffectiveSize(nbRows)));
@@ -152,11 +154,14 @@ public class HunterView extends Stage implements Observer {
     private void setPosition() {
         double effectiveWidth;
         double effectiveHeight;
-        if (modelMain instanceof MainMonsterBot) {
-            effectiveWidth = (MainView.BOUNDS.getMaxX()/2)-calcEffectiveSize(modelMain.getNbCols())/2;
+        /*
+        if(modelMain.MonsterIsIA()) {
+            effectiveWidth = (MainView.BOUNDS.getMaxX() / 2) - calcEffectiveSize(modelMain.getNbCols()) / 2;
         } else {
             effectiveWidth = MainView.BOUNDS.getMaxX();
         }
+        */
+        effectiveWidth = MainView.BOUNDS.getMaxX();
         effectiveHeight = MainView.BOUNDS.getMinY();
         setX(effectiveWidth);
         setY(effectiveHeight);

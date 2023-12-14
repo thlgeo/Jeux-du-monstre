@@ -1,5 +1,7 @@
 package fr.univlille.sae.model;
 
+import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
+import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
@@ -7,14 +9,11 @@ import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.events.CellEvent;
 import fr.univlille.sae.model.exceptions.MonsterNotFoundException;
-import fr.univlille.sae.model.exceptions.UnsupportedMazeException;
 import fr.univlille.sae.model.players.Hunter;
+import fr.univlille.sae.model.players.IAHunter;
+import fr.univlille.sae.model.players.IAMonster;
 import fr.univlille.sae.model.players.Monster;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -26,23 +25,29 @@ import java.util.Random;
  * @see Hunter
  * @see Cell
  */
-public class ModelMain extends Subject implements ModelMainInterface{
+public class ModelMain extends Subject{
 
     private static final int NB_TOUR_MIN = 5;
     private static final Random RDM = new Random();
     private static final int DEFAULT_DIMENSION = 10;
-    protected static final String FS = File.separator;
     private static final int DEFAULT_TURN = 1;
-    protected boolean generateMaze = true;
     private static final int VISION = 1;
+    public static final String CHANGER_TOUR = "changerTour";
+    protected boolean generateMaze = true;
     protected int turn;
     protected int nbRows;
     protected int nbCols;
     protected Hunter hunter;
     protected Monster monster;
+    protected IMonsterStrategy IAMonster;
+    protected IHunterStrategy IAHunter;
     protected Cell[][] maze;
-    protected boolean deplacementDiag;
+    protected boolean deplacementDiag = false;
     protected boolean fog = false;
+    protected boolean monsterIsIA = false;
+    protected boolean hunterIsIA = false;
+    protected String IAMonsterName = "IA Monster";
+    protected String IAHunterName = "IA Hunter";
 
     private ModelMain(int turn, int nbRows, int nbCols) {
         this.turn = turn;
@@ -52,7 +57,10 @@ public class ModelMain extends Subject implements ModelMainInterface{
         createMaze();
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
-        this.deplacementDiag = false;
+        this.IAMonster = new IAMonster();
+        this.IAHunter = new IAHunter();
+        setMonsterIA();
+        IAHunter.initialize(nbRows, nbCols);
     }
 
     ModelMain(int turn, int nbRows, int nbCols, boolean generateMaze) {
@@ -64,7 +72,10 @@ public class ModelMain extends Subject implements ModelMainInterface{
         createMaze();
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
-        this.deplacementDiag = false;
+        this.IAMonster = new IAMonster();
+        this.IAHunter = new IAHunter();
+        setMonsterIA();
+        IAHunter.initialize(nbRows, nbCols);
     }
 
     ModelMain(int nbRows, int nbCols) {
@@ -75,8 +86,27 @@ public class ModelMain extends Subject implements ModelMainInterface{
         this(DEFAULT_DIMENSION, DEFAULT_DIMENSION);
     }
 
+    /**
+     * Initialise un tableau de boolean pour l'IA du monstre et lui transmet l'emplacement de la sortie
+     */
+    private void setMonsterIA() {
+        boolean[][] booleanMaze = new boolean[nbRows][nbCols];
+        for(int i = 0; i < nbRows; i++) {
+            for(int j = 0; j < nbCols; j++) {
+                booleanMaze[i][j] = maze[i][j].getInfo() != ICellEvent.CellInfo.WALL;
+            }
+        }
+        IAMonster.initialize(booleanMaze);
+        ICoordinate exit = getExit();
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.EXIT, exit);
+        IAMonster.update(event);
+    }
+
+    /**
+     * Permet créer un labyrinthe soit importé, soit généré en fonction de la valeur de generateMaze
+     */
     private void createMaze() {
-        if (generateMaze) {
+        if(generateMaze) {
             this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();
         } else {
             this.maze = new MazeFactory(this.nbRows, this.nbCols).importMaze();
@@ -88,7 +118,7 @@ public class ModelMain extends Subject implements ModelMainInterface{
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA);
     }
 
     public int getNbRows() {
@@ -103,13 +133,15 @@ public class ModelMain extends Subject implements ModelMainInterface{
         return maze[row][col];
     }
 
-    protected ICoordinate getExit()
-    {
-        Cell c = null;
-        for(int i=0;i<nbRows;i++)
-        {
-            for(int j=0;j<nbCols;j++)
-            {
+    /**
+     * Renvoie les coordonnées de la sortie
+     *
+     * @return (ICoordinate) Coordonnées de la sortie
+     */
+    protected ICoordinate getExit() {
+        Cell c;
+        for(int i = 0; i < nbRows; i++) {
+            for(int j = 0; j < nbCols; j++) {
                 c = getCell(i, j);
                 if(c.getInfo() == CellInfo.EXIT) return new Coordinate(i, j);
             }
@@ -120,49 +152,150 @@ public class ModelMain extends Subject implements ModelMainInterface{
     /**
      * Notifie aux observers si le monstre a bougé ou non, ou s'il a gagné.
      *
-     * @param newCoord coordonnées choisies
+     * @param coord coordonnées choisies
      */
-    public void deplacementMonstre(ICoordinate newCoord) {
+    public void deplacementMonstre(ICoordinate coord) {
+        if(hunterIsIA && monsterIsIA) {
+            deplacementIA(coord);
+        } else if(hunterIsIA) {
+            deplacementIAChasseur(coord);
+        } else if(monsterIsIA) {
+            deplacementIAMonster(coord);
+        } else {
+            deplacementHumain(coord);
+        }
+    }
+
+    /**
+     * c'est la version de deplacementMonstre pour le mode humain vs humain
+     *
+     * @param coord coordonnées choisies
+     */
+    private void deplacementHumain(ICoordinate coord) {
         try {
             if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
-            if(!this.monster.canMove(newCoord,deplacementDiag)) {
+            if(!this.monster.canMove(coord, deplacementDiag)) {
                 monster.notify("cantMove");
                 return;
             }
-            if(getCell(newCoord).getInfo() == ICellEvent.CellInfo.EXIT) {
+            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
                 victory(true);
                 return;
             }
         } catch(MonsterNotFoundException e) {
-            newCoord = this.initMonsterPosition();
+            coord = this.initMonsterPosition();
             ICoordinate coordExit = getExit();
-            while(inRange(newCoord,coordExit))
-            {
-                newCoord = this.initMonsterPosition();
+            while(inRange(coord, coordExit)) {
+                coord = this.initMonsterPosition();
             }
         }
-        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, newCoord);
-        update(newCoord, ICellEvent.CellInfo.MONSTER);
-        monster.setCoordinateMonster(newCoord);
-        if(fog){
-            updateAround(newCoord);
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
+        update(coord, ICellEvent.CellInfo.MONSTER);
+        monster.setCoordinateMonster(coord);
+        if(fog) {
+            updateAround(coord);
         }
         monster.update(event);
-        hunter.notify("changerTour");
+        hunter.notify(CHANGER_TOUR);
     }
 
-    protected void updateAround(ICoordinate newCoord)
-    {
+    /**
+     * c'est la version de deplacementMonstre pour le mode humain vs IA Chasseur
+     *
+     * @param coord coordonnées choisies
+     */
+    private void deplacementIAChasseur(ICoordinate coord) {
+        try {
+            if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
+            if(!this.monster.canMove(coord, deplacementDiag)) {
+                monster.notify("cantMove");
+                return;
+            }
+            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
+                victory(true);
+                return;
+            }
+        } catch(MonsterNotFoundException e) {
+            coord = this.initMonsterPosition();
+            ICoordinate coordExit = getExit();
+            while(inRange(coord, coordExit)) {
+                coord = this.initMonsterPosition();
+            }
+        }
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
+        update(coord, ICellEvent.CellInfo.MONSTER);
+        monster.setCoordinateMonster(coord);
+        if(fog) {
+            updateAround(coord);
+        }
+        monster.update(event);
+        tirerChasseur(IAHunter.play());
+    }
+
+    /**
+     * c'est la version de deplacementMonstre pour le mode humain vs IA Monstre
+     *
+     * @param coord coordonnées choisies
+     */
+    private void deplacementIAMonster(ICoordinate coord) {
+        try {
+            if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();
+            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
+                victory(true);
+                return;
+            }
+        } catch(MonsterNotFoundException e) {
+            coord = this.initMonsterPosition();
+            ICoordinate coordExit = getExit();
+            while(inRange(coord, coordExit)) {
+                coord = this.initMonsterPosition();
+            }
+        }
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
+        update(coord, ICellEvent.CellInfo.MONSTER);
+        IAMonster.update(event);
+        hunter.notify(CHANGER_TOUR);
+    }
+
+    /**
+     * c'est la version de deplacementMonstre pour le mode IA Monstre vs IA Chasseur
+     *
+     * @param coord coordonnées choisies
+     */
+    private void deplacementIA(ICoordinate coord) {
+        try {
+            if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();
+            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
+                victory(true);
+                return;
+            }
+        } catch(MonsterNotFoundException e) {
+            coord = this.initMonsterPosition();
+            ICoordinate coordExit = getExit();
+            while(inRange(coord, coordExit)) {
+                coord = this.initMonsterPosition();
+            }
+        }
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
+        update(coord, ICellEvent.CellInfo.MONSTER);
+        IAMonster.update(event);
+        tirerChasseur(IAHunter.play());
+    }
+
+    /**
+     * Mets à jour les cellules autour du monstre pour le mode brouillard
+     *
+     * @param newCoord (ICoordinate) Nouvelles coordonnées du monstre
+     */
+    protected void updateAround(ICoordinate newCoord) {
         int newRow = newCoord.getRow();
         int newCol = newCoord.getCol();
         ICoordinate coord;
-        for(int lig=newRow-VISION;lig<=newRow+VISION;lig++)
-        {
-            for(int col=newCol-VISION;col<=newCol+VISION;col++)
-            {
+        for(int lig = newRow - VISION; lig <= newRow + VISION; lig++) {
+            for(int col = newCol - VISION; col <= newCol + VISION; col++) {
                 coord = new Coordinate(lig, col);
                 Cell c = getCell(coord);
-                if(c != null){
+                if(c != null) {
                     monster.update(new CellEvent(c.getTurn(), c.getInfo(), coord));
                 }
             }
@@ -171,18 +304,17 @@ public class ModelMain extends Subject implements ModelMainInterface{
 
     /**
      * Vérifie si les coordonnées du monstre sont à une portée de 5 cases ou moins de la sortie.
-     * 
+     *
      * @param coordMonster (ICoordinate) Coordonnée du monstre
-     * @param coordExit (ICoordinate) Coordonnée de la sortie
+     * @param coordExit    (ICoordinate) Coordonnée de la sortie
      * @return Vrai si le monstre est à une portée de moins de 5 cases de la sortie, faux sinon
      */
-    protected boolean inRange(ICoordinate coordMonster, ICoordinate coordExit)
-    {
+    protected boolean inRange(ICoordinate coordMonster, ICoordinate coordExit) {
         int rowM = coordMonster.getRow();
         int colM = coordMonster.getCol();
         int rowE = coordExit.getRow();
         int colE = coordExit.getCol();
-        return (colM < colE+NB_TOUR_MIN && colM > colE-NB_TOUR_MIN) && (rowM < rowE+NB_TOUR_MIN && rowM > rowE-NB_TOUR_MIN);
+        return (colM < colE + NB_TOUR_MIN && colM > colE - NB_TOUR_MIN) && (rowM < rowE + NB_TOUR_MIN && rowM > rowE - NB_TOUR_MIN);
     }
 
     /**
@@ -198,6 +330,24 @@ public class ModelMain extends Subject implements ModelMainInterface{
     }
 
     /**
+     * Renvoie les coordonnées du monstre
+     *
+     * @param lastTurn (boolean) Si on veut les coordonnées du monstre du dernier tour ou non
+     * @return (ICoordinate) Coordonnées du monstre
+     */
+    private ICoordinate getCoordinateMonster(boolean lastTurn) {
+        int tour = lastTurn ? turn - 1 : turn;
+        for(int i = 0; i < nbRows; i++) {
+            for(int j = 0; j < nbCols; j++) {
+                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER && maze[i][j].getTurn() == tour) {
+                    return new Coordinate(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Demande à indiquer la fin de la partie à monstre à joueur, puis envois le nom du vainqueur a la MainView pour afficher la fin de partie
      *
      * @param isMonster booléen indiquant qui a gagné (true = monstre, false = hunter)
@@ -206,7 +356,11 @@ public class ModelMain extends Subject implements ModelMainInterface{
         monster.notify("endGame");
         hunter.notify("endGame");
         reset();
-        notifyObservers(isMonster ? monster.getName() : hunter.getName());
+        if(isMonster) {
+            notifyObservers(monsterIsIA ? IAMonsterName : monster.getName());
+        } else {
+            notifyObservers(hunterIsIA ? IAHunterName : hunter.getName());
+        }
     }
 
     /**
@@ -215,11 +369,25 @@ public class ModelMain extends Subject implements ModelMainInterface{
      * @param coord coordonnées choisies
      */
     public void tirerChasseur(ICoordinate coord) {
+        if(hunterIsIA && monsterIsIA) {
+            tirerIA(coord);
+        } else if(hunterIsIA) {
+            tirerIAChasseur(coord);
+        } else if(monsterIsIA) {
+            tirerIAMonster(coord);
+        } else {
+            tirerHumain(coord);
+        }
+    }
+
+    /**
+     * c'est la version de tirerChasseur pour le mode humain vs humain
+     *
+     * @param coord coordonnées choisies
+     */
+    private void tirerHumain(ICoordinate coord) {
         if(coord.equals(monster.getCoordinateMonster())) {
             victory(false);
-            return;
-        }
-        if(!hunter.canShoot(coord)) {
             return;
         }
         ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
@@ -229,19 +397,75 @@ public class ModelMain extends Subject implements ModelMainInterface{
         turn++;
         hunter.notify(turn);
         monster.notify(turn);
-        monster.notify("changerTour");
+        monster.notify(CHANGER_TOUR);
+    }
+
+    /**
+     * c'est la version de tirerChasseur pour le mode humain vs IA Chasseur
+     *
+     * @param coord coordonnées choisies
+     */
+    private void tirerIAChasseur(ICoordinate coord) {
+        if(coord.equals(monster.getCoordinateMonster())) {
+            victory(false);
+            return;
+        }
+        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
+        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
+        monster.update(monsterEvent);
+        IAHunter.update(hunterEvent);
+        turn++;
+        monster.notify(turn);
+        monster.notify(CHANGER_TOUR);
+    }
+
+    /**
+     * c'est la version de tirerChasseur pour le mode humain vs IA Monstre
+     *
+     * @param coord coordonnées choisies
+     */
+    private void tirerIAMonster(ICoordinate coord) {
+        if(coord.equals(getCoordinateMonster(false))) {
+            victory(false);
+            return;
+        }
+        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
+        hunter.update(hunterEvent);
+        turn++;
+        hunter.notify(turn);
+        deplacementMonstre(IAMonster.play());
+    }
+
+    /**
+     * c'est la version de tirerChasseur pour le mode IA Monstre vs IA Chasseur
+     *
+     * @param coord coordonnées choisies
+     */
+    private void tirerIA(ICoordinate coord) {
+        if(coord.equals(getCoordinateMonster(false))) {
+            victory(false);
+            return;
+        }
+        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
+        IAHunter.update(hunterEvent);
+        turn++;
+        deplacementMonstre(IAMonster.play());
     }
 
     /**
      * Fonction permettant de changer les paramètre de la partie
      *
-     * @param hunterName    (String)    Nom du chasseur
-     * @param monsterName   (String)    Nom du monstre
-     * @param height    (int)       hauteur du labyrinthe
-     * @param width   (int)       largeur du labyrinthe
-     * @param depDiag   (boolean)       déplacement en diagonale
+     * @param hunterName  (String)    Nom du chasseur
+     * @param monsterName (String)    Nom du monstre
+     * @param height      (int)       hauteur du labyrinthe
+     * @param width       (int)       largeur du labyrinthe
+     * @param depDiag     (boolean)   déplacement en diagonale
+     * @param fog         (boolean)   brouillard
+     * @param generateMaze (boolean)  génération du labyrinthe
+     * @param IAMonster   (boolean)   le monster est une IA
+     * @param IAHunter    (boolean)   le chasseur est une IA
      */
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze) {
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter) {
         this.nbRows = height;
         this.nbCols = width;
         this.generateMaze = generateMaze;
@@ -252,12 +476,17 @@ public class ModelMain extends Subject implements ModelMainInterface{
         hunter.setName(hunterName);
         monster.setName(monsterName);
         hunter.setRowCol(nbRows, nbCols);
-        if(fog)
-        {
+        if(fog) {
             monster.setMazeEmpty(nbRows, nbCols);
-        }else{
+        } else {
             monster.setMaze(this.maze);
         }
+        IAMonsterName = monsterName;
+        IAHunterName = hunterName;
+        setMonsterIA();
+        this.IAHunter.initialize(nbRows, nbCols);
+        monsterIsIA = IAMonster;
+        hunterIsIA = IAHunter;
         turn = DEFAULT_TURN;
         notifyObservers("ParamMAJ");
     }
@@ -301,6 +530,7 @@ public class ModelMain extends Subject implements ModelMainInterface{
     public void notifyDiscoveredMaze() {
         monster.notifyDiscoveredMaze();
         hunter.notifyDiscoveredMaze();
+        if(monsterIsIA) deplacementMonstre(null); //on commence la jeu par l'initialisation du monstre
     }
 
     /**
@@ -314,8 +544,8 @@ public class ModelMain extends Subject implements ModelMainInterface{
      * Notifie aux observers d'afficher les pages monstre et le chasseur
      */
     public void notifyShowMH() {
-        monster.notifyShow();
-        hunter.notifyShow();
+        if(!monsterIsIA) monster.notifyShow();
+        if(!hunterIsIA) hunter.notifyShow();
         notifyObservers("close");
     }
 }

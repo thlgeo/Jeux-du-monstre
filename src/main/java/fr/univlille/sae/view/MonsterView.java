@@ -6,7 +6,8 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
-import fr.univlille.sae.model.*;
+import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -19,19 +20,20 @@ import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre de jeu du monstre
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class MonsterView extends Stage implements Observer {
-    public static final int MARGIN=150;
-    private final ModelMainInterface modelMain;
+    public static final int MARGIN = 150;
+    private final ModelMain modelMain;
     private Label titre;
     private Label tour;
     private MazeController mc;
     private Button ready;
     private Label nbTour;
 
-    public MonsterView(ModelMainInterface modelMain) {
+    public MonsterView(ModelMain modelMain) {
         this.modelMain = modelMain;
         setTitle("S3.02_G1_Monstre");
         setResizable(false);
@@ -116,7 +118,7 @@ public class MonsterView extends Stage implements Observer {
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      *
      * @param subject correspond au sujet observé
-     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
+     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre
      */
     @Override
     public void update(Subject subject, Object o) {
@@ -134,8 +136,8 @@ public class MonsterView extends Stage implements Observer {
         } else if("changerTour".equals(o)) {
             tour.setText("Tour du monstre !");
             setReadyScene();
-        }else if(o instanceof Integer turn){
-            nbTour.setText("  Tour "+turn);
+        } else if(o instanceof Integer turn) {
+            nbTour.setText("  Tour " + turn);
         }
     }
 
@@ -144,7 +146,7 @@ public class MonsterView extends Stage implements Observer {
      *
      * @param nbCols (int) correspond au nombre de colonnes du labyrinthe
      * @param nbRows (int) correspond au nombre de lignes du labyrinthe
-     * @param pane (Pane) correspond au panneau à afficher
+     * @param pane   (Pane) correspond au panneau à afficher
      */
     private void setScene(int nbRows, int nbCols, Pane pane) {
         super.setScene(new Scene(pane, calcEffectiveSize(nbRows), calcEffectiveSize(nbCols)));
@@ -157,12 +159,15 @@ public class MonsterView extends Stage implements Observer {
     private void setPosition() {
         double effectiveWidth;
         double effectiveHeight;
-        if (modelMain instanceof MainHunterBot) {
-            effectiveWidth = (MainView.BOUNDS.getMaxX()/2)-calcEffectiveSize(modelMain.getNbCols())/2;
+        /*
+        if(modelMain.HunterIsIA()) {
+            effectiveWidth = (MainView.BOUNDS.getMaxX() / 2) - calcEffectiveSize(modelMain.getNbCols()) / 2;
         } else {
             effectiveWidth = MainView.BOUNDS.getMinX();
 
         }
+        */
+        effectiveWidth = MainView.BOUNDS.getMinX();
         effectiveHeight = MainView.BOUNDS.getMinY();
         setX(effectiveWidth);
         setY(effectiveHeight);

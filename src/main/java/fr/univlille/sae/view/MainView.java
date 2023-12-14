@@ -6,7 +6,6 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
 import fr.univlille.sae.controller.SettingButton;
 import fr.univlille.sae.model.ModelMain;
-import fr.univlille.sae.model.ModelMainInterface;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -19,20 +18,21 @@ import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre principale de l'application
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class MainView extends Stage implements Observer {
 
     public static final int WIDTH = 500;
     public static final int HEIGHT = 300;
     public static final Rectangle2D BOUNDS = Screen.getPrimary().getBounds();
-    private final ModelMainInterface modelMain;
+    private final ModelMain modelMain;
     private Label titre;
     private SettingButton settingButton;
     private LaunchButton launchButton;
 
-    public MainView(ModelMainInterface modelMain) {
+    public MainView(ModelMain modelMain) {
         this.modelMain = modelMain;
         setTitle("S3.02_G1_ChasseAuMonstre");
         setResizable(false);
@@ -96,7 +96,7 @@ public class MainView extends Stage implements Observer {
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      *
      * @param subject correspond au sujet observé
-     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
+     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre
      */
     @Override
     public void update(Subject subject, Object o) {

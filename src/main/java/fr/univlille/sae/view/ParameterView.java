@@ -5,23 +5,22 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.*;
 import fr.univlille.sae.model.ModelMain;
-import fr.univlille.sae.model.ModelMainInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
  * Cette classe est la fenêtre où l'utilisateur peut changer les paramètres
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class ParameterView extends Stage implements Observer {
     public static final int WIDTH = 500;
-    public static final int HEIGHT = 400;
-    private final ModelMainInterface modelMain;
+    public static final int HEIGHT = 500;
+    private final ModelMain modelMain;
     private Label nameMonster;
     private Label nameHunter;
     private Label titreHeight;
@@ -35,8 +34,10 @@ public class ParameterView extends Stage implements Observer {
 
     private GenerateMazeController generateMaze;
     private FogController fog;
+    private IAMonsterController IAMonstre;
+    private IAHunterController IAHunter;
 
-    public ParameterView(ModelMainInterface modelMain) {
+    public ParameterView(ModelMain modelMain) {
         this.modelMain = modelMain;
         setTitle("S3.02_G1_Parametres");
         setParameterNodes();
@@ -58,6 +59,8 @@ public class ParameterView extends Stage implements Observer {
         root.getChildren().addAll(new Spacer(), depDiag);
         root.getChildren().addAll(new Spacer(), fog);
         root.getChildren().addAll(new Spacer(), generateMaze);
+        root.getChildren().addAll(new Spacer(), IAMonstre);
+        root.getChildren().addAll(new Spacer(), IAHunter);
         root.getChildren().addAll(new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
@@ -83,7 +86,9 @@ public class ParameterView extends Stage implements Observer {
         depDiag = new DepDiagController();
         fog = new FogController();
         generateMaze = new GenerateMazeController();
-        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, modelMain);
+        IAMonstre = new IAMonsterController();
+        IAHunter = new IAHunterController();
+        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, IAMonstre, IAHunter, modelMain);
     }
 
     /**
@@ -100,7 +105,7 @@ public class ParameterView extends Stage implements Observer {
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
      *
      * @param subject correspond au sujet observé
-     * @param o correspond à la donnée à partir de laquelle on met à jour la fenêtre
+     * @param o       correspond à la donnée à partir de laquelle on met à jour la fenêtre
      */
     @Override
     public void update(Subject subject, Object o) {

@@ -8,8 +8,9 @@ import javafx.scene.layout.HBox;
 
 /**
  * Cette classe correspond à une zone pour changer la taille du labyrinthe
+ *
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
- * @version  1.0
+ * @version 1.0
  */
 public class SizeController extends HBox {
     public static final int MIN_SIZE = 8;

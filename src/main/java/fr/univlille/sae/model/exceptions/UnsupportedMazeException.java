@@ -2,6 +2,7 @@ package fr.univlille.sae.model.exceptions;
 
 /**
  * Cette classe est une exception qui est levée lorsque la taille du maze est trop grande
+ *
  * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
  * @version 1.0.0
  */

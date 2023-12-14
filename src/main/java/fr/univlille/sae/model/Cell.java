@@ -17,8 +17,8 @@ import java.util.Objects;
  * @see CellInfo
  */
 public class Cell {
-    protected static Map<Character, CellInfo> charToInfo = new HashMap<>();
     public static final String IS_WALL = "W";
+    protected static Map<Character, CellInfo> charToInfo = new HashMap<>();
     protected CellInfo info;
     protected int turn;
     protected boolean visited = false;

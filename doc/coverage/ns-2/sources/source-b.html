@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > SizeController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">fr.univlille.sae.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: SizeController (fr.univlille.sae.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SizeController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package fr.univlille.sae.controller;
+&nbsp;
+&nbsp;import fr.univlille.sae.Main;
+&nbsp;import javafx.geometry.Pos;
+&nbsp;import javafx.scene.control.Button;
+&nbsp;import javafx.scene.control.Label;
+&nbsp;import javafx.scene.layout.HBox;
+&nbsp;
+&nbsp;/**
+&nbsp; * Cette classe correspond à une zone pour changer la taille du labyrinthe
+&nbsp; *
+&nbsp; * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+&nbsp; * @version 1.0
+&nbsp; */
+&nbsp;public class SizeController extends HBox {
+&nbsp;    public static final int MIN_SIZE = 8;
+&nbsp;    public static final int DEFAULT_SIZE = 10;
+&nbsp;    public static final int MAX_SIZE = 16;
+<b class="nc">&nbsp;    Button moins = new Button(&quot;-&quot;);</b>
+<b class="nc">&nbsp;    Button plus = new Button(&quot;+&quot;);</b>
+<b class="nc">&nbsp;    Label size = new Label();</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    public SizeController() {</b>
+<b class="nc">&nbsp;        getChildren().addAll(moins, new Label(&quot;  &quot;), size, new Label(&quot;  &quot;), plus);</b>
+<b class="nc">&nbsp;        setAction();</b>
+<b class="nc">&nbsp;        size.setText(String.valueOf(DEFAULT_SIZE));</b>
+<b class="nc">&nbsp;        size.setFont(Main.loadFont(Main.ARCADE_FONT, 20));</b>
+<b class="nc">&nbsp;        setAlignment(Pos.CENTER);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet de paramétrer les actions des boutons plus et moins
+&nbsp;     */
+&nbsp;    private void setAction() {
+<b class="nc">&nbsp;        plus.setOnAction(e -&gt; {</b>
+<b class="nc">&nbsp;            int actualSize = Integer.parseInt(size.getText());</b>
+<b class="nc">&nbsp;            if(actualSize != MAX_SIZE) {</b>
+<b class="nc">&nbsp;                size.setText(&quot;&quot; + (actualSize + 1));</b>
+&nbsp;            }
+&nbsp;        });
+<b class="nc">&nbsp;        moins.setOnAction(e -&gt; {</b>
+<b class="nc">&nbsp;            int actualSize = Integer.parseInt(size.getText());</b>
+<b class="nc">&nbsp;            if(actualSize != MIN_SIZE) {</b>
+<b class="nc">&nbsp;                size.setText(&quot;&quot; + (actualSize - 1));</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet de récupérer la valeur de la taille
+&nbsp;     *
+&nbsp;     * @return (int) La valeur de la taille
+&nbsp;     */
+&nbsp;    public int getValue() {
+<b class="nc">&nbsp;        return Integer.parseInt(this.size.getText());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cette méthode permet de savoir si la valeur est correcte
+&nbsp;     *
+&nbsp;     * @return (boolean) true si la valeur est correcte, false sinon
+&nbsp;     */
+&nbsp;    public boolean isValid() {
+<b class="nc">&nbsp;        int value = getValue();</b>
+<b class="nc">&nbsp;        return value &gt;= MIN_SIZE &amp;&amp; value &lt;= MAX_SIZE;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-14 10:54</div>
+</div>
+</body>
+</html>

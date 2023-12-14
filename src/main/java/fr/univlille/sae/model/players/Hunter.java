@@ -142,5 +142,13 @@ public class Hunter extends Subject implements IHunterStrategy {
         if(coord.getCol() < 0 || coord.getCol() >= maze[0].length) { return null; }
         return maze[coord.getRow()][coord.getCol()];
     }
+
+    public int getNbRows() {
+        return nbRows;
+    }
+
+    public int getNbCols() {
+        return nbCols;
+    }
 }
 

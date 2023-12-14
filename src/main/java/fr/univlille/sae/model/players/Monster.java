@@ -268,4 +268,8 @@ public class Monster extends Subject implements IMonsterStrategy {
     public void setFog(boolean fog) {
         this.fog = fog;
     }
+
+    public Cell[][] getDiscoveredMaze() {
+        return discoveredMaze;
+    }
 }

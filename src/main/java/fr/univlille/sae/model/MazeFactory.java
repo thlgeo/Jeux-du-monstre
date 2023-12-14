@@ -72,11 +72,32 @@ public class MazeFactory {
     private void genereNotSet() {
         for(int row = 0; row < this.x; row++) {
             for(int col = 0; col < this.y; col++) {
-                if(!isVisited(row, col) && r.nextDouble(1) <= PERCENT_WALL) {
+                if(!isVisited(row, col) && r.nextDouble(1) <= PERCENT_WALL && isValidWall(row, col)) {
                     this.setVisited(row, col);
                 }
             }
         }
+    }
+
+    /**
+     * Vérifie si le mur est valide, c'est a dire qu'au moins une case adjacente est vide
+     * @param row
+     * @param col
+     * @return
+     */
+    private boolean isValidWall(int row, int col) {
+        if (maze[row][col].getInfo() != ICellEvent.CellInfo.WALL) return false;
+        ICoordinate coordNorth = new Coordinate(row - 1, col);
+        ICoordinate coordSouth = new Coordinate(row + 1, col);
+        ICoordinate coordEast = new Coordinate(row, col + 1);
+        ICoordinate coordWest = new Coordinate(row, col - 1);
+        ICoordinate[] neighbors = {coordNorth, coordSouth, coordEast, coordWest};
+        for (ICoordinate neighbor : neighbors) {
+            if (isValidCoords(neighbor) && maze[neighbor.getRow()][neighbor.getCol()].getInfo() == ICellEvent.CellInfo.EMPTY) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private ICoordinate getGateway(ICoordinate start, ICoordinate end) {
@@ -109,7 +130,7 @@ public class MazeFactory {
     private ICoordinate getOriginCord(ICoordinate cord) {
         List<ICoordinate> cordFrontiers = getFrontierCoords(cord);
         for(ICoordinate cordFrontier : cordFrontiers) {
-            if(isValid(cordFrontier) && isVisited(cordFrontier)) {
+            if(isValidCoords(cordFrontier) && isVisited(cordFrontier)) {
                 return cordFrontier;
             }
         }
@@ -140,10 +161,10 @@ public class MazeFactory {
     }
 
     private boolean isPossibility(ICoordinate cord) {
-        return (isValid(cord) && isWall(cord));
+        return (isValidCoords(cord) && isWall(cord));
     }
 
-    private boolean isValid(ICoordinate cord) {
+    private boolean isValidCoords(ICoordinate cord) {
         return cord.getRow() >= 0 && cord.getRow() < x && cord.getCol() >= 0 && cord.getCol() < y;
     }
 

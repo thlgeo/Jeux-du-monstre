@@ -28,11 +28,12 @@ import java.util.Random;
 public class ModelMain extends Subject{
 
     private static int NB_TOUR_MIN = 5;
-    private static final Random RDM = new Random();
+    public static final Random RDM = new Random();
     private static final int DEFAULT_DIMENSION = 10;
     private static final int DEFAULT_TURN = 1;
     private static final int VISION = 1;
     public static final String CHANGER_TOUR = "changerTour";
+    public static final String CHANGER_TOUR_IA = "changerTourIA";
     protected boolean generateMaze = true;
     protected int turn;
     protected int nbRows;
@@ -255,7 +256,7 @@ public class ModelMain extends Subject{
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
         update(coord, ICellEvent.CellInfo.MONSTER);
         IAMonster.update(event);
-        hunter.notify(CHANGER_TOUR);
+        hunter.notify(CHANGER_TOUR_IA);
     }
 
     /**
@@ -425,7 +426,7 @@ public class ModelMain extends Subject{
         IAHunter.update(hunterEvent);
         turn++;
         monster.notify(turn);
-        monster.notify(CHANGER_TOUR);
+        monster.notify(CHANGER_TOUR_IA);
     }
 
     /**

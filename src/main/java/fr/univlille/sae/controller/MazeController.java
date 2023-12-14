@@ -75,6 +75,7 @@ public class MazeController extends GridPane {
             b.setText("h");
         }else if(info == ICellEvent.CellInfo.EXIT) {
             b.setStyle("-fx-background-image: url('https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png'); -fx-background-size:"+CellController.SIZE+"; -fx-background-position: center center; -fx-border-color: #000000; -fx-background-color: #ffffff");
+            b.setText(" ");
         }else{
             b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
             b.setText(" ");

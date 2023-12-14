@@ -135,7 +135,11 @@ public class MonsterView extends Stage implements Observer {
             close();
         } else if("changerTour".equals(o)) {
             tour.setText("Tour du monstre !");
-            setReadyScene();
+            if (modelMain.isHunterIsIA()) {
+                setMonsterScene();
+            } else {
+                setReadyScene();
+            }
         } else if(o instanceof Integer turn) {
             nbTour.setText("  Tour " + turn);
         }

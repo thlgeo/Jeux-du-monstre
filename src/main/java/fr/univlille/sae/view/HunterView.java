@@ -132,6 +132,9 @@ public class HunterView extends Stage implements Observer {
         } else if(o.equals("changerTour")) {
             tour.setText("Tour du chasseur !");
             setReadyScene();
+        } else if(o.equals("changerTourIA")) {
+            tour.setText("Tour du monstre !");
+            setHunterScene();
         } else if(o instanceof Integer turn) {
             nbTour.setText("  Tour " + turn);
         }

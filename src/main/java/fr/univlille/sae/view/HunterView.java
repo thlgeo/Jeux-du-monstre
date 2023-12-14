@@ -39,7 +39,6 @@ public class HunterView extends Stage implements Observer {
         setTitle("S3.02_G1_Chasseur");
         setResizable(false);
         setHunterNodes();
-        setPosition();
         modelMain.attachHunter(this);
     }
 
@@ -104,12 +103,15 @@ public class HunterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject) {
+        setPosition();
         show();
         tour = new Label("Tour du monstre !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         nbTour = new Label("  Tour 1");
         nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
+        System.out.println("je wait la");
         setWaitScene();
+
     }
 
     /**
@@ -152,17 +154,16 @@ public class HunterView extends Stage implements Observer {
     }
 
     private void setPosition() {
-        double effectiveWidth;
-        double effectiveHeight;
-        /*
-        if(modelMain.MonsterIsIA()) {
+        double effectiveWidth = 0;
+        double effectiveHeight = 0;
+        if(modelMain.isMonsterIsIA()) {
             effectiveWidth = (MainView.BOUNDS.getMaxX() / 2) - calcEffectiveSize(modelMain.getNbCols()) / 2;
+        } else if (modelMain.isHunterIsIA()){
+            effectiveWidth = MainView.BOUNDS.getMaxX();
         } else {
             effectiveWidth = MainView.BOUNDS.getMaxX();
+            effectiveHeight = MainView.BOUNDS.getMinY();
         }
-        */
-        effectiveWidth = MainView.BOUNDS.getMaxX();
-        effectiveHeight = MainView.BOUNDS.getMinY();
         setX(effectiveWidth);
         setY(effectiveHeight);
     }

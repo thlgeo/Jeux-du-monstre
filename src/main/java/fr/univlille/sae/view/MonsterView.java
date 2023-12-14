@@ -38,7 +38,6 @@ public class MonsterView extends Stage implements Observer {
         setTitle("S3.02_G1_Monstre");
         setResizable(false);
         setMonsterNodes();
-        setPosition();
         modelMain.attachMonster(this);
     }
 
@@ -106,6 +105,7 @@ public class MonsterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject) {
+        setPosition();
         show();
         tour = new Label("Cliquez pour commencer !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
@@ -157,18 +157,16 @@ public class MonsterView extends Stage implements Observer {
     }
 
     private void setPosition() {
-        double effectiveWidth;
-        double effectiveHeight;
-        /*
-        if(modelMain.HunterIsIA()) {
+        double effectiveWidth = 0;
+        double effectiveHeight = 0;
+        if(modelMain.isHunterIsIA()) {
             effectiveWidth = (MainView.BOUNDS.getMaxX() / 2) - calcEffectiveSize(modelMain.getNbCols()) / 2;
+        } else if (modelMain.isMonsterIsIA()){
+            effectiveWidth = MainView.BOUNDS.getMinX();
         } else {
             effectiveWidth = MainView.BOUNDS.getMinX();
-
+            effectiveHeight = MainView.BOUNDS.getMinY();
         }
-        */
-        effectiveWidth = MainView.BOUNDS.getMinX();
-        effectiveHeight = MainView.BOUNDS.getMinY();
         setX(effectiveWidth);
         setY(effectiveHeight);
     }

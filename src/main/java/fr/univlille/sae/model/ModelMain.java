@@ -46,6 +46,7 @@ public class ModelMain extends Subject{
     protected boolean fog = false;
     protected boolean monsterIsIA = false;
     protected boolean hunterIsIA = false;
+
     protected String IAMonsterName = "IA Monster";
     protected String IAHunterName = "IA Hunter";
 
@@ -345,6 +346,14 @@ public class ModelMain extends Subject{
             }
         }
         return null;
+    }
+    
+    public boolean isMonsterIsIA() {
+        return monsterIsIA;
+    }
+
+    public boolean isHunterIsIA() {
+        return hunterIsIA;
     }
 
     /**

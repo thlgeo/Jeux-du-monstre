@@ -59,3 +59,11 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 
 - Implémentation d'une IA random pour le Monster
 - Implémentation d'une IA random pour le Hunter mais lorsqu'il trouve une cellule où le monstre est passé, réduit sa portée de tir à (tour actuel - tour où le monstre est passé)
+
+## Semaine du 11/12/2023
+
+### Nathan DESMEE
+
+- Ajout de la doc pour le ModelMain
+- Suppression des ModelMain obsolètes
+- Mise à jour des tests

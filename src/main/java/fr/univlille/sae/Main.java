@@ -6,6 +6,8 @@ import fr.univlille.sae.view.MainView;
 import fr.univlille.sae.view.MonsterView;
 import fr.univlille.sae.view.ParameterView;
 import javafx.application.Application;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -21,6 +23,7 @@ import java.io.FileNotFoundException;
  */
 public class Main extends Application {
     public static final String FONT_DIR = System.getProperty("user.dir") + File.separator + "res" + File.separator + "font" + File.separator;
+    public static final String MUSIC_DIR = System.getProperty("user.dir") + File.separator + "res" + File.separator + "music" + File.separator;
     public static final String ARCADE_FONT = "arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF";
 
     /**
@@ -46,6 +49,12 @@ public class Main extends Application {
             System.out.println(e.getMessage());
         }
         return Font.font("Arial", size);
+    }
+
+    public static MediaPlayer loadMusic(String path) {
+        File f = new File(path);
+        Media m = new Media(f.toURI().toString());
+        return new MediaPlayer(m);
     }
 
     /**

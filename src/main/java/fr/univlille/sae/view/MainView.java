@@ -12,7 +12,9 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -31,6 +33,9 @@ public class MainView extends Stage implements Observer {
     private Label titre;
     private SettingButton settingButton;
     private LaunchButton launchButton;
+    private Button quitButton;
+    private Button noMusicButton;
+    private MediaPlayer mp;
 
     public MainView(ModelMain modelMain) {
         this.modelMain = modelMain;
@@ -50,7 +55,12 @@ public class MainView extends Stage implements Observer {
         VBox.setMargin(titre, new Insets(10, 0, 10, 0));
         VBox.setMargin(settingButton, new Insets(10, 0, 10, 0));
         VBox.setMargin(launchButton, new Insets(10, 0, 10, 0));
-        root.getChildren().addAll(titre, settingButton, launchButton);
+
+        HBox footer = new HBox();
+        footer.getChildren().addAll(noMusicButton, new Spacer(), quitButton);
+        footer.setAlignment(Pos.CENTER);
+
+        root.getChildren().addAll(titre, settingButton, launchButton, new Spacer(), footer);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
     }
@@ -63,6 +73,25 @@ public class MainView extends Stage implements Observer {
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         settingButton = new SettingButton(modelMain);
         launchButton = new LaunchButton(modelMain);
+
+        quitButton = new Button("Quitter");
+        quitButton.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+
+        noMusicButton = new Button("Musique");
+        noMusicButton.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+
+        quitButton.setOnAction(e -> close());
+        noMusicButton.setOnAction(e -> {
+            if(mp.getStatus() == MediaPlayer.Status.PLAYING) {
+                mp.pause();
+            } else {
+                mp.play();
+            }
+        });
+
+        mp = Main.loadMusic(Main.MUSIC_DIR + "music.mp3");
+        mp.setCycleCount(MediaPlayer.INDEFINITE);
+        mp.play();
     }
 
     /**

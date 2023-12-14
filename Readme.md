@@ -24,3 +24,16 @@ S'il tire sur la sortie du labyrinthe, il n'apprendra pas que cette case est la 
 Le but du jeu pour les deux joueurs est de gagner, mais ils gagnent tout-deux de manière différente.  
 - Le chasseur gagne en tirant sur la case où le monstre se trouve actuellement.
 - Le monstre gagne en atteignant la sortie du labyrinthe sans se faire tirer dessus par le chasseur.
+
+# Credits
+
+Développé par :
+
+- Nathan DESMEE
+- Théo LENGART
+- Armand SADY
+- Valentin THUILLIER
+
+Musique par :
+
+- Lesiakower

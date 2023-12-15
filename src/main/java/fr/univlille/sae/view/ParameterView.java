@@ -8,6 +8,7 @@ import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -52,10 +53,18 @@ public class ParameterView extends Stage implements Observer {
      */
     private void setParameterScene() {
         VBox root = new VBox();
+        HBox dimensions = new HBox();
+        VBox heightParam = new VBox();
+        VBox widthParam = new VBox();
         root.getChildren().addAll(nameMonster, monsterName);
         root.getChildren().addAll(new Spacer(), nameHunter, hunterName);
-        root.getChildren().addAll(new Spacer(), titreHeight, heigth);
-        root.getChildren().addAll(new Spacer(), titreWidth, width);
+        heightParam.getChildren().addAll(titreHeight, heigth);
+        heightParam.setAlignment(Pos.CENTER);
+        widthParam.getChildren().addAll(titreWidth, this.width);
+        widthParam.setAlignment(Pos.CENTER);
+        dimensions.getChildren().addAll(heightParam, new Spacer(), widthParam);
+        dimensions.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(new Spacer(), dimensions);
         root.getChildren().addAll(new Spacer(), depDiag);
         root.getChildren().addAll(new Spacer(), fog);
         root.getChildren().addAll(new Spacer(), generateMaze);
@@ -75,9 +84,9 @@ public class ParameterView extends Stage implements Observer {
         nameMonster.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         nameHunter = new Label("Nom du Chasseur");
         nameHunter.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        titreHeight = new Label("hauteur du labyrinthe");
+        titreHeight = new Label("hauteur");
         titreHeight.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        titreWidth = new Label("largeur du labyrinthe");
+        titreWidth = new Label("largeur");
         titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         monsterName = new NameController(true);
         hunterName = new NameController(false);

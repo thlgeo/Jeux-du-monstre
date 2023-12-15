@@ -28,7 +28,7 @@ public class CellController extends Button {
     private static final String HUNTER_DIR = Main.MUSIC_DIR + "hunter" + File.separator;
     private static final String MONSTER_DIR = Main.MUSIC_DIR + "monster" + File.separator;
     private static final MediaPlayer MEDIA_PLAYER_HUNTER = Main.loadMusic(HUNTER_DIR + "SFX1.wav", 1.0);
-    private static MediaPlayer MEDIA_PLAYER_MONSTER = Main.loadMusic(MONSTER_DIR + "SFX1.wav", 1.0);
+    private static final MediaPlayer MEDIA_PLAYER_MONSTER = Main.loadMusic(MONSTER_DIR + "SFX1.wav", 1.0);
 
     public CellController(int a, int o, ModelMain modelMain, boolean isMonsterCell) {
         super(" ");

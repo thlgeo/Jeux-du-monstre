@@ -37,7 +37,7 @@ public class MazeFactory {
         if(x != y) {
             return generateMaze();
         }
-        generateImport(this.x, this.y, 0);
+        generateImport(this.x, this.y);
         return this.maze;
     }
 
@@ -189,9 +189,8 @@ public class MazeFactory {
      *
      * @param nbRows nombre de lignes du labyrinthe
      * @param nbCols nombre de colonnes du labyrinthe
-     * @param id     l'identifiant du labyrinthe
      */
-    protected void generateImport(int nbRows, int nbCols, int id) {
+    protected void generateImport(int nbRows, int nbCols) {
         BufferedReader reader = null;
         new Cell(); // Permet d'initialiser la map charToInfo
         try {
@@ -199,7 +198,7 @@ public class MazeFactory {
                 throw new UnsupportedMazeException();
             }
             this.maze = new Cell[x][y];
-            String filePath = mazefilepath(nbRows, nbCols, id);
+            String filePath = mazefilepath(nbRows, nbCols);
             reader = new BufferedReader(new FileReader(filePath));
             for(int rowId = 0; rowId < nbRows; rowId++) {
                 String currentLine = reader.readLine();
@@ -224,10 +223,9 @@ public class MazeFactory {
      *
      * @param nbCols Le nombre de colonnes du labyrinthe
      * @param nbRows Le nombre de lignes du labyrinthe
-     * @param id     Identifiant du labyrinthe
      * @return String - le chemin du fichier du labyrinthe associé aux paramètres
      */
-    private String mazefilepath(int nbRows, int nbCols, int id) {
-        return System.getProperty("user.dir") + FS + "res" + FS + "mazes" + FS + "maze-" + nbCols + "-" + nbRows + "-" + id;
+    private String mazefilepath(int nbRows, int nbCols) {
+        return System.getProperty("user.dir") + FS + "res" + FS + "mazes" + FS + "maze-" + nbCols + "-" + nbRows;
     }
 }

@@ -151,6 +151,15 @@ public class ModelMain extends Subject{
         return null;
     }
 
+
+    public void lancerTourMonstre() {
+        if(turn == 1) {
+            deplacementMonstre(null);
+        } else {
+            deplacementMonstre(IAMonster.play());
+        }
+    }
+
     /**
      * Notifie aux observers si le monstre a bougé ou non, ou s'il a gagné.
      *
@@ -280,6 +289,7 @@ public class ModelMain extends Subject{
         }
         ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
         update(coord, ICellEvent.CellInfo.MONSTER);
+        monster.update(event); //notification à la vue
         IAMonster.update(event);
         tirerChasseur(IAHunter.play());
     }
@@ -349,11 +359,11 @@ public class ModelMain extends Subject{
         return null;
     }
     
-    public boolean isMonsterIsIA() {
+    public boolean monsterIsIA() {
         return monsterIsIA;
     }
 
-    public boolean isHunterIsIA() {
+    public boolean hunterIsIA() {
         return hunterIsIA;
     }
 
@@ -456,10 +466,13 @@ public class ModelMain extends Subject{
             victory(false);
             return;
         }
+        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
         ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
+        monster.update(monsterEvent); //notification à la vue
         IAHunter.update(hunterEvent);
         turn++;
-        deplacementMonstre(IAMonster.play());
+        notifyObservers(turn);
+        monster.notify("showIA");
     }
 
     /**
@@ -481,12 +494,14 @@ public class ModelMain extends Subject{
         this.generateMaze = generateMaze;
         createMaze();
         this.deplacementDiag = depDiag;
-        this.fog = fog;
-        monster.setFog(fog);
+        monsterIsIA = IAMonster; // doit se réaliser avant le fog pour les changements
+        hunterIsIA = IAHunter;
+        if(!monsterIsIA) this.fog = fog;
+        monster.setFog(this.fog);
         hunter.setName(hunterName);
         monster.setName(monsterName);
         hunter.setRowCol(nbRows, nbCols);
-        if(fog) {
+        if(this.fog) {
             monster.setMazeEmpty(nbRows, nbCols);
         } else {
             monster.setMaze(this.maze);
@@ -495,8 +510,6 @@ public class ModelMain extends Subject{
         IAHunterName = hunterName;
         setMonsterIA();
         this.IAHunter.initialize(nbRows, nbCols);
-        monsterIsIA = IAMonster;
-        hunterIsIA = IAHunter;
         turn = DEFAULT_TURN;
         notifyObservers("ParamMAJ");
     }
@@ -540,7 +553,7 @@ public class ModelMain extends Subject{
     public void notifyDiscoveredMaze() {
         monster.notifyDiscoveredMaze();
         hunter.notifyDiscoveredMaze();
-        if(monsterIsIA) deplacementMonstre(null); //on commence la jeu par l'initialisation du monstre
+        if(monsterIsIA && !hunterIsIA) deplacementMonstre(null); //on commence la jeu par l'initialisation du monstre
     }
 
     /**
@@ -556,10 +569,15 @@ public class ModelMain extends Subject{
     public void notifyShowMH() {
         if(!monsterIsIA) monster.notifyShow();
         if(!hunterIsIA) hunter.notifyShow();
+        if(monsterIsIA && hunterIsIA) monster.notify("showIA");
         notifyObservers("close");
     }
 
-    public void setNbTourMin(int nbTourMin) {
+    public static void setNbTourMin(int nbTourMin) {
         NB_TOUR_MIN = nbTourMin;
+    }
+
+    public boolean isFullIA() {
+        return monsterIsIA && hunterIsIA;
     }
 }

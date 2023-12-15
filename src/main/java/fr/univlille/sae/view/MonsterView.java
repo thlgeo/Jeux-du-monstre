@@ -6,6 +6,7 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.CellController;
 import fr.univlille.sae.controller.MazeController;
+import fr.univlille.sae.controller.NextTurnController;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
@@ -32,6 +33,7 @@ public class MonsterView extends Stage implements Observer {
     private MazeController mc;
     private Button ready;
     private Label nbTour;
+    private NextTurnController nextTurnController;
 
     public MonsterView(ModelMain modelMain) {
         this.modelMain = modelMain;
@@ -39,6 +41,7 @@ public class MonsterView extends Stage implements Observer {
         setResizable(false);
         setMonsterNodes();
         modelMain.attachMonster(this);
+        modelMain.attach(this);
     }
 
 
@@ -51,6 +54,13 @@ public class MonsterView extends Stage implements Observer {
         turnBox.getChildren().addAll(tour, nbTour);
         turnBox.setAlignment(Pos.CENTER);
         root.getChildren().addAll(titre, mc, turnBox);
+        setScene(modelMain.getNbCols(), modelMain.getNbRows(), root);
+        root.setAlignment(Pos.CENTER);
+    }
+
+    private void setMonsterIAScene() {
+        VBox root = new VBox();
+        root.getChildren().addAll(titre, mc, new Spacer(), nextTurnController);
         setScene(modelMain.getNbCols(), modelMain.getNbRows(), root);
         root.setAlignment(Pos.CENTER);
     }
@@ -96,6 +106,7 @@ public class MonsterView extends Stage implements Observer {
         nbTour = new Label("  Tour 1");
         nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         mc = new MazeController(modelMain, true);
+        nextTurnController = new NextTurnController(modelMain);
     }
 
     /**
@@ -105,6 +116,7 @@ public class MonsterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject) {
+        if(subject instanceof ModelMain) return;
         setPosition();
         show();
         tour = new Label("Cliquez pour commencer !");
@@ -141,6 +153,10 @@ public class MonsterView extends Stage implements Observer {
             setMonsterScene();
         } else if(o instanceof Integer turn) {
             nbTour.setText("  Tour " + turn);
+            nextTurnController.setText("Tour " + turn);
+        }else if("showIA".equals(o)) {
+            setMonsterIAScene();
+            show();
         }
     }
 
@@ -162,9 +178,9 @@ public class MonsterView extends Stage implements Observer {
     private void setPosition() {
         double effectiveWidth = 0;
         double effectiveHeight = 0;
-        if(modelMain.isHunterIsIA()) {
+        if(modelMain.hunterIsIA()) {
             effectiveWidth = (MainView.BOUNDS.getMaxX() / 2) - calcEffectiveSize(modelMain.getNbCols()) / 2;
-        } else if (modelMain.isMonsterIsIA()){
+        } else if (modelMain.monsterIsIA()){
             effectiveWidth = MainView.BOUNDS.getMinX();
         } else {
             effectiveWidth = MainView.BOUNDS.getMinX();

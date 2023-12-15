@@ -4,12 +4,13 @@ import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
 
 import java.util.*;
 
-public class IAMonster implements IMonsterStrategy {
+public class IAMonster implements IMonsterStrategy{
 
     public static final Random rd = new Random();
     protected Cell[][] maze;

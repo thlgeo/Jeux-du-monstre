@@ -27,7 +27,8 @@ public class CellController extends Button {
     private final int NB_SOUNDS = 3;
     private static final String HUNTER_DIR = Main.MUSIC_DIR + "hunter" + File.separator;
     private static final String MONSTER_DIR = Main.MUSIC_DIR + "monster" + File.separator;
-    private static MediaPlayer mediaPlayerHunter = Main.loadMusic(HUNTER_DIR + "SFX1.mp3");
+    private static final MediaPlayer MEDIA_PLAYER_HUNTER = Main.loadMusic(HUNTER_DIR + "SFX1.mp3", 1.0);
+    private static MediaPlayer MEDIA_PLAYER_MONSTER = Main.loadMusic(MONSTER_DIR + "SFX1.mp3", 1.0);
 
     public CellController(int a, int o, ModelMain modelMain, boolean isMonsterCell) {
         super(" ");
@@ -60,12 +61,11 @@ public class CellController extends Button {
         if(modelMain.isFullIA()) return;
         if(this.isMonster) {
             this.modelMain.deplacementMonstre(this.getCoord());
+            CellController.MEDIA_PLAYER_MONSTER.play();
         } else {
             try {
                 this.modelMain.tirerChasseur(this.getCoord());
-                CellController.mediaPlayerHunter.stop();
-                CellController.mediaPlayerHunter.play();
-                System.out.println(CellController.mediaPlayerHunter.currentCountProperty());
+                CellController.MEDIA_PLAYER_HUNTER.play();
             } catch(Exception e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
             }

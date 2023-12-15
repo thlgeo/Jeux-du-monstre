@@ -51,14 +51,12 @@ public class Main extends Application {
         return Font.font("Arial", size);
     }
 
-    public static MediaPlayer loadMusic(String path) {
+    public static MediaPlayer loadMusic(String path, double volume) {
         File f = new File(path);
         Media m = new Media(f.toURI().toString());
-        return new MediaPlayer(m);
-    }
-
-    public static void changeMusic(MediaPlayer mp) {
-
+        MediaPlayer mp = new MediaPlayer(m);
+        mp.setVolume(volume);
+        return mp;
     }
 
     /**

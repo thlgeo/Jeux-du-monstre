@@ -176,7 +176,7 @@ public class MonsterView extends Stage implements Observer {
     }
 
     private void setPosition() {
-        double effectiveWidth = 0;
+        double effectiveWidth;
         double effectiveHeight = 0;
         if(modelMain.hunterIsIA()) {
             effectiveWidth = (MainView.BOUNDS.getMaxX() / 2) - calcEffectiveSize(modelMain.getNbCols()) / 2;

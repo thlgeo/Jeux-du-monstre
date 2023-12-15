@@ -156,14 +156,14 @@ public class HunterView extends Stage implements Observer {
     }
 
     private void setPosition() {
-        double effectiveWidth = 0;
+        double effectiveWidth;
         double effectiveHeight = 0;
         if(modelMain.monsterIsIA()) {
             effectiveWidth = (MainView.BOUNDS.getMaxX() / 2) - calcEffectiveSize(modelMain.getNbCols()) / 2;
         } else if (modelMain.hunterIsIA()){
             effectiveWidth = MainView.BOUNDS.getMaxX();
         } else {
-            effectiveWidth = MainView.BOUNDS.getMaxX();
+            effectiveWidth = MainView.BOUNDS.getMaxX() - calcEffectiveSize(modelMain.getNbCols());
             effectiveHeight = MainView.BOUNDS.getMinY();
         }
         setX(effectiveWidth);

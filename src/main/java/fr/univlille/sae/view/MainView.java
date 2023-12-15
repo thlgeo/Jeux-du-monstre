@@ -89,7 +89,7 @@ public class MainView extends Stage implements Observer {
             }
         });
 
-        mp = Main.loadMusic(Main.MUSIC_DIR + "music.mp3");
+        mp = Main.loadMusic(Main.MUSIC_DIR + "music.mp3", 0.5);
         mp.setCycleCount(MediaPlayer.INDEFINITE);
         mp.play();
     }

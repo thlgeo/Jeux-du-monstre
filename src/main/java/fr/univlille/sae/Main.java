@@ -57,6 +57,10 @@ public class Main extends Application {
         return new MediaPlayer(m);
     }
 
+    public static void changeMusic(MediaPlayer mp) {
+
+    }
+
     /**
      * Cette méthode permet de lancer le Stage Principal de l'application
      *

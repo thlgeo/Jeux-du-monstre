@@ -6,8 +6,11 @@ import fr.univlille.sae.model.Coordinate;
 import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Cette classe coorespond au bouton d'une cellule du labyrinthe
@@ -21,6 +24,10 @@ public class CellController extends Button {
     private final int a;
     private final int o;
     private final ModelMain modelMain;
+    private final int NB_SOUNDS = 3;
+    private static final String HUNTER_DIR = Main.MUSIC_DIR + "hunter" + File.separator;
+    private static final String MONSTER_DIR = Main.MUSIC_DIR + "monster" + File.separator;
+    private static MediaPlayer mediaPlayerHunter = Main.loadMusic(HUNTER_DIR + "SFX1.mp3");
 
     public CellController(int a, int o, ModelMain modelMain, boolean isMonsterCell) {
         super(" ");
@@ -55,6 +62,9 @@ public class CellController extends Button {
         } else {
             try {
                 this.modelMain.tirerChasseur(this.getCoord());
+                CellController.mediaPlayerHunter.stop();
+                CellController.mediaPlayerHunter.play();
+                System.out.println(CellController.mediaPlayerHunter.currentCountProperty());
             } catch(Exception e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
             }

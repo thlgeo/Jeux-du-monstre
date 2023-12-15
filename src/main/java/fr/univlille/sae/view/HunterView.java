@@ -109,7 +109,6 @@ public class HunterView extends Stage implements Observer {
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         nbTour = new Label("  Tour 1");
         nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        setWaitScene();
 
     }
 
@@ -127,6 +126,7 @@ public class HunterView extends Stage implements Observer {
             setWaitScene();
         } else if(o instanceof Cell[][]) {
             mc.resize();
+            setWaitScene();
         } else if("endGame".equals(o)) {
             close();
         } else if(o.equals("changerTour")) {

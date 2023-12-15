@@ -123,7 +123,6 @@ public class MonsterView extends Stage implements Observer {
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         nbTour = new Label("  Tour 1");
         nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
-        setMonsterScene();
     }
 
     /**
@@ -141,6 +140,7 @@ public class MonsterView extends Stage implements Observer {
         } else if(o instanceof Cell[][] discoveredMaze) {
             mc.resize();
             mc.initMaze(discoveredMaze);
+            setMonsterScene();
         } else if("cantMove".equals(o)) {
             new Alert(Alert.AlertType.ERROR, "Impossible de vous déplacer sur cette case !").showAndWait();
         } else if("endGame".equals(o)) {

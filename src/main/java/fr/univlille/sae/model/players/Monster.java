@@ -257,6 +257,7 @@ public class Monster extends Subject implements IMonsterStrategy {
     public void notifyShow() {
         notifyObservers();
     }
+
     private Cell[][] copyOf(Cell[][] maze) {
         Cell[][] newMaze = new Cell[maze.length][];
         for(int i = 0; i < maze.length; i++) {

@@ -18,8 +18,8 @@ import javafx.stage.Stage;
  * @version 1.0
  */
 public class ParameterView extends Stage implements Observer {
-    public static final int WIDTH = 500;
-    public static final int HEIGHT = 500;
+    public static final int WIDTH_VIEW = 500;
+    public static final int HEIGHT_VIEW = 500;
     private final ModelMain modelMain;
     private Label nameMonster;
     private Label nameHunter;
@@ -63,7 +63,7 @@ public class ParameterView extends Stage implements Observer {
         root.getChildren().addAll(new Spacer(), IAHunter);
         root.getChildren().addAll(new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
-        setScene(new Scene(root, WIDTH, HEIGHT));
+        setScene(new Scene(root, WIDTH_VIEW, HEIGHT_VIEW));
     }
 
 
@@ -109,6 +109,8 @@ public class ParameterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        close();
+        if(o.equals("ParamMAJ")) {
+            close();
+        }
     }
 }

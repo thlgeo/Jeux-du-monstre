@@ -57,6 +57,7 @@ public class CellController extends Button {
      * Cette méthode permet de définir l'action du bouton
      */
     private void setAction() {
+        if(modelMain.isFullIA()) return;
         if(this.isMonster) {
             this.modelMain.deplacementMonstre(this.getCoord());
         } else {

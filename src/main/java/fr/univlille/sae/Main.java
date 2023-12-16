@@ -6,6 +6,7 @@ import fr.univlille.sae.view.MainView;
 import fr.univlille.sae.view.MonsterView;
 import fr.univlille.sae.view.ParameterView;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
@@ -22,9 +23,13 @@ import java.io.FileNotFoundException;
  * @version 1.0
  */
 public class Main extends Application {
-    public static final String FONT_DIR = System.getProperty("user.dir") + File.separator + "res" + File.separator + "font" + File.separator;
-    public static final String MUSIC_DIR = System.getProperty("user.dir") + File.separator + "res" + File.separator + "music" + File.separator;
+    public static final String RES_DIR = System.getProperty("user.dir") + File.separator + "res" + File.separator;
+    public static final String FONT_DIR = RES_DIR + "font" + File.separator;
+    public static final String MUSIC_DIR = RES_DIR + File.separator + "music" + File.separator;
+
     public static final String ARCADE_FONT = "arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF";
+
+    public static final String ICON_URL = "https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png";
 
     /**
      * Cette méthode permet de lancer l'application
@@ -57,6 +62,10 @@ public class Main extends Application {
         MediaPlayer mp = new MediaPlayer(m);
         mp.setVolume(volume);
         return mp;
+    }
+
+    public static Image loadImage(String s) {
+        return new Image(s);
     }
 
     /**

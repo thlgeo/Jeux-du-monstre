@@ -39,6 +39,7 @@ public class HunterView extends Stage implements Observer {
         setTitle("S3.02_G1_Chasseur");
         setResizable(false);
         setHunterNodes();
+        getIcons().add(Main.loadImage(Main.ICON_URL));
         modelMain.attachHunter(this);
     }
 

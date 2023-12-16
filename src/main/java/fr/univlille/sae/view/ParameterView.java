@@ -44,6 +44,7 @@ public class ParameterView extends Stage implements Observer {
         setParameterNodes();
         setParameterScene();
         setResizable(false);
+        getIcons().add(Main.loadImage(Main.ICON_URL));
         modelMain.attach(this);
     }
 

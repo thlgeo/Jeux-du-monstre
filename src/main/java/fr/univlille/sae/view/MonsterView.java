@@ -41,6 +41,7 @@ public class MonsterView extends Stage implements Observer {
         setResizable(false);
         setMonsterNodes();
         modelMain.attachMonster(this);
+        getIcons().add(Main.loadImage(Main.ICON_URL));
         modelMain.attach(this);
     }
 

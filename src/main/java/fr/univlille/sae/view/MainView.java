@@ -43,6 +43,7 @@ public class MainView extends Stage implements Observer {
         setResizable(false);
         setMainNodes();
         setMainScene();
+        getIcons().add(Main.loadImage(Main.ICON_URL));
         modelMain.attach(this);
         show();
     }

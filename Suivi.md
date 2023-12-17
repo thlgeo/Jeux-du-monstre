@@ -67,3 +67,11 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 - Ajout de la doc pour le ModelMain
 - Suppression des ModelMain obsolètes
 - Mise à jour des tests
+
+### Armand SADY
+
+- Correction de bugs liés au positionnement des views
+- Correction de bugs liés à la suppression de murs dans le labyrinthe
+- Ajout de bruits de pas pour le monstre et de tir pour le hunter
+- Refactoring de la manière d'importer un labyrinthe depuis un fichier
+- Ajout d'icônes pour l'application

@@ -199,7 +199,7 @@ public class IAMonster implements IMonsterStrategy{
             throw new RuntimeException("Chemin impossible");
         }
         path = new ArrayList<>();
-        while(current != null && !current.equals(new NullCellule())) {
+        while(current != null && !current.equals(new NullCellule()) && !current.equals(getMonster())) {
             path.add(new Coordinate(current.row, current.col));
             current = current.parent;
         }

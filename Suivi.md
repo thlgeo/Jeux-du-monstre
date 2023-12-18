@@ -83,3 +83,7 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 ### Nathan DESMEE
 
 - Correction Scene Monstre IA
+
+### Valentin THUILLIER
+
+- Correction d'une erreur lier à l'IA du monstre

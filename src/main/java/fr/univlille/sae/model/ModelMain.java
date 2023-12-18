@@ -471,7 +471,7 @@ public class ModelMain extends Subject{
         monster.update(monsterEvent); //notification à la vue
         IAHunter.update(hunterEvent);
         turn++;
-        notifyObservers(turn);
+        monster.notify(turn);
         monster.notify("showIA");
     }
 
@@ -554,6 +554,7 @@ public class ModelMain extends Subject{
         monster.notifyDiscoveredMaze();
         hunter.notifyDiscoveredMaze();
         if(monsterIsIA && !hunterIsIA) deplacementMonstre(null); //on commence la jeu par l'initialisation du monstre
+        if(monsterIsIA && hunterIsIA) monster.notify("showIA");
     }
 
     /**
@@ -569,7 +570,6 @@ public class ModelMain extends Subject{
     public void notifyShowMH() {
         if(!monsterIsIA) monster.notifyShow();
         if(!hunterIsIA) hunter.notifyShow();
-        if(monsterIsIA && hunterIsIA) monster.notify("showIA");
         notifyObservers("close");
     }
 

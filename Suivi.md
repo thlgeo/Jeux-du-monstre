@@ -67,6 +67,8 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 - Ajout de la doc pour le ModelMain
 - Suppression des ModelMain obsolètes
 - Mise à jour des tests
+- Ajout et gestion de la musique 
+- Scene du monstre IA
 
 ### Armand SADY
 
@@ -75,3 +77,9 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 - Ajout de bruits de pas pour le monstre et de tir pour le hunter
 - Refactoring de la manière d'importer un labyrinthe depuis un fichier
 - Ajout d'icônes pour l'application
+
+## Semaine du 18/12/2023
+
+### Nathan DESMEE
+
+- Correction Scene Monstre IA

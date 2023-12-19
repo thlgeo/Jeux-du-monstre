@@ -16,6 +16,10 @@ public class NextTurnController extends Button {
         setFont(Main.loadFont(Main.ARCADE_FONT, 20));
     }
 
+    public void reset(){
+        setText("Tour 1");
+    }
+
     private void setAction(){
         setOnAction(event -> modelMain.lancerTourMonstre());
     }

@@ -497,6 +497,7 @@ public class ModelMain extends Subject{
         monsterIsIA = IAMonster; // doit se réaliser avant le fog pour les changements
         hunterIsIA = IAHunter;
         if(!monsterIsIA) this.fog = fog;
+        else this.fog = false;
         monster.setFog(this.fog);
         hunter.setName(hunterName);
         monster.setName(monsterName);
@@ -554,7 +555,10 @@ public class ModelMain extends Subject{
         monster.notifyDiscoveredMaze();
         hunter.notifyDiscoveredMaze();
         if(monsterIsIA && !hunterIsIA) deplacementMonstre(null); //on commence la jeu par l'initialisation du monstre
-        if(monsterIsIA && hunterIsIA) monster.notify("showIA");
+        if(monsterIsIA && hunterIsIA) {
+            monster.notify(turn);
+            monster.notify("showIA");
+        }
     }
 
     /**

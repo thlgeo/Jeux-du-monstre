@@ -83,6 +83,7 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 ### Nathan DESMEE
 
 - Correction Scene Monstre IA
+- Correction brouillard et tour pour la vue de L'ia
 
 ### Valentin THUILLIER
 

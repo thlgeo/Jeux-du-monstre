@@ -14,14 +14,15 @@ import java.util.Random;
 
 public class MazeFactory {
     protected static final String FS = File.separator;
-    private static final double PERCENT_WALL = 0.35;
+    private double percent_wall;
     private final int x;
     private final int y;
     private final Random r = new Random();
     protected Cell[][] maze;
     protected boolean[][] visited;
 
-    public MazeFactory(int x, int y) {
+    public MazeFactory(int x, int y, double percent_wall) {
+        this.percent_wall = percent_wall;
         this.x = x;
         this.y = y;
         maze = new Cell[x][y];
@@ -50,6 +51,7 @@ public class MazeFactory {
     }
 
     protected void generePrim() {
+        System.out.println(percent_wall);
         makeDefaultMaze();
         List<ICoordinate> frontier = new ArrayList<>();
         ICoordinate coord = new Coordinate(r.nextInt(x - 1), r.nextInt(y - 1));
@@ -72,7 +74,7 @@ public class MazeFactory {
     private void genereNotSet() {
         for(int row = 0; row < this.x; row++) {
             for(int col = 0; col < this.y; col++) {
-                if(!isVisited(row, col) && r.nextDouble(1) <= PERCENT_WALL && isValidWall(row, col)) {
+                if(!isVisited(row, col) && r.nextDouble(1) <= percent_wall && isValidWall(row, col)) {
                     this.setVisited(row, col);
                 }
             }

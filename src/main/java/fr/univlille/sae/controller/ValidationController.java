@@ -22,8 +22,9 @@ public class ValidationController extends Button {
     private final GenerateMazeController generateMaze;
     private final IAMonsterController IAMonstre;
     private final IAHunterController IAHunter;
+    private final PercentWallController slider;
 
-    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, DepDiagController depDiag, FogController fog, GenerateMazeController generateMaze, IAMonsterController IAMonstre, IAHunterController IAHunter, ModelMain modelMain) {
+    public ValidationController(NameController nameMonster, NameController nameHunter, SizeController height, SizeController width, DepDiagController depDiag, FogController fog, GenerateMazeController generateMaze, IAMonsterController IAMonstre, IAHunterController IAHunter, PercentWallController slider, ModelMain modelMain) {
         this.modelMain = modelMain;
         this.nameMonster = nameMonster;
         this.nameHunter = nameHunter;
@@ -34,6 +35,7 @@ public class ValidationController extends Button {
         this.generateMaze = generateMaze;
         this.IAMonstre = IAMonstre;
         this.IAHunter = IAHunter;
+        this.slider = slider;
         setText("Enregistrer les parametres");
         setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         setAction();
@@ -52,7 +54,7 @@ public class ValidationController extends Button {
                 new Alert(Alert.AlertType.ERROR, "Veuillez entrer une taille entre " + SizeController.MIN_SIZE + " et " + SizeController.MAX_SIZE + "  !").showAndWait();
                 return;
             }
-            modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected(), fog.isSelected(), generateMaze.isSelected(), IAMonstre.isSelected(), IAHunter.isSelected());
+            modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected(), fog.isSelected(), generateMaze.isSelected(), IAMonstre.isSelected(), IAHunter.isSelected() ,modelMain.getPercent_wall());
             new Alert(Alert.AlertType.CONFIRMATION, "Les informations ont bien été mises à jour").showAndWait();
         });
     }

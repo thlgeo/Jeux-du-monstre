@@ -101,7 +101,7 @@ class TestModelMain {
 
     @Test
     void testChangerParam(){
-        modelMain.changerParam("Nathan", "Valentin", 8, 8, true, false, true, true, false);
+        modelMain.changerParam("Nathan", "Valentin", 8, 8, true, false, true, true, false, 0.35);
         assertEquals("Valentin", modelMain.monster.getName());
         assertEquals("Nathan", modelMain.hunter.getName());
         assertEquals(8, modelMain.getNbRows());

@@ -47,6 +47,7 @@ public class ModelMain extends Subject{
     protected boolean fog = false;
     protected boolean monsterIsIA = false;
     protected boolean hunterIsIA = false;
+    protected double percent_wall;
 
     protected String IAMonsterName = "IA Monster";
     protected String IAHunterName = "IA Hunter";
@@ -56,6 +57,7 @@ public class ModelMain extends Subject{
         this.nbRows = nbRows;
         this.nbCols = nbCols;
         this.maze = null;
+        percent_wall = 0.35;
         createMaze();
         this.monster = new Monster("Monster", this.maze);
         this.hunter = new Hunter("Hunter", nbRows, nbCols);
@@ -109,9 +111,9 @@ public class ModelMain extends Subject{
      */
     private void createMaze() {
         if(generateMaze) {
-            this.maze = new MazeFactory(this.nbRows, this.nbCols).generateMaze();
+            this.maze = new MazeFactory(this.nbRows, this.nbCols,percent_wall).generateMaze();
         } else {
-            this.maze = new MazeFactory(this.nbRows, this.nbCols).importMaze();
+            this.maze = new MazeFactory(this.nbRows, this.nbCols,percent_wall).importMaze();
         }
     }
 
@@ -120,7 +122,7 @@ public class ModelMain extends Subject{
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA);
+        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA, percent_wall);
     }
 
     public int getNbRows() {
@@ -133,6 +135,10 @@ public class ModelMain extends Subject{
 
     protected Cell getCell(int row, int col) {
         return maze[row][col];
+    }
+
+    public double getPercent_wall() {
+        return percent_wall;
     }
 
     /**
@@ -488,10 +494,12 @@ public class ModelMain extends Subject{
      * @param IAMonster   (boolean)   le monster est une IA
      * @param IAHunter    (boolean)   le chasseur est une IA
      */
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter) {
+    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter, double percent_wall) {
         this.nbRows = height;
+        System.out.println(percent_wall);
         this.nbCols = width;
         this.generateMaze = generateMaze;
+        this.percent_wall = percent_wall;
         createMaze();
         this.deplacementDiag = depDiag;
         monsterIsIA = IAMonster; // doit se réaliser avant le fog pour les changements
@@ -526,6 +534,11 @@ public class ModelMain extends Subject{
         if(coordinate.getRow() < 0 || coordinate.getRow() >= nbRows || coordinate.getCol() < 0 || coordinate.getCol() >= nbCols)
             return null;
         return maze[coordinate.getRow()][coordinate.getCol()];
+    }
+
+    public void setPercentWall(double percent_wall)
+    {
+        this.percent_wall = percent_wall;
     }
 
     /**

@@ -7,7 +7,7 @@ public class TestMazeFactory {
 
     @Test
     public void testGenerationMaze() {
-        mazeFactory = new MazeFactory(5,5);
+        mazeFactory = new MazeFactory(5,5,0.35);
         mazeFactory.generePrim();
     }
 }

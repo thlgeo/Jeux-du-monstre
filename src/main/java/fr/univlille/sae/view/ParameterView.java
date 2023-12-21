@@ -5,6 +5,8 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.*;
 import fr.univlille.sae.model.ModelMain;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -32,6 +34,7 @@ public class ParameterView extends Stage implements Observer {
     private SizeController width;
     private ValidationController validation;
     private DepDiagController depDiag;
+    private PercentWallController percentWall;
 
     private GenerateMazeController generateMaze;
     private FogController fog;
@@ -65,6 +68,7 @@ public class ParameterView extends Stage implements Observer {
         widthParam.setAlignment(Pos.CENTER);
         dimensions.getChildren().addAll(heightParam, new Spacer(), widthParam);
         dimensions.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(new Spacer(), percentWall);
         root.getChildren().addAll(new Spacer(), dimensions);
         root.getChildren().addAll(new Spacer(), depDiag);
         root.getChildren().addAll(new Spacer(), fog);
@@ -98,6 +102,15 @@ public class ParameterView extends Stage implements Observer {
         generateMaze = new GenerateMazeController();
         IAMonstre = new IAMonsterController();
         IAHunter = new IAHunterController();
+        percentWall = new PercentWallController(0.35);
+        // percentWall.valueProperty().addListener(new ChangeListener<Number>() {
+
+        //     @Override
+        //     public void changed(ObservableValue<? extends Number> arg0, Number oldVal, Number newVal) {
+        //         modelMain.setPercentWall(newVal.doubleValue());
+        //     }
+            
+        // });
         validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, IAMonstre, IAHunter, modelMain);
     }
 

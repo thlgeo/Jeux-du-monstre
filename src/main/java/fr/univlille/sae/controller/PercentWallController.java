@@ -7,22 +7,13 @@ import javafx.scene.control.Slider;
 public class PercentWallController extends Slider {
     public PercentWallController(double percent_wall)
     {
-        setWidth(100);
+        setMaxWidth(400);
         setValue(percent_wall);
         setMax(0.5);
         setMin(0);
-        setAction();
-    }
-
-    public void setAction()
-    {
-        valueProperty().addListener(new ChangeListener<Number>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Number> arg0, Number oldVal, Number newVal) {
-                modelMain.setPercentWall(newVal.doubleValue());
-            }
-            
-        });
+        majorTickUnitProperty().set(0.05);
+        snapToTicksProperty().set(true);
+        showTickMarksProperty().set(true);
+        showTickLabelsProperty().set(true);
     }
 }

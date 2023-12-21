@@ -55,7 +55,7 @@ public class ValidationController extends Button {
                 return;
             }
             //modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected(), fog.isSelected(), generateMaze.isSelected(), IAMonstre.isSelected(), IAHunter.isSelected());
-            modelMain.rebuildMaze(height.getValue(), width.getValue(), generateMaze.isSelected());
+            modelMain.rebuildMaze(height.getValue(), width.getValue(), generateMaze.isSelected(), slider.getValue());
             modelMain.rebuildPlayers(nameHunter.getText(), nameMonster.getText(), IAMonstre.isSelected(), IAHunter.isSelected());
             modelMain.rebuildParam(depDiag.isSelected(), fog.isSelected());
             new Alert(Alert.AlertType.CONFIRMATION, "Les informations ont bien été mises à jour").showAndWait();

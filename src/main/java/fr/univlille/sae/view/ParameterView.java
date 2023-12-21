@@ -28,6 +28,7 @@ public class ParameterView extends Stage implements Observer {
     private Label nameHunter;
     private Label titreHeight;
     private Label titreWidth;
+    private Label titreSlider;
     private NameController monsterName;
     private NameController hunterName;
     private SizeController heigth;
@@ -68,6 +69,7 @@ public class ParameterView extends Stage implements Observer {
         widthParam.setAlignment(Pos.CENTER);
         dimensions.getChildren().addAll(heightParam, new Spacer(), widthParam);
         dimensions.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(new Spacer(), titreSlider);
         root.getChildren().addAll(new Spacer(), percentWall);
         root.getChildren().addAll(new Spacer(), dimensions);
         root.getChildren().addAll(new Spacer(), depDiag);
@@ -93,6 +95,8 @@ public class ParameterView extends Stage implements Observer {
         titreHeight.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         titreWidth = new Label("largeur");
         titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        titreSlider = new Label("Pourcentage d'imperfection");
+        titreSlider.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         monsterName = new NameController(true);
         hunterName = new NameController(false);
         heigth = new SizeController();
@@ -103,15 +107,7 @@ public class ParameterView extends Stage implements Observer {
         IAMonstre = new IAMonsterController();
         IAHunter = new IAHunterController();
         percentWall = new PercentWallController(0.35);
-        // percentWall.valueProperty().addListener(new ChangeListener<Number>() {
-
-        //     @Override
-        //     public void changed(ObservableValue<? extends Number> arg0, Number oldVal, Number newVal) {
-        //         modelMain.setPercentWall(newVal.doubleValue());
-        //     }
-            
-        // });
-        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, IAMonstre, IAHunter, modelMain);
+        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, IAMonstre, IAHunter, percentWall, modelMain);
     }
 
     /**

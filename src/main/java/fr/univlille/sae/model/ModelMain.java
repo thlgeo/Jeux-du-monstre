@@ -123,7 +123,7 @@ public class ModelMain extends Subject {
      */
     protected void reset() {
         //changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA);
-        rebuildMaze(nbRows, nbCols, generateMaze);
+        rebuildMaze(nbRows, nbCols, generateMaze, percent_wall);
         rebuildPlayers(hunter.getName(), monster.getName(), monsterIsIA, hunterIsIA);
         rebuildParam(deplacementDiag, fog);
     }
@@ -500,10 +500,10 @@ public class ModelMain extends Subject {
      */
     public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter) {
         this.nbRows = height;
-        System.out.println(percent_wall);
+        // System.out.println(percent_wall);
         this.nbCols = width;
         this.generateMaze = generateMaze;
-        this.percent_wall = percent_wall;
+        // this.percent_wall = percent_wall;
         createMaze();
         this.deplacementDiag = depDiag;
         monsterIsIA = IAMonster;
@@ -525,12 +525,12 @@ public class ModelMain extends Subject {
         turn = DEFAULT_TURN;
         notifyObservers("ParamMAJ");
     }
-     */
 
 
-    public void rebuildMaze(int height, int width, boolean generateMaze) {
+    public void rebuildMaze(int height, int width, boolean generateMaze, double percent_wall) {
         this.nbRows = height;
         this.nbCols = width;
+        this.percent_wall = percent_wall;
         this.generateMaze = generateMaze;
         createMaze();
         turn = DEFAULT_TURN;

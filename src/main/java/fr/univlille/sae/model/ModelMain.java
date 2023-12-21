@@ -25,7 +25,7 @@ import java.util.Random;
  * @see Hunter
  * @see Cell
  */
-public class ModelMain extends Subject{
+public class ModelMain extends Subject {
 
     private static int NB_TOUR_MIN = 5;
     public static final Random RDM = new Random();
@@ -578,7 +578,13 @@ public class ModelMain extends Subject{
      * Notifie aux observers d'afficher les paramètres
      */
     public void notifyShowParameter() {
-        notifyObservers();
+        notifyObservers("ParamSHOW");
+    }
+    public void notifyShowRessources() {
+        notifyObservers("ResSHOW");
+    }
+    public void notifyMajRessources() {
+        notifyObservers("ResMAJ");
     }
 
     /**

@@ -120,7 +120,10 @@ public class ModelMain extends Subject{
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA);
+        //changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA);
+        rebuildMaze(nbRows, nbCols, generateMaze);
+        rebuildPlayers(hunter.getName(), monster.getName(), monsterIsIA, hunterIsIA);
+        rebuildParam(deplacementDiag, fog);
     }
 
     public int getNbRows() {
@@ -475,6 +478,7 @@ public class ModelMain extends Subject{
         monster.notify("showIA");
     }
 
+
     /**
      * Fonction permettant de changer les paramètre de la partie
      *
@@ -488,13 +492,15 @@ public class ModelMain extends Subject{
      * @param IAMonster   (boolean)   le monster est une IA
      * @param IAHunter    (boolean)   le chasseur est une IA
      */
+
+    /*
     public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter) {
         this.nbRows = height;
         this.nbCols = width;
         this.generateMaze = generateMaze;
         createMaze();
         this.deplacementDiag = depDiag;
-        monsterIsIA = IAMonster; // doit se réaliser avant le fog pour les changements
+        monsterIsIA = IAMonster;
         hunterIsIA = IAHunter;
         if(!monsterIsIA) this.fog = fog;
         else this.fog = false;
@@ -509,9 +515,43 @@ public class ModelMain extends Subject{
         }
         IAMonsterName = monsterName;
         IAHunterName = hunterName;
-        setMonsterIA();
         this.IAHunter.initialize(nbRows, nbCols);
         turn = DEFAULT_TURN;
+        notifyObservers("ParamMAJ");
+    }
+     */
+
+
+    public void rebuildMaze(int height, int width, boolean generateMaze) {
+        this.nbRows = height;
+        this.nbCols = width;
+        this.generateMaze = generateMaze;
+        createMaze();
+        turn = DEFAULT_TURN;
+    }
+
+    public void rebuildPlayers(String hunterName, String monsterName, boolean IAMonster, boolean IAHunter) {
+        monsterIsIA = IAMonster;
+        hunterIsIA = IAHunter;
+        hunter.setName(hunterName);
+        monster.setName(monsterName);
+        IAMonsterName = monsterName;
+        IAHunterName = hunterName;
+        hunter.setRowCol(nbRows, nbCols);
+        this.IAHunter.initialize(nbRows, nbCols);
+        setMonsterIA();
+    }
+
+    public void rebuildParam(boolean depDiag, boolean fog) {
+        this.deplacementDiag = depDiag;
+        if(!monsterIsIA) this.fog = fog;
+        else this.fog = false;
+        monster.setFog(this.fog);
+        if(this.fog) {
+            monster.setMazeEmpty(nbRows, nbCols);
+        } else {
+            monster.setMaze(this.maze);
+        }
         notifyObservers("ParamMAJ");
     }
 

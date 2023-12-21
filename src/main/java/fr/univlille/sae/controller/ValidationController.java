@@ -52,7 +52,10 @@ public class ValidationController extends Button {
                 new Alert(Alert.AlertType.ERROR, "Veuillez entrer une taille entre " + SizeController.MIN_SIZE + " et " + SizeController.MAX_SIZE + "  !").showAndWait();
                 return;
             }
-            modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected(), fog.isSelected(), generateMaze.isSelected(), IAMonstre.isSelected(), IAHunter.isSelected());
+            //modelMain.changerParam(nameHunter.getText(), nameMonster.getText(), height.getValue(), width.getValue(), depDiag.isSelected(), fog.isSelected(), generateMaze.isSelected(), IAMonstre.isSelected(), IAHunter.isSelected());
+            modelMain.rebuildMaze(height.getValue(), width.getValue(), generateMaze.isSelected());
+            modelMain.rebuildPlayers(nameHunter.getText(), nameMonster.getText(), IAMonstre.isSelected(), IAHunter.isSelected());
+            modelMain.rebuildParam(depDiag.isSelected(), fog.isSelected());
             new Alert(Alert.AlertType.CONFIRMATION, "Les informations ont bien été mises à jour").showAndWait();
         });
     }

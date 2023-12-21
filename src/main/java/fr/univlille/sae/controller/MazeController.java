@@ -17,6 +17,10 @@ public class MazeController extends GridPane {
 
     private final ModelMain modelMain;
     private final boolean isMonsterMaze;
+    //to change
+    public static String wallColor = "#000000";
+    //to change
+    public static String emptyColor = "#ffffff";
     Button[][] mazeTable;
 
     public MazeController(ModelMain modelMain, boolean isMonsterMaze) {
@@ -25,6 +29,14 @@ public class MazeController extends GridPane {
         this.isMonsterMaze = isMonsterMaze;
         setDefaultMaze(isMonsterMaze);
         setAlignment(Pos.CENTER);
+    }
+
+    public static void setWallColor(String wallColor) {
+        MazeController.wallColor = wallColor;
+    }
+
+    public static void setEmptyColor(String emptyColor) {
+        MazeController.emptyColor = emptyColor;
     }
 
     /**
@@ -63,21 +75,21 @@ public class MazeController extends GridPane {
             b.setStyle("-fx-background-color: #9B9B9B; -fx-border-color: #000000");
             b.setText(" ");
         } else if(info == ICellEvent.CellInfo.WALL) {
-            b.setStyle("-fx-background-color: #000000; -fx-border-color: #000000");
+            b.setStyle("-fx-background-color:"+ wallColor+"; -fx-border-color: #000000");
             b.setText(" ");
         } else if(!isMonsterMaze && info == ICellEvent.CellInfo.EXIT) {
-            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+            b.setStyle("-fx-background-color:" +emptyColor+"; -fx-border-color: #000000");
             b.setText(" ");
         } else if(info == ICellEvent.CellInfo.MONSTER) {
-            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+            b.setStyle("-fx-background-color:"+ emptyColor+"; -fx-border-color: #000000");
             b.setText("" + turn);
         } else if(info == ICellEvent.CellInfo.HUNTER) {
             b.setText("h");
         }else if(info == ICellEvent.CellInfo.EXIT) {
-            b.setStyle("-fx-background-image: url('https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png'); -fx-background-size:"+CellController.SIZE+"; -fx-background-position: center center; -fx-border-color: #000000; -fx-background-color: #ffffff");
+            b.setStyle("-fx-background-image: url('https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png'); -fx-background-size:"+CellController.SIZE+"; -fx-background-position: center center; -fx-border-color: #000000; -fx-background-color:"+emptyColor+";");
             b.setText(" ");
         }else{
-            b.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+            b.setStyle("-fx-background-color:"+ emptyColor+"; -fx-border-color: #000000");
             b.setText(" ");
         }
     }

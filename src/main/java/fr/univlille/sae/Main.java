@@ -1,10 +1,7 @@
 package fr.univlille.sae;
 
 import fr.univlille.sae.model.ModelMain;
-import fr.univlille.sae.view.HunterView;
-import fr.univlille.sae.view.MainView;
-import fr.univlille.sae.view.MonsterView;
-import fr.univlille.sae.view.ParameterView;
+import fr.univlille.sae.view.*;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -78,6 +75,7 @@ public class Main extends Application {
         ModelMain modelMain = new ModelMain();
         new MainView(modelMain);
         new ParameterView(modelMain);
+        new RessourcesView(modelMain);
         new HunterView(modelMain);
         new MonsterView(modelMain);
     }

@@ -565,7 +565,13 @@ public class ModelMain extends Subject{
      * Notifie aux observers d'afficher les paramètres
      */
     public void notifyShowParameter() {
-        notifyObservers();
+        notifyObservers("ParamSHOW");
+    }
+    public void notifyShowRessources() {
+        notifyObservers("ResSHOW");
+    }
+    public void notifyMajRessources() {
+        notifyObservers("ResMAJ");
     }
 
     /**

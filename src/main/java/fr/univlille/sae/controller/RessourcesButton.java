@@ -19,6 +19,6 @@ public class RessourcesButton extends Button {
      * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire afficher la page des ressources
      */
     private void setAction() {
-        setOnAction(event -> modelMain.notifyShowParameter());
+        setOnAction(event -> modelMain.notifyShowRessources());
     }
 }

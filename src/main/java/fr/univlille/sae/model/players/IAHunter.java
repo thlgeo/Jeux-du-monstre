@@ -76,7 +76,7 @@ public class IAHunter implements IHunterStrategy {
     @Override
     public void initialize(int arg0, int arg1) {
         portee = 1;
-        turn = 1;
+        turn = 0;
         lastPositionMonster = null;
         this.maze = new Cell[arg0][arg1];
         for(int i = 0; i < arg0; i++) {

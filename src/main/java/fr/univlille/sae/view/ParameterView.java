@@ -107,9 +107,7 @@ public class ParameterView extends Stage implements Observer {
      * @param subject correspond au sujet observé
      */
     @Override
-    public void update(Subject subject) {
-        show();
-    }
+    public void update(Subject subject) {}
 
     /**
      * Cette méthode permet de mettre à jour la fenêtre à partir d'une donnée
@@ -119,7 +117,9 @@ public class ParameterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o.equals("ParamMAJ")) {
+        if(o.equals("ParamSHOW")) {
+            show();
+        } else if(o.equals("ParamMAJ")) {
             close();
         }
     }

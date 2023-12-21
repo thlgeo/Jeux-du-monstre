@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
+import fr.univlille.sae.controller.RessourcesButton;
 import fr.univlille.sae.controller.SettingButton;
 import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Insets;
@@ -35,6 +36,7 @@ public class MainView extends Stage implements Observer {
     private LaunchButton launchButton;
     private Button quitButton;
     private Button noMusicButton;
+    private RessourcesButton ressourcesButton;
     private MediaPlayer mp;
 
     public MainView(ModelMain modelMain) {
@@ -55,13 +57,14 @@ public class MainView extends Stage implements Observer {
         VBox root = new VBox();
         VBox.setMargin(titre, new Insets(10, 0, 10, 0));
         VBox.setMargin(settingButton, new Insets(10, 0, 10, 0));
+        VBox.setMargin(ressourcesButton, new Insets(10, 0, 10, 0));
         VBox.setMargin(launchButton, new Insets(10, 0, 10, 0));
 
         HBox footer = new HBox();
         footer.getChildren().addAll(noMusicButton, new Spacer(), quitButton);
         footer.setAlignment(Pos.CENTER);
 
-        root.getChildren().addAll(titre, settingButton, launchButton, new Spacer(), footer);
+        root.getChildren().addAll(titre, launchButton, settingButton, ressourcesButton, new Spacer(), footer);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
     }
@@ -74,6 +77,7 @@ public class MainView extends Stage implements Observer {
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         settingButton = new SettingButton(modelMain);
         launchButton = new LaunchButton(modelMain);
+        ressourcesButton = new RessourcesButton(modelMain);
 
         quitButton = new Button("Quitter");
         quitButton.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
@@ -130,9 +134,9 @@ public class MainView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o.equals("ParamMAJ")) {
+        if(o.equals("ParamMAJ")|| o.equals("ResMAJ")) {
             show();
-        } else if(o.equals("close")) {
+        } else if(o.equals("close") || o.equals("ParamSHOW") || o.equals("ResSHOW")) {
             close();
         } else if(o instanceof String winner) {
             show();

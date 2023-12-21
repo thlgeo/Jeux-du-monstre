@@ -75,6 +75,9 @@ public class Main extends Application {
         ModelMain modelMain = new ModelMain();
         new MainView(modelMain);
         new ParameterView(modelMain);
+        new MazeParamView(modelMain);
+        new PlayerParamView(modelMain);
+        new OptionParamView(modelMain);
         new RessourcesView(modelMain);
         new HunterView(modelMain);
         new MonsterView(modelMain);

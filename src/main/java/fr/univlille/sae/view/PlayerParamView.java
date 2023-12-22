@@ -31,7 +31,6 @@ public class PlayerParamView extends Stage implements Observer {
         setResizable(false);
         getIcons().add(Main.loadImage(Main.ICON_URL));
         modelMain.attach(this);
-        show();
     }
 
     private void setParameterScene() {

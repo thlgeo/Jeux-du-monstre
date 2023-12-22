@@ -18,5 +18,8 @@ public class OptionValidController extends Button {
     }
 
     private void setAction() {
+        setOnAction(event -> {
+            modelMain.rebuildParam(fog.isSelected(), depDiag.isSelected());
+        });
     }
 }

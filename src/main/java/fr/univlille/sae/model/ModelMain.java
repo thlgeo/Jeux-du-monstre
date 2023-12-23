@@ -122,10 +122,10 @@ public class ModelMain extends Subject {
      * Reinitialise le labyrinthe avec les paramètres déjà définis
      */
     protected void reset() {
-        //changerParam(hunter.getName(), monster.getName(), nbRows, nbCols, deplacementDiag, fog, generateMaze, monsterIsIA, hunterIsIA);
         rebuildMaze(nbRows, nbCols, generateMaze, percent_wall);
         rebuildPlayers(hunter.getName(), monster.getName(), monsterIsIA, hunterIsIA);
-        rebuildParam(deplacementDiag, fog);
+        rebuildOption(deplacementDiag, fog);
+        turn = DEFAULT_TURN;
     }
 
     public int getNbRows() {
@@ -485,55 +485,13 @@ public class ModelMain extends Subject {
     }
 
 
-    /**
-     * Fonction permettant de changer les paramètre de la partie
-     *
-     * @param hunterName  (String)    Nom du chasseur
-     * @param monsterName (String)    Nom du monstre
-     * @param height      (int)       hauteur du labyrinthe
-     * @param width       (int)       largeur du labyrinthe
-     * @param depDiag     (boolean)   déplacement en diagonale
-     * @param fog         (boolean)   brouillard
-     * @param generateMaze (boolean)  génération du labyrinthe
-     * @param IAMonster   (boolean)   le monster est une IA
-     * @param IAHunter    (boolean)   le chasseur est une IA
-     */
-    public void changerParam(String hunterName, String monsterName, int height, int width, boolean depDiag, boolean fog, boolean generateMaze, boolean IAMonster, boolean IAHunter) {
-        this.nbRows = height;
-        // System.out.println(percent_wall);
-        this.nbCols = width;
-        this.generateMaze = generateMaze;
-        // this.percent_wall = percent_wall;
-        createMaze();
-        this.deplacementDiag = depDiag;
-        monsterIsIA = IAMonster;
-        hunterIsIA = IAHunter;
-        if(!monsterIsIA) this.fog = fog;
-        else this.fog = false;
-        monster.setFog(this.fog);
-        hunter.setName(hunterName);
-        monster.setName(monsterName);
-        hunter.setRowCol(nbRows, nbCols);
-        if(this.fog) {
-            monster.setMazeEmpty(nbRows, nbCols);
-        } else {
-            monster.setMaze(this.maze);
-        }
-        IAMonsterName = monsterName;
-        IAHunterName = hunterName;
-        this.IAHunter.initialize(nbRows, nbCols);
-        turn = DEFAULT_TURN;
-        notifyObservers("ParamMAJ");
-    }
-
-
     public void rebuildMaze(int height, int width, boolean generateMaze, double percent_wall) {
         this.nbRows = height;
         this.nbCols = width;
         this.percent_wall = percent_wall;
         this.generateMaze = generateMaze;
         createMaze();
-        turn = DEFAULT_TURN;
+        notifyObservers("MazeParamMAJ");
     }
 
     public void rebuildPlayers(String hunterName, String monsterName, boolean IAMonster, boolean IAHunter) {
@@ -546,9 +504,15 @@ public class ModelMain extends Subject {
         hunter.setRowCol(nbRows, nbCols);
         this.IAHunter.initialize(nbRows, nbCols);
         setMonsterIA();
+        if(monsterIsIA) { // on enlève le brouillard si le monstre est une IA
+            this.fog = false;
+            monster.setFog(false);
+            monster.setMaze(this.maze);
+        }
+        notifyObservers("PlayerParamMAJ");
     }
 
-    public void rebuildParam(boolean depDiag, boolean fog) {
+    public void rebuildOption(boolean depDiag, boolean fog) {
         this.deplacementDiag = depDiag;
         if(!monsterIsIA) this.fog = fog;
         else this.fog = false;
@@ -558,7 +522,7 @@ public class ModelMain extends Subject {
         } else {
             monster.setMaze(this.maze);
         }
-        notifyObservers("ParamMAJ");
+        notifyObservers("OptionParamMAJ");
     }
 
     /**
@@ -612,17 +576,8 @@ public class ModelMain extends Subject {
         }
     }
 
-    /**
-     * Notifie aux observers d'afficher les paramètres
-     */
-    public void notifyShowParameter() {
-        notifyObservers("ParamSHOW");
-    }
-    public void notifyShowRessources() {
-        notifyObservers("ResSHOW");
-    }
-    public void notifyMajRessources() {
-        notifyObservers("ResMAJ");
+    public void notify(String s) {
+        notifyObservers(s);
     }
 
     /**

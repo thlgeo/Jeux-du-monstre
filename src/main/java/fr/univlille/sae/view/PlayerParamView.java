@@ -2,8 +2,11 @@ package fr.univlille.sae.view;
 
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
+import fr.univlille.sae.controller.parameter.IAHunterParam;
+import fr.univlille.sae.controller.parameter.IAMonsterParam;
+import fr.univlille.sae.controller.parameter.NameParam;
+import fr.univlille.sae.controller.validation.PlayerValidController;
 import fr.univlille.sae.model.ModelMain;
-import fr.univlille.sae.controller.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -17,10 +20,10 @@ public class PlayerParamView extends Stage implements Observer {
     public static final int HEIGHT_VIEW = 500;
     private Label nameMonster;
     private Label nameHunter;
-    private NameController monsterName;
-    private NameController hunterName;
-    private IAMonsterController IAMonstre;
-    private IAHunterController IAHunter;
+    private NameParam monsterName;
+    private NameParam hunterName;
+    private IAMonsterParam IAMonstre;
+    private IAHunterParam IAHunter;
     private PlayerValidController validation;
 
     public PlayerParamView(ModelMain modelMain) {
@@ -49,10 +52,10 @@ public class PlayerParamView extends Stage implements Observer {
         nameMonster.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         nameHunter = new Label("Nom du Chasseur");
         nameHunter.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        monsterName = new NameController(true);
-        hunterName = new NameController(false);
-        IAMonstre = new IAMonsterController();
-        IAHunter = new IAHunterController();
+        monsterName = new NameParam(true);
+        hunterName = new NameParam(false);
+        IAMonstre = new IAMonsterParam();
+        IAHunter = new IAHunterParam();
         validation = new PlayerValidController(monsterName, hunterName, IAMonstre, IAHunter, modelMain);
     }
 
@@ -63,6 +66,10 @@ public class PlayerParamView extends Stage implements Observer {
 
     @Override
     public void update(Subject subject, Object o) {
-
+        if(o.equals("PlayerParamSHOW")){
+            show();
+        } else {
+            close();
+        }
     }
 }

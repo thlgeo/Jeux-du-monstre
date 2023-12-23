@@ -1,4 +1,4 @@
-package fr.univlille.sae.controller;
+package fr.univlille.sae.controller.parameter;
 
 import fr.univlille.sae.Main;
 import javafx.geometry.Pos;
@@ -6,18 +6,18 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class IAHunterController extends HBox {
-    protected CheckBox IAHunter = new CheckBox();
+public class IAMonsterParam extends HBox {
+    protected CheckBox IAMonster = new CheckBox();
     protected Label texte;
 
-    public IAHunterController() {
-        texte = new Label("Jouer avec IA chasseur ");
+    public IAMonsterParam() {
+        texte = new Label("Jouer contre IA monstre ");
         texte.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        getChildren().addAll(texte, IAHunter);
+        getChildren().addAll(texte, IAMonster);
         setAlignment(Pos.CENTER);
     }
 
     public boolean isSelected() {
-        return IAHunter.isSelected();
+        return IAMonster.isSelected();
     }
 }

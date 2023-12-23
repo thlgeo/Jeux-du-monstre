@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.*;
+import fr.univlille.sae.controller.validation.ValidationController;
 import fr.univlille.sae.model.ModelMain;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,25 +23,13 @@ import javafx.stage.Stage;
  */
 public class ParameterView extends Stage implements Observer {
     public static final int WIDTH_VIEW = 500;
-    public static final int HEIGHT_VIEW = 500;
+    public static final int HEIGHT_VIEW = 300;
     private final ModelMain modelMain;
-    private Label nameMonster;
-    private Label nameHunter;
-    private Label titreHeight;
-    private Label titreWidth;
-    private Label titreSlider;
-    private NameController monsterName;
-    private NameController hunterName;
-    private SizeController heigth;
-    private SizeController width;
+    private MazeButton mazeButton;
+    private OptionButton optionButton;
+    private PlayerButton playerButton;
     private ValidationController validation;
-    private DepDiagController depDiag;
-    private PercentWallController percentWall;
 
-    private GenerateMazeController generateMaze;
-    private FogController fog;
-    private IAMonsterController IAMonstre;
-    private IAHunterController IAHunter;
 
     public ParameterView(ModelMain modelMain) {
         this.modelMain = modelMain;
@@ -58,26 +47,10 @@ public class ParameterView extends Stage implements Observer {
      */
     private void setParameterScene() {
         VBox root = new VBox();
-        HBox dimensions = new HBox();
-        VBox heightParam = new VBox();
-        VBox widthParam = new VBox();
-        root.getChildren().addAll(nameMonster, monsterName);
-        root.getChildren().addAll(new Spacer(), nameHunter, hunterName);
-        heightParam.getChildren().addAll(titreHeight, heigth);
-        heightParam.setAlignment(Pos.CENTER);
-        widthParam.getChildren().addAll(titreWidth, this.width);
-        widthParam.setAlignment(Pos.CENTER);
-        dimensions.getChildren().addAll(heightParam, new Spacer(), widthParam);
-        dimensions.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(new Spacer(), titreSlider);
-        root.getChildren().addAll(new Spacer(), percentWall);
-        root.getChildren().addAll(new Spacer(), dimensions);
-        root.getChildren().addAll(new Spacer(), depDiag);
-        root.getChildren().addAll(new Spacer(), fog);
-        root.getChildren().addAll(new Spacer(), generateMaze);
-        root.getChildren().addAll(new Spacer(), IAMonstre);
-        root.getChildren().addAll(new Spacer(), IAHunter);
-        root.getChildren().addAll(new Spacer(), validation);
+        root.getChildren().addAll(mazeButton);
+        root.getChildren().addAll(new Spacer(), new Spacer(), optionButton);
+        root.getChildren().addAll(new Spacer(), new Spacer(), playerButton);
+        root.getChildren().addAll(new Spacer(), new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH_VIEW, HEIGHT_VIEW));
     }
@@ -87,27 +60,10 @@ public class ParameterView extends Stage implements Observer {
      * Cette méthode permet d'initialiser les éléments de la scène principale de la page de paramétrage
      */
     private void setParameterNodes() {
-        nameMonster = new Label("Nom du Monstre");
-        nameMonster.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        nameHunter = new Label("Nom du Chasseur");
-        nameHunter.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        titreHeight = new Label("hauteur");
-        titreHeight.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        titreWidth = new Label("largeur");
-        titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        titreSlider = new Label("Pourcentage d'imperfection");
-        titreSlider.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        monsterName = new NameController(true);
-        hunterName = new NameController(false);
-        heigth = new SizeController();
-        width = new SizeController();
-        depDiag = new DepDiagController();
-        fog = new FogController();
-        generateMaze = new GenerateMazeController();
-        IAMonstre = new IAMonsterController();
-        IAHunter = new IAHunterController();
-        percentWall = new PercentWallController(0.35);
-        validation = new ValidationController(monsterName, hunterName, heigth, width, depDiag, fog, generateMaze, IAMonstre, IAHunter, percentWall, modelMain);
+        mazeButton = new MazeButton(modelMain);
+        optionButton = new OptionButton(modelMain);
+        playerButton = new PlayerButton(modelMain);
+        validation = new ValidationController(modelMain);
     }
 
     /**
@@ -126,9 +82,9 @@ public class ParameterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o.equals("ParamSHOW")) {
+        if(o.equals("ParamSHOW") || o.equals("MazeParamMAJ") || o.equals("OptionParamMAJ") || o.equals("PlayerParamMAJ")) {
             show();
-        } else if(o.equals("ParamMAJ")) {
+        } else {
             close();
         }
     }

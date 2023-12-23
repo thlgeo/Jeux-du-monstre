@@ -1,18 +1,21 @@
-package fr.univlille.sae.controller;
+package fr.univlille.sae.controller.validation;
 
 import fr.univlille.sae.Main;
+import fr.univlille.sae.controller.parameter.IAHunterParam;
+import fr.univlille.sae.controller.parameter.IAMonsterParam;
+import fr.univlille.sae.controller.parameter.NameParam;
 import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 public class PlayerValidController extends Button {
-    private final NameController hunterName;
-    private final NameController monsterName;
-    private IAHunterController iaHunter;
-    private IAMonsterController iaMonstre;
+    private final NameParam hunterName;
+    private final NameParam monsterName;
+    private IAHunterParam iaHunter;
+    private IAMonsterParam iaMonstre;
     private ModelMain modelMain;
 
-    public PlayerValidController(NameController monsterName, NameController hunterName, IAMonsterController iaMonstre, IAHunterController iaHunter, ModelMain modelMain) {
+    public PlayerValidController(NameParam monsterName, NameParam hunterName, IAMonsterParam iaMonstre, IAHunterParam iaHunter, ModelMain modelMain) {
         this.modelMain = modelMain;
         this.monsterName = monsterName;
         this.hunterName = hunterName;
@@ -30,6 +33,7 @@ public class PlayerValidController extends Button {
                 return;
             }
             modelMain.rebuildPlayers(hunterName.getText(), monsterName.getText(), iaMonstre.isSelected(), iaHunter.isSelected());
+            new Alert(Alert.AlertType.CONFIRMATION, "Les informations ont bien été mises à jour").showAndWait();
         });
     }
 }

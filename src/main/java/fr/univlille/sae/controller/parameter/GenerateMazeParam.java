@@ -1,4 +1,4 @@
-package fr.univlille.sae.controller;
+package fr.univlille.sae.controller.parameter;
 
 import fr.univlille.sae.Main;
 import javafx.geometry.Pos;
@@ -6,11 +6,11 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class GenerateMazeController extends HBox {
+public class GenerateMazeParam extends HBox {
     protected CheckBox generateMaze;
     protected Label texte;
 
-    public GenerateMazeController() {
+    public GenerateMazeParam() {
         generateMaze = new CheckBox();
         generateMaze.setSelected(true);
         texte = new Label("Generation aleatoire ");

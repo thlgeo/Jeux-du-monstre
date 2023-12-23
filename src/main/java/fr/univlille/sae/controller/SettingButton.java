@@ -25,6 +25,6 @@ public class SettingButton extends Button {
      * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire afficher la page de paramètres
      */
     private void setAction() {
-        setOnAction(event -> modelMain.notifyShowParameter());
+        setOnAction(event -> modelMain.notify("ParamSHOW"));
     }
 }

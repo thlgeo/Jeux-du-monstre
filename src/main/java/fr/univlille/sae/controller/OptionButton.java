@@ -4,23 +4,18 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Button;
 
-public class NextTurnController extends Button {
+public class OptionButton extends Button {
 
     private final ModelMain modelMain;
-
-    public NextTurnController(ModelMain modelMain){
-        super("Tour 1");
+    public OptionButton(ModelMain modelMain) {
+        super("option");
         this.modelMain = modelMain;
         setAction();
         setMinSize(200, 30);
         setFont(Main.loadFont(Main.ARCADE_FONT, 20));
     }
 
-    public void reset(){
-        setText("Tour 1");
-    }
-
-    private void setAction(){
-        setOnAction(event -> modelMain.lancerTourMonstre());
+    private void setAction() {
+        setOnAction(event -> modelMain.notify("OptionParamSHOW"));
     }
 }

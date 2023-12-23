@@ -1,4 +1,4 @@
-package fr.univlille.sae.controller;
+package fr.univlille.sae.controller.maze;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.sae.model.Cell;

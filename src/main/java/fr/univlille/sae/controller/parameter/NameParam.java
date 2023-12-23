@@ -1,4 +1,4 @@
-package fr.univlille.sae.controller;
+package fr.univlille.sae.controller.parameter;
 
 import javafx.scene.control.TextField;
 
@@ -8,8 +8,8 @@ import javafx.scene.control.TextField;
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
  * @version 1.0
  */
-public class NameController extends TextField {
-    public NameController(boolean isMonster) {
+public class NameParam extends TextField {
+    public NameParam(boolean isMonster) {
         setMinWidth(200);
         setText(isMonster ? "Monster" : "Hunter");
     }

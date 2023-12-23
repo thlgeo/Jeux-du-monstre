@@ -2,13 +2,12 @@ package fr.univlille.sae.view;
 
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
-import fr.univlille.sae.controller.DepDiagController;
-import fr.univlille.sae.controller.FogController;
-import fr.univlille.sae.controller.OptionValidController;
+import fr.univlille.sae.controller.parameter.DepDiagParam;
+import fr.univlille.sae.controller.parameter.FogParam;
+import fr.univlille.sae.controller.validation.OptionValidController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.model.ModelMain;
@@ -17,8 +16,8 @@ public class OptionParamView extends Stage implements Observer {
     public static final int WIDTH_VIEW = 500;
     public static final int HEIGHT_VIEW = 500;
     private OptionValidController validation;
-    private FogController fog;
-    private DepDiagController depDiag;
+    private FogParam fog;
+    private DepDiagParam depDiag;
     private ModelMain modelMain;
     
     public OptionParamView(ModelMain modelMain) {
@@ -29,7 +28,6 @@ public class OptionParamView extends Stage implements Observer {
         setResizable(false);
         getIcons().add(Main.loadImage(Main.ICON_URL));
         modelMain.attach(this);
-        show();
     }
 
     private void setParameterScene() {
@@ -42,8 +40,8 @@ public class OptionParamView extends Stage implements Observer {
     }
 
     private void setParameterNodes() {
-        fog = new FogController();
-        depDiag = new DepDiagController();
+        fog = new FogParam();
+        depDiag = new DepDiagParam();
         validation = new OptionValidController(fog, depDiag, modelMain);
     }
 
@@ -54,6 +52,10 @@ public class OptionParamView extends Stage implements Observer {
 
     @Override
     public void update(Subject subject, Object o) {
-
+        if(o.equals("OptionParamSHOW")){
+            show();
+        } else {
+            close();
+        }
     }
 }

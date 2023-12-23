@@ -1,4 +1,4 @@
-package fr.univlille.sae.controller;
+package fr.univlille.sae.controller.maze;
 
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.Main;
@@ -9,8 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Cette classe coorespond au bouton d'une cellule du labyrinthe

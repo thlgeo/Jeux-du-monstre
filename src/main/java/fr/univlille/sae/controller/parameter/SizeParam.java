@@ -1,4 +1,4 @@
-package fr.univlille.sae.controller;
+package fr.univlille.sae.controller.parameter;
 
 import fr.univlille.sae.Main;
 import javafx.geometry.Pos;
@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
  * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
  * @version 1.0
  */
-public class SizeController extends HBox {
+public class SizeParam extends HBox {
     public static final int MIN_SIZE = 8;
     public static final int DEFAULT_SIZE = 10;
     public static final int MAX_SIZE = 16;
@@ -21,7 +21,7 @@ public class SizeController extends HBox {
     Label size = new Label();
 
 
-    public SizeController() {
+    public SizeParam() {
         getChildren().addAll(moins, new Label("  "), size, new Label("  "), plus);
         setAction();
         size.setText(String.valueOf(DEFAULT_SIZE));

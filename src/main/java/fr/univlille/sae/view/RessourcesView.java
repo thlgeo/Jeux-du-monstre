@@ -3,15 +3,13 @@ package fr.univlille.sae.view;
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
-import fr.univlille.sae.controller.MazeController;
-import fr.univlille.sae.controller.ValidationController;
+import fr.univlille.sae.controller.maze.MazeController;
 import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -70,7 +68,7 @@ public class RessourcesView extends Stage implements Observer {
         });
         getBack = new Button("Retour");
         getBack.setFont(font);
-        getBack.setOnAction(e-> modelMain.notifyMajRessources());
+        getBack.setOnAction(e-> modelMain.notify("ResMAJ"));
     }
 
     private double[] convertHexToRGB(String wallColor) {
@@ -90,7 +88,7 @@ public class RessourcesView extends Stage implements Observer {
     public void update(Subject subject, Object o) {
         if(o.equals("ResSHOW")) {
             show();
-        } else if(o.equals("ResMAJ")) {
+        } else {
             close();
         }
     }

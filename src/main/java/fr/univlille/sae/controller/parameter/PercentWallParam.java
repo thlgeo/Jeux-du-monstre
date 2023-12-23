@@ -1,11 +1,9 @@
-package fr.univlille.sae.controller;
+package fr.univlille.sae.controller.parameter;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Slider;
 
-public class PercentWallController extends Slider {
-    public PercentWallController(double percent_wall)
+public class PercentWallParam extends Slider {
+    public PercentWallParam(double percent_wall)
     {
         setMaxWidth(400);
         setValue(percent_wall);

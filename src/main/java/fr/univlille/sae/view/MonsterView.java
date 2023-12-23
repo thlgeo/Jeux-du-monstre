@@ -118,7 +118,7 @@ public class MonsterView extends Stage implements Observer {
     public void update(Subject subject) {
         if(subject instanceof ModelMain) return;
         setPosition();
-        show();
+        montrer();
         tour = new Label("Cliquez pour commencer !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         nbTour = new Label("  Tour 1");
@@ -156,7 +156,7 @@ public class MonsterView extends Stage implements Observer {
             nextTurnController.setText("Tour " + turn);
         }else if("showIA".equals(o)) {
             setMonsterIAScene();
-            show();
+            montrer();
         }
     }
 
@@ -188,5 +188,11 @@ public class MonsterView extends Stage implements Observer {
         }
         setX(effectiveWidth);
         setY(effectiveHeight);
+    }
+
+    private void montrer(){
+        if(!(modelMain.monsterIsIA() && !modelMain.hunterIsIA())){
+            show();
+        }
     }
 }

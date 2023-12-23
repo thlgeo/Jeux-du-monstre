@@ -175,132 +175,44 @@ public class ModelMain extends Subject {
      * @param coord coordonnées choisies
      */
     public void deplacementMonstre(ICoordinate coord) {
+        try {
+            if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
+            if(!this.monster.canMove(coord, deplacementDiag)) {
+                monster.notify("cantMove");
+                return;
+            }
+            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
+                victory(true);
+                return;
+            }
+        } catch(MonsterNotFoundException e) {
+            coord = this.initMonsterPosition();
+            ICoordinate coordExit = getExit();
+            while(inRange(coord, coordExit)) {
+                coord = this.initMonsterPosition();
+            }
+        }
+        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
+        update(coord, ICellEvent.CellInfo.MONSTER);
+        monster.setCoordinateMonster(coord);
+        if(fog) {
+            updateAround(coord);
+        }
+        monster.update(event);
+        IAMonster.update(event);
+        notificationDeplacement();
+    }
+
+    public void notificationDeplacement() {
         if(hunterIsIA && monsterIsIA) {
-            deplacementIA(coord);
+            tirerChasseur(IAHunter.play());
         } else if(hunterIsIA) {
-            deplacementIAChasseur(coord);
+            tirerChasseur(IAHunter.play());
         } else if(monsterIsIA) {
-            deplacementIAMonster(coord);
+            hunter.notify(CHANGER_TOUR_IA);
         } else {
-            deplacementHumain(coord);
+            hunter.notify(CHANGER_TOUR);
         }
-    }
-
-    /**
-     * c'est la version de deplacementMonstre pour le mode humain vs humain
-     *
-     * @param coord coordonnées choisies
-     */
-    private void deplacementHumain(ICoordinate coord) {
-        try {
-            if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
-            if(!this.monster.canMove(coord, deplacementDiag)) {
-                monster.notify("cantMove");
-                return;
-            }
-            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
-                victory(true);
-                return;
-            }
-        } catch(MonsterNotFoundException e) {
-            coord = this.initMonsterPosition();
-            ICoordinate coordExit = getExit();
-            while(inRange(coord, coordExit)) {
-                coord = this.initMonsterPosition();
-            }
-        }
-        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
-        update(coord, ICellEvent.CellInfo.MONSTER);
-        monster.setCoordinateMonster(coord);
-        if(fog) {
-            updateAround(coord);
-        }
-        monster.update(event);
-        hunter.notify(CHANGER_TOUR);
-    }
-
-    /**
-     * c'est la version de deplacementMonstre pour le mode humain vs IA Chasseur
-     *
-     * @param coord coordonnées choisies
-     */
-    private void deplacementIAChasseur(ICoordinate coord) {
-        try {
-            if(monster.getCoordinateMonster() == null) throw new MonsterNotFoundException();
-            if(!this.monster.canMove(coord, deplacementDiag)) {
-                monster.notify("cantMove");
-                return;
-            }
-            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
-                victory(true);
-                return;
-            }
-        } catch(MonsterNotFoundException e) {
-            coord = this.initMonsterPosition();
-            ICoordinate coordExit = getExit();
-            while(inRange(coord, coordExit)) {
-                coord = this.initMonsterPosition();
-            }
-        }
-        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
-        update(coord, ICellEvent.CellInfo.MONSTER);
-        monster.setCoordinateMonster(coord);
-        if(fog) {
-            updateAround(coord);
-        }
-        monster.update(event);
-        tirerChasseur(IAHunter.play());
-    }
-
-    /**
-     * c'est la version de deplacementMonstre pour le mode humain vs IA Monstre
-     *
-     * @param coord coordonnées choisies
-     */
-    private void deplacementIAMonster(ICoordinate coord) {
-        try {
-            if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();
-            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
-                victory(true);
-                return;
-            }
-        } catch(MonsterNotFoundException e) {
-            coord = this.initMonsterPosition();
-            ICoordinate coordExit = getExit();
-            while(inRange(coord, coordExit)) {
-                coord = this.initMonsterPosition();
-            }
-        }
-        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
-        update(coord, ICellEvent.CellInfo.MONSTER);
-        IAMonster.update(event);
-        hunter.notify(CHANGER_TOUR_IA);
-    }
-
-    /**
-     * c'est la version de deplacementMonstre pour le mode IA Monstre vs IA Chasseur
-     *
-     * @param coord coordonnées choisies
-     */
-    private void deplacementIA(ICoordinate coord) {
-        try {
-            if(getCoordinateMonster(true) == null) throw new MonsterNotFoundException();
-            if(getCell(coord).getInfo() == ICellEvent.CellInfo.EXIT) {
-                victory(true);
-                return;
-            }
-        } catch(MonsterNotFoundException e) {
-            coord = this.initMonsterPosition();
-            ICoordinate coordExit = getExit();
-            while(inRange(coord, coordExit)) {
-                coord = this.initMonsterPosition();
-            }
-        }
-        ICellEvent event = new CellEvent(turn, ICellEvent.CellInfo.MONSTER, coord);
-        update(coord, ICellEvent.CellInfo.MONSTER);
-        monster.update(event); //notification à la vue
-        IAMonster.update(event);
-        tirerChasseur(IAHunter.play());
     }
 
     /**
@@ -349,24 +261,6 @@ public class ModelMain extends Subject {
         Cell c = getCell(coord);
         return c.getInfo() != ICellEvent.CellInfo.EMPTY ? initMonsterPosition() : coord;
     }
-
-    /**
-     * Renvoie les coordonnées du monstre
-     *
-     * @param lastTurn (boolean) Si on veut les coordonnées du monstre du dernier tour ou non
-     * @return (ICoordinate) Coordonnées du monstre
-     */
-    private ICoordinate getCoordinateMonster(boolean lastTurn) {
-        int tour = lastTurn ? turn - 1 : turn;
-        for(int i = 0; i < nbRows; i++) {
-            for(int j = 0; j < nbCols; j++) {
-                if(maze[i][j].getInfo() == ICellEvent.CellInfo.MONSTER && maze[i][j].getTurn() == tour) {
-                    return new Coordinate(i, j);
-                }
-            }
-        }
-        return null;
-    }
     
     public boolean monsterIsIA() {
         return monsterIsIA;
@@ -398,90 +292,32 @@ public class ModelMain extends Subject {
      * @param coord coordonnées choisies
      */
     public void tirerChasseur(ICoordinate coord) {
+        if(coord.equals(monster.getCoordinateMonster())) {
+            victory(false);
+            return;
+        }
+        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
+        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
+        monster.update(monsterEvent);
+        hunter.update(hunterEvent);
+        IAMonster.update(monsterEvent);
+        IAHunter.update(hunterEvent);
+        turn++;
+        hunter.notify(turn);
+        monster.notify(turn);
+        notificationTirer();
+    }
+
+    public void notificationTirer() {
         if(hunterIsIA && monsterIsIA) {
-            tirerIA(coord);
+            monster.notify("showIA");
         } else if(hunterIsIA) {
-            tirerIAChasseur(coord);
+            monster.notify(CHANGER_TOUR_IA);
         } else if(monsterIsIA) {
-            tirerIAMonster(coord);
+            deplacementMonstre(IAMonster.play());
         } else {
-            tirerHumain(coord);
+            monster.notify(CHANGER_TOUR);
         }
-    }
-
-    /**
-     * c'est la version de tirerChasseur pour le mode humain vs humain
-     *
-     * @param coord coordonnées choisies
-     */
-    private void tirerHumain(ICoordinate coord) {
-        if(coord.equals(monster.getCoordinateMonster())) {
-            victory(false);
-            return;
-        }
-        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
-        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
-        monster.update(monsterEvent);
-        hunter.update(hunterEvent);
-        turn++;
-        hunter.notify(turn);
-        monster.notify(turn);
-        monster.notify(CHANGER_TOUR);
-    }
-
-    /**
-     * c'est la version de tirerChasseur pour le mode humain vs IA Chasseur
-     *
-     * @param coord coordonnées choisies
-     */
-    private void tirerIAChasseur(ICoordinate coord) {
-        if(coord.equals(monster.getCoordinateMonster())) {
-            victory(false);
-            return;
-        }
-        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
-        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
-        monster.update(monsterEvent);
-        IAHunter.update(hunterEvent);
-        turn++;
-        monster.notify(turn);
-        monster.notify(CHANGER_TOUR_IA);
-    }
-
-    /**
-     * c'est la version de tirerChasseur pour le mode humain vs IA Monstre
-     *
-     * @param coord coordonnées choisies
-     */
-    private void tirerIAMonster(ICoordinate coord) {
-        if(coord.equals(getCoordinateMonster(false))) {
-            victory(false);
-            return;
-        }
-        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
-        hunter.update(hunterEvent);
-        turn++;
-        hunter.notify(turn);
-        deplacementMonstre(IAMonster.play());
-    }
-
-    /**
-     * c'est la version de tirerChasseur pour le mode IA Monstre vs IA Chasseur
-     *
-     * @param coord coordonnées choisies
-     */
-    private void tirerIA(ICoordinate coord) {
-        if(coord.equals(getCoordinateMonster(false))) {
-            victory(false);
-            return;
-        }
-        ICellEvent monsterEvent = new CellEvent(turn, CellInfo.HUNTER, coord);
-        ICellEvent hunterEvent = new CellEvent(getCell(coord).getTurn(), getCell(coord).getInfo(), coord);
-        monster.update(monsterEvent); //notification à la vue
-        IAHunter.update(hunterEvent);
-        turn++;
-        monster.notify(turn);
-        monster.notify("showIA");
     }
 
 

@@ -105,7 +105,7 @@ public class HunterView extends Stage implements Observer {
     @Override
     public void update(Subject subject) {
         setPosition();
-        show();
+        montrer();
         tour = new Label("Tour du monstre !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         nbTour = new Label("  Tour 1");
@@ -171,4 +171,9 @@ public class HunterView extends Stage implements Observer {
         setY(effectiveHeight);
     }
 
+    private void montrer(){
+        if(!modelMain.hunterIsIA()){
+            show();
+        }
+    }
 }

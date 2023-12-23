@@ -18,7 +18,8 @@ public class ValidationController extends Button {
 
     public ValidationController(ModelMain modelMain) {
         this.modelMain = modelMain;
-        setText("Enregistrer les parametres");
+        setText("Menu");
+        setMinWidth(300);
         setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         setAction();
     }

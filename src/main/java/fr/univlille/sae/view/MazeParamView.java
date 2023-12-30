@@ -19,6 +19,7 @@ public class MazeParamView extends Stage implements Observer {
     public static final int HEIGHT_VIEW = 500;
     private Label titreHeight;
     private Label titreWidth;
+    private Label titrePercent;
     private SizeParam heigth;
     private SizeParam width;
     private MazeValidController validation;
@@ -45,7 +46,7 @@ public class MazeParamView extends Stage implements Observer {
         widthParam.getChildren().addAll(titreWidth, this.width);
         widthParam.setAlignment(Pos.CENTER);
         root.getChildren().addAll(heightParam, new Spacer(), widthParam);
-        root.getChildren().addAll(new Spacer(), percentWall);
+        root.getChildren().addAll(new Spacer(), titrePercent, new Spacer(), percentWall);
         root.getChildren().addAll(new Spacer(), generateMaze);
         root.getChildren().addAll(new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
@@ -57,6 +58,8 @@ public class MazeParamView extends Stage implements Observer {
         titreHeight.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         titreWidth = new Label("Largeur");
         titreWidth.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        titrePercent = new Label("Pourcentage imperfection");
+        titrePercent.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         heigth = new SizeParam();
         width = new SizeParam();
         percentWall = new PercentWallParam(0.35);

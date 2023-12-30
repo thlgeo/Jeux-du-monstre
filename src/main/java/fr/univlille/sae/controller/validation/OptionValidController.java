@@ -22,7 +22,7 @@ public class OptionValidController extends Button {
 
     private void setAction() {
         setOnAction(event -> {
-            modelMain.rebuildOption(fog.isSelected(), depDiag.isSelected());
+            modelMain.rebuildOption(depDiag.isSelected(), fog.isSelected());
             new Alert(Alert.AlertType.CONFIRMATION, "Les informations ont bien été mises à jour").showAndWait();
         });
     }

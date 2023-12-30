@@ -28,6 +28,7 @@ public class ParameterView extends Stage implements Observer {
     private MazeButton mazeButton;
     private OptionButton optionButton;
     private PlayerButton playerButton;
+    private RessourcesButton ressourcesButton;
     private ValidationController validation;
 
 
@@ -50,6 +51,7 @@ public class ParameterView extends Stage implements Observer {
         root.getChildren().addAll(mazeButton);
         root.getChildren().addAll(new Spacer(), new Spacer(), optionButton);
         root.getChildren().addAll(new Spacer(), new Spacer(), playerButton);
+        root.getChildren().addAll(new Spacer(), new Spacer(), ressourcesButton);
         root.getChildren().addAll(new Spacer(), new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH_VIEW, HEIGHT_VIEW));
@@ -64,6 +66,7 @@ public class ParameterView extends Stage implements Observer {
         optionButton = new OptionButton(modelMain);
         playerButton = new PlayerButton(modelMain);
         validation = new ValidationController(modelMain);
+        ressourcesButton = new RessourcesButton(modelMain);
     }
 
     /**
@@ -82,7 +85,7 @@ public class ParameterView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o.equals("ParamSHOW") || o.equals("MazeParamMAJ") || o.equals("OptionParamMAJ") || o.equals("PlayerParamMAJ")) {
+        if(o.equals("ParamSHOW") || o.equals("MazeParamMAJ") || o.equals("OptionParamMAJ") || o.equals("PlayerParamMAJ") || o.equals(("ResMAJ"))) {
             show();
         } else {
             close();

@@ -51,7 +51,6 @@ public class MazeFactory {
     }
 
     protected void generePrim() {
-        System.out.println(percent_wall);
         makeDefaultMaze();
         List<ICoordinate> frontier = new ArrayList<>();
         ICoordinate coord = new Coordinate(r.nextInt(x - 1), r.nextInt(y - 1));

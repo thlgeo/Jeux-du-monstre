@@ -327,6 +327,14 @@ public class ModelMain extends Subject {
         this.percent_wall = percent_wall;
         this.generateMaze = generateMaze;
         createMaze();
+        hunter.setRowCol(nbRows, nbCols);
+        this.IAHunter.initialize(nbRows, nbCols);
+        setMonsterIA();
+        if (fog) {
+            monster.setMazeEmpty(nbRows, nbCols);
+        } else {
+            monster.setMaze(this.maze);
+        }
         notifyObservers("MazeParamMAJ");
     }
 
@@ -337,9 +345,6 @@ public class ModelMain extends Subject {
         monster.setName(monsterName);
         IAMonsterName = monsterName;
         IAHunterName = hunterName;
-        hunter.setRowCol(nbRows, nbCols);
-        this.IAHunter.initialize(nbRows, nbCols);
-        setMonsterIA();
         if(monsterIsIA) { // on enlève le brouillard si le monstre est une IA
             this.fog = false;
             monster.setFog(false);

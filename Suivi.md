@@ -84,7 +84,16 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 
 - Correction Scene Monstre IA
 - Correction brouillard et tour pour la vue de L'ia
+- Modification de l'interface de paramétrage
+- Restructuration du modelMain
 
 ### Valentin THUILLIER
 
 - Correction d'une erreur lier à l'IA du monstre
+
+## Semaine du 25/12/2023
+
+### Nathan DESMEE
+
+- Ajout de la personnalisation des couleurs dans la nouvelle structure
+- Corrections des bugs liés au paramétrage

@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Classe IAHunter - IA du chasseur qui peut tirer sur une cellule selon les informations qu'il possède.
+ *
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0
+ */
 public class IAHunter implements IHunterStrategy {
     public static final Random rd = new Random();
     protected Cell[][] maze;
@@ -18,6 +24,10 @@ public class IAHunter implements IHunterStrategy {
     protected int portee;
     protected int turn;
 
+    /**
+     * Méthode permettant de calculer le tir à faire selon les informations que le chasseur possède.
+     * @return ICoordinate coordonnées du tir
+     */
     @Override
     public ICoordinate play() {
         ICoordinate coord;
@@ -37,10 +47,19 @@ public class IAHunter implements IHunterStrategy {
         return coord;
     }
 
+    /**
+     * Permet de vérifier si le tir est bien dans le labyrinthe
+     * @param coord (ICoordinate) coordonnées du tir
+     */
     private boolean inRange(ICoordinate coord) {
         return (coord.getRow() >= 0 && coord.getRow() < maze.length) && (coord.getCol() >= 0 && coord.getCol() < maze[0].length);
     }
 
+    /**
+     * Permet de récupérer les coordonnées des cases autour d'une case
+     * @param coordonnee (ICoordinate) coordonnées de la case
+     * @return List<ICoordinate> liste des coordonnées des cases autour
+     */
     private List<ICoordinate> around(ICoordinate coordonnee) {
         List<ICoordinate> l = new ArrayList<>();
         int row = coordonnee.getRow();
@@ -58,6 +77,10 @@ public class IAHunter implements IHunterStrategy {
         return l;
     }
 
+    /**
+     * Permet de mettre à jour les informations d'une cellule du labyrinthe
+     * @param arg0 (ICellEvent) informations de la cellule
+     */
     @Override
     public void update(ICellEvent arg0) {
         ICoordinate coord = arg0.getCoord();
@@ -73,6 +96,11 @@ public class IAHunter implements IHunterStrategy {
         updateCell.setTurn(arg0.getTurn());
     }
 
+    /**
+     * Permet d'initialiser le labyrinthe
+     * @param arg0 (int) nombre de lignes
+     * @param arg1 (int) nombre de colonnes
+     */
     @Override
     public void initialize(int arg0, int arg1) {
         portee = 1;

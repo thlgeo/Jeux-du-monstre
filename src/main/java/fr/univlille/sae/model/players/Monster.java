@@ -42,7 +42,7 @@ public class Monster extends Subject implements IMonsterStrategy {
     }
 
     /**
-     * Définie le labyrinthe du monstre.
+     * Permet de définir le labyrinthe du monstre.
      *
      * @param maze (Cell[][])   Le labyrinthe
      */
@@ -53,6 +53,11 @@ public class Monster extends Subject implements IMonsterStrategy {
         lastShotHunter = null;
     }
 
+    /**
+     * Initialise le labyrinthe vide avec le nombre de lignes et de colonnes spécifié en paramètre.
+     * @param nbRow
+     * @param nbCol
+     */
     public void setMazeEmpty(int nbRow, int nbCol) {
         this.discoveredMaze = new Cell[nbRow][nbCol];
         for(int i = 0; i < nbRow; i++) {
@@ -80,6 +85,11 @@ public class Monster extends Subject implements IMonsterStrategy {
         return mazeB;
     }
 
+    /**
+     * Renvoie true si on peut se deplacer sur la cellule, sinon false.
+     * @param cellule
+     * @return
+     */
     private boolean convertCell(Cell cellule) {
         return cellule.getInfo().equals(CellInfo.EMPTY) || cellule.getInfo().equals(CellInfo.EXIT) || cellule.getInfo().equals(CellInfo.MONSTER);
     }

@@ -41,6 +41,9 @@ public class Cell {
         this(null);
     }
 
+    /**
+     * Permet d'associer un caractère à un type de cellule dans une map.
+     */
     protected static void initialiseCharToInfo() {
         charToInfo.put('W', CellInfo.WALL);
         charToInfo.put('E', CellInfo.EMPTY);
@@ -73,10 +76,17 @@ public class Cell {
         return info == cell.info && turn == cell.turn;
     }
 
+    /**
+     * Permet de mettre l'état visité à true.
+     */
     public void visited() {
         visited = true;
     }
 
+    /**
+     * Permet de savoir si la cellule a été visitée.
+     * @return boolean true si la cellule a été visitée, false sinon.
+     */
     public boolean isVisited() {
         return visited;
     }

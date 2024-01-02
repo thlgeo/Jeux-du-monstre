@@ -139,6 +139,11 @@ public class MainView extends Stage implements Observer {
         }
     }
 
+    /**
+     * Cette méthode permet de savoir si la donnée est une notification de paramétrage
+     * @param text (String)  La donnée à tester
+     * @return (boolean)     true si la donnée est une notification de paramétrage, false sinon
+     */
     public boolean paramNotif(String text) {
         return text.endsWith("SHOW") || text.endsWith("MAJ");
     }

@@ -160,7 +160,9 @@ public class ModelMain extends Subject {
         return null;
     }
 
-
+    /**
+     * Permet de lancer le tour du monstre lorsqu'il est une IA
+     */
     public void lancerTourMonstre() {
         if(turn == 1) {
             deplacementMonstre(null);
@@ -170,7 +172,7 @@ public class ModelMain extends Subject {
     }
 
     /**
-     * Notifie aux observers si le monstre a bougé ou non, ou s'il a gagné.
+     * Notifie aux observers du mouvement du monstre s'il a bougé ou non, ou s'il a gagné.
      *
      * @param coord coordonnées choisies
      */
@@ -203,6 +205,9 @@ public class ModelMain extends Subject {
         notificationDeplacement();
     }
 
+    /**
+     * Permet de gérer la notification aux views selon si les joueurs sont des IA ou non
+     */
     public void notificationDeplacement() {
         if(hunterIsIA && monsterIsIA) {
             tirerChasseur(IAHunter.play());
@@ -308,6 +313,9 @@ public class ModelMain extends Subject {
         notificationTirer();
     }
 
+    /**
+     * Permet de gérer la notification aux views selon si les joueurs sont des IA ou non
+     */
     public void notificationTirer() {
         if(hunterIsIA && monsterIsIA) {
             monster.notify("showIA");
@@ -320,7 +328,13 @@ public class ModelMain extends Subject {
         }
     }
 
-
+    /**
+     * Permet de changer le labyrinthe avec les paramètres choisis
+     * @param height hauteur du labyrinthe
+     * @param width largeur du labyrinthe
+     * @param generateMaze booléen indiquant si le labyrinthe est généré ou importé
+     * @param percent_wall pourcentage de perfection du labyrinthe
+     */
     public void rebuildMaze(int height, int width, boolean generateMaze, double percent_wall) {
         this.nbRows = height;
         this.nbCols = width;
@@ -338,6 +352,13 @@ public class ModelMain extends Subject {
         notifyObservers("MazeParamMAJ");
     }
 
+    /**
+     * Permet de changer les joueurs avec les paramètres choisis
+     * @param hunterName nom du chasseur
+     * @param monsterName nom du monstre
+     * @param IAMonster booléen indiquant si le monstre est une IA
+     * @param IAHunter booléen indiquant si le chasseur est une IA
+     */
     public void rebuildPlayers(String hunterName, String monsterName, boolean IAMonster, boolean IAHunter) {
         monsterIsIA = IAMonster;
         hunterIsIA = IAHunter;
@@ -353,6 +374,11 @@ public class ModelMain extends Subject {
         notifyObservers("PlayerParamMAJ");
     }
 
+    /**
+     * Permet de changer les options de jeu avec les paramètres choisis
+     * @param depDiag booléen indiquant si le monstre peut se déplacer en diagonale
+     * @param fog booléen indiquant si le brouillard est activé
+     */
     public void rebuildOption(boolean depDiag, boolean fog) {
         this.deplacementDiag = depDiag;
         if(!monsterIsIA) this.fog = fog;

@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Classe MazeFactory - Permet de créer un labyrinthe
+ *
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0
+ */
 public class MazeFactory {
     protected static final String FS = File.separator;
     private double percent_wall;
@@ -29,11 +35,20 @@ public class MazeFactory {
         visited = new boolean[x][y];
     }
 
+    /**
+     * Génère un labyrinthe de taille x et y
+     * @return Cell[][] - le labyrinthe généré
+     */
     public Cell[][] generateMaze() {
         generePrim();
         return this.maze;
     }
 
+    /**
+     * Import un labyrinthe de la taille mise en paramètre.
+     *
+     * @return Cell[][] - le labyrinthe importé
+     */
     public Cell[][] importMaze() {
         if(x != y) {
             return generateMaze();
@@ -42,6 +57,9 @@ public class MazeFactory {
         return this.maze;
     }
 
+    /**
+     * Génère un labyrinthe de taille x et y par défaut
+     */
     private void makeDefaultMaze() {
         for(int i = 0; i < x; i++) {
             for(int j = 0; j < y; j++) {
@@ -50,6 +68,9 @@ public class MazeFactory {
         }
     }
 
+    /**
+     * Algorithm permettant de générer un labyrinthe de taille x et y par défaut
+     */
     protected void generePrim() {
         makeDefaultMaze();
         List<ICoordinate> frontier = new ArrayList<>();
@@ -161,14 +182,29 @@ public class MazeFactory {
         }
     }
 
+    /**
+     * Vérifie s'il est possible de se déplacer sur la case
+     * @param cord coordonnées de la case
+     * @return boolean - true si la case est valide et est un mur, false sinon
+     */
     private boolean isPossibility(ICoordinate cord) {
         return (isValidCoords(cord) && isWall(cord));
     }
 
+    /**
+     * Vérifie si les coordonnées sont valides (dans le labyrinthe)
+     * @param cord coordonnées à vérifier
+     * @return boolean - true si les coordonnées sont valides, false sinon
+     */
     private boolean isValidCoords(ICoordinate cord) {
         return cord.getRow() >= 0 && cord.getRow() < x && cord.getCol() >= 0 && cord.getCol() < y;
     }
 
+    /**
+     * Vérifie si la case est un mur
+     * @param cord coordonnées de la case
+     * @return boolean - true si la case est un mur, false sinon
+     */
     private boolean isWall(ICoordinate cord) {
         return maze[cord.getRow()][cord.getCol()].getInfo() == ICellEvent.CellInfo.WALL;
     }

@@ -73,9 +73,9 @@ public class Hunter extends Subject implements IHunterStrategy {
     }
 
     /**
-     * Play is not available for a hunter.
+     * Play n'est pas utilisé pour un chasseur.
      *
-     * @throws UnsupportedOperationException Play is not available for a hunter.
+     * @throws UnsupportedOperationException Play n'est pas utilisé pour un chasseur.
      */
     @Override
     public ICoordinate play() {

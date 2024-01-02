@@ -2,6 +2,12 @@ package fr.univlille.sae.controller.parameter;
 
 import javafx.scene.control.Slider;
 
+/**
+ * Classe permettant de créer un slider pour choisir le pourcentage de "perfection" du labyrinth
+ *
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version 1.0
+ */
 public class PercentWallParam extends Slider {
     public PercentWallParam(double percent_wall)
     {

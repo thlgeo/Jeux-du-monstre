@@ -1,4 +1,4 @@
-package fr.univlille.sae.view;
+package fr.univlille.sae.view.parameter;
 
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
@@ -6,6 +6,7 @@ import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.*;
 import fr.univlille.sae.controller.validation.ValidationController;
 import fr.univlille.sae.model.ModelMain;
+import fr.univlille.sae.view.Spacer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;

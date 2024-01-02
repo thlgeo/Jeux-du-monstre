@@ -40,7 +40,7 @@ public class MazeController extends GridPane {
     }
 
     /**
-     * Cette méthode permet de changer le labyrinthe
+     * Cette méthode permet de changer la taille du labyrinthe
      */
     public void resize() {
         mazeTable = new Button[modelMain.getNbRows()][modelMain.getNbCols()];
@@ -68,6 +68,8 @@ public class MazeController extends GridPane {
      *
      * @param i ordonnee de la case
      * @param j abscisse de la case
+     * @param info information de la case
+     * @param turn tour de la case
      */
     public void setRender(int i, int j, ICellEvent.CellInfo info, int turn) {
         Button b = mazeTable[i][j];

@@ -2,6 +2,7 @@ package fr.univlille.sae;
 
 import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.view.*;
+import fr.univlille.sae.view.parameter.*;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -53,6 +54,13 @@ public class Main extends Application {
         return Font.font("Arial", size);
     }
 
+    /**
+     * Cette méthode permet de charger une musique
+     *
+     * @param path : le chemin vers la musique depuis le dossier res/music
+     * @param volume : le volume de la musique
+     * @return MediaPlayer : le lecteur de la musique
+     */
     public static MediaPlayer loadMusic(String path, double volume) {
         File f = new File(path);
         Media m = new Media(f.toURI().toString());
@@ -61,6 +69,12 @@ public class Main extends Application {
         return mp;
     }
 
+    /**
+     * Cette méthode permet de charger une image
+     *
+     * @param s : le chemin vers l'image
+     * @return Image : l'image chargée
+     */
     public static Image loadImage(String s) {
         return new Image(s);
     }

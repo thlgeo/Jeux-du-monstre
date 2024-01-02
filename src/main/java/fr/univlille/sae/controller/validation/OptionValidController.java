@@ -7,6 +7,12 @@ import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
+/**
+ * Classe correspondante au bouton qui permet de valider les parametres du jeu
+ *
+ * @author Nathan DESMEE, Armand SADY, Valentin THUILLIER, Theo LENGLART
+ * @version 1.0
+ */
 public class OptionValidController extends Button {
     private ModelMain modelMain;
     private FogParam fog;
@@ -20,6 +26,9 @@ public class OptionValidController extends Button {
         setAction();
     }
 
+    /**
+     * Cette méthode permet de mettre en place l'action du bouton, c'est-à-dire vérifier si les paramètres sont valides et de les enregistrer
+     */
     private void setAction() {
         setOnAction(event -> {
             modelMain.rebuildOption(depDiag.isSelected(), fog.isSelected());

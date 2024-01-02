@@ -5,6 +5,12 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.model.Cell;
 
+/**
+ * Classe RightWallIAMonster - IA du monstre qui se déplace en suivant le mur de droite.
+ *
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0
+ */
 public class RightWallIAMonster implements IMonsterStrategy {
 
     protected Cell[][] maze;
@@ -15,6 +21,10 @@ public class RightWallIAMonster implements IMonsterStrategy {
         // Do nothing
     }
 
+    /**
+     * Initialise le labyrinthe avec le tableau de booleen spécifié en paramètre.
+     * @param booleans (boolean[][])   Le labyrinthe
+     */
     @Override
     public void initialize(boolean[][] booleans) {
         this.maze = new Cell[booleans.length][booleans[0].length];
@@ -25,6 +35,10 @@ public class RightWallIAMonster implements IMonsterStrategy {
         }
     }
 
+    /**
+     * Méthode permettant de calculer le déplacement à faire selon les informations que le monstre possède.
+     * @return ICoordinate coordonnées du déplacement
+     */
     @Override
     public ICoordinate play() {
         if(rightCellIsEmpty()) {
@@ -38,6 +52,10 @@ public class RightWallIAMonster implements IMonsterStrategy {
         }
     }
 
+    /**
+     * Permet de mettre à jour le labyrinthe du monstre selon une cellule.
+     * @param cellEvent (ICellEvent) informations de la cellule
+     */
     @Override
     public void update(ICellEvent cellEvent) {
         if(cellEvent.getState() == ICellEvent.CellInfo.MONSTER) {
@@ -50,18 +68,30 @@ public class RightWallIAMonster implements IMonsterStrategy {
         updateCell.visited();
     }
 
+    /**
+     * Renvoie false si la cellule suivante est vide, sinon true.
+     * @return boolean
+     */
     boolean nextCellIsEmpty() {
         if(!nextCoordIsValid()) { return false; }
         ICoordinate nextCoord = direction.next(coordonnee);
         return maze[nextCoord.getRow()][nextCoord.getCol()].getInfo() != ICellEvent.CellInfo.EMPTY;
     }
 
+    /**
+     * Renvoie false si la cellule suivante est vide, sinon true.
+     * @return boolean
+     */
     boolean rightCellIsEmpty() {
         if(!nextCoordIsValid()) { return false; }
         ICoordinate nextCoord = direction.next().next(coordonnee);
         return maze[nextCoord.getRow()][nextCoord.getCol()].getInfo() != ICellEvent.CellInfo.EMPTY;
     }
 
+    /**
+     * Renvoie true si la cellule suivante est dans le labyrinthe, sinon false.
+     * @return boolean
+     */
     boolean nextCoordIsValid() {
         ICoordinate nextCoord = direction.next(coordonnee);
         return nextCoord.getRow() >= 0 && nextCoord.getRow() < maze.length && nextCoord.getCol() >= 0 && nextCoord.getCol() < maze[0].length;
@@ -112,6 +142,11 @@ public class RightWallIAMonster implements IMonsterStrategy {
             return col;
         }
 
+        /**
+         * Retourne la coordonnée suivante dans la direction actuelle
+         * @param coord (ICoordinate)   -   La coordonnée actuelle
+         * @return  (ICoordinate)    -    La coordonnée suivante
+         */
         public ICoordinate next(ICoordinate coord) {
             return new ICoordinate() {
                 @Override

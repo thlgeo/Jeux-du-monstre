@@ -152,10 +152,18 @@ public class HunterView extends Stage implements Observer {
         super.setScene(new Scene(pane, calcEffectiveSize(nbCols), calcEffectiveSize(nbRows)));
     }
 
+    /**
+     * Cette méthode permet de calculer la taille effective de la fenêtre
+     * @param size (double) correspond à la taille de base
+     * @return (double) la taille effective
+     */
     private double calcEffectiveSize(double size) {
         return size * CellController.SIZE + MARGIN;
     }
 
+    /**
+     * Cette méthode permet de changer la position de la fenêtre
+     */
     private void setPosition() {
         double effectiveWidth;
         double effectiveHeight = 0;
@@ -171,6 +179,9 @@ public class HunterView extends Stage implements Observer {
         setY(effectiveHeight);
     }
 
+    /**
+     * Cette méthode permet d'afficher la fenêtre
+     */
     private void montrer(){
         if(!modelMain.hunterIsIA()){
             show();

@@ -58,6 +58,9 @@ public class MonsterView extends Stage implements Observer {
         root.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Cette méthode permet de changer la scène de la fenêtre à la scène principale du monstre en mode IA
+     */
     private void setMonsterIAScene() {
         VBox root = new VBox();
         root.getChildren().addAll(titre, mc, new Spacer(), nextTurnController);
@@ -171,10 +174,18 @@ public class MonsterView extends Stage implements Observer {
         super.setScene(new Scene(pane, calcEffectiveSize(nbRows), calcEffectiveSize(nbCols)));
     }
 
+    /**
+     * Cette méthode permet de calculer la taille effective de la fenêtre
+     * @param size (double) correspond à la taille de base
+     * @return (double) la taille effective
+     */
     private double calcEffectiveSize(double size) {
         return size * CellController.SIZE + MARGIN;
     }
 
+    /**
+     * Cette méthode permet de changer la position de la fenêtre
+     */
     private void setPosition() {
         double effectiveWidth;
         double effectiveHeight = 0;
@@ -190,6 +201,9 @@ public class MonsterView extends Stage implements Observer {
         setY(effectiveHeight);
     }
 
+    /**
+     * Cette méthode permet de montrer la fenêtre
+     */
     private void montrer(){
         if(!(modelMain.monsterIsIA() && !modelMain.hunterIsIA())){
             show();

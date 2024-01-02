@@ -6,6 +6,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+/**
+ * Classe permettant de créer une case à cocher pour activer ou non la génération automatique du labyrinthe
+ *
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version 1.0
+ */
 public class GenerateMazeParam extends HBox {
     protected CheckBox generateMaze;
     protected Label texte;
@@ -19,6 +25,9 @@ public class GenerateMazeParam extends HBox {
         setAlignment(Pos.CENTER);
     }
 
+    /**
+     * @return true si la case est cochée, false sinon
+     */
     public boolean isSelected() {
         return generateMaze.isSelected();
     }

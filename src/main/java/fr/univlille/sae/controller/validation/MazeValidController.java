@@ -8,6 +8,12 @@ import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
+/**
+ * Classe correspondante au bouton qui permet de valider les parametres du labyrinthe
+ *
+ * @author Nathan DESMEE, Armand SADY, Valentin THUILLIER, Theo LENGLART
+ * @version 1.0
+ */
 public class MazeValidController extends Button {
     private final SizeParam height;
     private final SizeParam width;
@@ -27,6 +33,9 @@ public class MazeValidController extends Button {
 
     }
 
+    /**
+     * Cette méthode permet de mettre en place l'action du bouton, c'est-à-dire vérifier si les paramètres sont valides et de les enregistrer
+     */
     private void setAction() {
         setOnAction(event -> {
             if (!height.isValid() || !width.isValid()) {

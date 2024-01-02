@@ -8,6 +8,12 @@ import fr.univlille.sae.model.ModelMain;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
+/**
+ * Classe correspondante au bouton qui permet de valider les parametres des joueurs
+ *
+ * @author Nathan DESMEE, Armand SADY, Valentin THUILLIER, Theo LENGLART
+ * @version 1.0
+ */
 public class PlayerValidController extends Button {
     private final NameParam hunterName;
     private final NameParam monsterName;
@@ -26,6 +32,9 @@ public class PlayerValidController extends Button {
         setAction();
     }
 
+    /**
+     * Cette méthode permet de mettre en place l'action du bouton, c'est-à-dire vérifier si les paramètres sont valides et de les enregistrer
+     */
     private void setAction() {
         setOnAction(event -> {
             if (monsterName.getText() == null|| hunterName.getText() == null) {

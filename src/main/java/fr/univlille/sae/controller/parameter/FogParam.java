@@ -6,6 +6,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+/**
+ * Classe permettant de créer une case à cocher pour activer ou non le brouillard du monstre
+ *
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version 1.0
+ */
 public class FogParam extends HBox {
     protected CheckBox depDiag;
     protected Label texte;
@@ -18,6 +24,9 @@ public class FogParam extends HBox {
         setAlignment(Pos.CENTER);
     }
 
+    /**
+     * @return true si la case est cochée, false sinon
+     */
     public boolean isSelected() {
         return depDiag.isSelected();
     }

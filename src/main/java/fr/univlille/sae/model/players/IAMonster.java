@@ -9,6 +9,12 @@ import fr.univlille.sae.model.Coordinate;
 
 import java.util.*;
 
+/**
+ * Classe IAMonster - IA du monstre qui peut se déplacer dans le labyrinthe selon l'algorithme A*.
+ *
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0
+ */
 public class IAMonster implements IMonsterStrategy {
 
     public static final Random rd = new Random();

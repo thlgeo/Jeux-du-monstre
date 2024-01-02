@@ -1,10 +1,11 @@
-package fr.univlille.sae.view;
+package fr.univlille.sae.view.parameter;
 
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.maze.MazeController;
 import fr.univlille.sae.model.ModelMain;
+import fr.univlille.sae.view.Spacer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,6 +16,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/**
+ * Cette classe est la fenêtre où l'utilisateur peut changer les paramètres des ressources
+ *
+ * @author Nathan Desmee, Valentin Thuillier, Armand Sady, Théo Lenglart
+ * @version 1.0
+ */
 public class RessourcesView extends Stage implements Observer {
     public static final int WIDTH_VIEW = 500;
     public static final int HEIGHT_VIEW = 200;
@@ -37,6 +44,9 @@ public class RessourcesView extends Stage implements Observer {
         modelMain.attach(this);
     }
 
+    /**
+     * Cette méthode permet de changer la scène de la fenêtre à la scène principale de la page de paramétrage
+     */
     private void setParameterScene() {
         VBox root = new VBox();
         VBox wallBox = new VBox();
@@ -51,6 +61,9 @@ public class RessourcesView extends Stage implements Observer {
 
     }
 
+    /**
+     * Cette méthode permet de créer les différents éléments de la fenêtre
+     */
     private void setParameterNodes() {
         wallLabel = new Label("Texture des murs ");
         wallLabel.setFont(font);
@@ -71,6 +84,11 @@ public class RessourcesView extends Stage implements Observer {
         getBack.setOnAction(e-> modelMain.notify("ResMAJ"));
     }
 
+    /**
+     * Cette méthode permet de convertir une couleur hexadécimale en un tableau de couleur RGB
+     * @param wallColor Couleur hexadécimale
+     * @return double[] Tableau de couleur RGB
+     */
     private double[] convertHexToRGB(String wallColor) {
         double[] rgb = new double[3];
         rgb[0] = Integer.parseInt(wallColor.substring(1, 3), 16) / 255.0;
@@ -79,11 +97,20 @@ public class RessourcesView extends Stage implements Observer {
         return rgb;
     }
 
+    /**
+     * Cette méthode permet de mettre à jour la fenêtre
+     * @param subject correspond au sujet observé
+     */
     @Override
     public void update(Subject subject) {
 
     }
 
+    /**
+     * Cette méthode permet de mettre à jour la fenêtre en fonction de l'objet passé en paramètre
+     * @param subject correspond au sujet observé
+     * @param o Object correspond à la donnée à partir de laquelle on met à jour la fenêtre
+     */
     @Override
     public void update(Subject subject, Object o) {
         if(o.equals("ResSHOW")) {

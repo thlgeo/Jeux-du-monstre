@@ -25,7 +25,7 @@ public class ValidationController extends Button {
     }
 
     /**
-     * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire signaler les changements de paramètres
+     * Cette méthode permet de paramétrer les actions du bouton, c'est-à-dire valider les changements de paramètres
      */
     private void setAction() {
         setOnAction(event -> modelMain.notify("ParamMAJ"));

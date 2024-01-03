@@ -26,7 +26,7 @@ public class Main extends Application {
     public static final String MUSIC_DIR = RES_DIR + File.separator + "music" + File.separator;
 
     public static final String ARCADE_FONT = "arcade_classic_2" + File.separator + "ARCADECLASSIC.TTF";
-
+    public static final String IA_PACKAGE = "fr.univlille.sae.model.players.";
     public static final String ICON_URL = "https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png";
 
     /**

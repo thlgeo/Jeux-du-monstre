@@ -14,6 +14,10 @@ import fr.univlille.sae.model.players.IAHunter;
 import fr.univlille.sae.model.players.IAMonster;
 import fr.univlille.sae.model.players.Monster;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -123,7 +127,7 @@ public class ModelMain extends Subject {
      */
     protected void reset() {
         rebuildMaze(nbRows, nbCols, generateMaze, percent_wall);
-        rebuildPlayers(hunter.getName(), monster.getName(), monsterIsIA, hunterIsIA);
+        rebuildPlayers(hunter.getName(), monster.getName(), monsterIsIA, hunterIsIA, IAMonster.getClass().getName(), IAHunter.getClass().getName());
         rebuildOption(deplacementDiag, fog);
         turn = DEFAULT_TURN;
     }
@@ -359,19 +363,42 @@ public class ModelMain extends Subject {
      * @param IAMonster booléen indiquant si le monstre est une IA
      * @param IAHunter booléen indiquant si le chasseur est une IA
      */
-    public void rebuildPlayers(String hunterName, String monsterName, boolean IAMonster, boolean IAHunter) {
+    public void rebuildPlayers(String hunterName, String monsterName, boolean IAMonster, boolean IAHunter, String monsterChoice, String hunterChoice) {
         monsterIsIA = IAMonster;
         hunterIsIA = IAHunter;
         hunter.setName(hunterName);
         monster.setName(monsterName);
         IAMonsterName = monsterName;
         IAHunterName = hunterName;
+        setChoiceIA(monsterChoice, hunterChoice);
         if(monsterIsIA) { // on enlève le brouillard si le monstre est une IA
             this.fog = false;
             monster.setFog(false);
             monster.setMaze(this.maze);
         }
         notifyObservers("PlayerParamMAJ");
+    }
+
+    /**
+     * Permet de mettre en place les choix d'IA pour le monstre et le chasseur
+     * @param monsterChoice choix de l'IA du monstre
+     * @param hunterChoice choix de l'IA du chasseur
+     */
+    private void setChoiceIA(String monsterChoice, String hunterChoice) {
+        try {
+            this.IAMonster = (IMonsterStrategy) Class.forName(monsterChoice).getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            this.IAMonster = new IAMonster();
+        } finally {
+            setMonsterIA();
+        }
+        try {
+            this.IAHunter = (IHunterStrategy) Class.forName(hunterChoice).getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            this.IAHunter = new IAHunter();
+        } finally {
+            this.IAHunter.initialize(nbRows, nbCols);
+        }
     }
 
     /**
@@ -462,5 +489,10 @@ public class ModelMain extends Subject {
 
     public boolean isFullIA() {
         return monsterIsIA && hunterIsIA;
+    }
+
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        System.out.println(list.getClass().getName());
     }
 }

@@ -2,6 +2,7 @@ package fr.univlille.sae.model;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+import fr.univlille.sae.Main;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -99,19 +100,33 @@ class TestModelMain {
         assertNull(lastShot);
     }
 
-    /*
     @Test
-    void testChangerParam(){
-        modelMain.changerParam("Nathan", "Valentin", 8, 8, true, false, true, true, false);
-        assertEquals("Valentin", modelMain.monster.getName());
-        assertEquals("Nathan", modelMain.hunter.getName());
-        assertEquals(8, modelMain.getNbRows());
-        assertEquals(8, modelMain.getNbCols());
-        assertEquals(8, modelMain.hunter.getNbRows());
-        assertEquals(8, modelMain.hunter.getNbCols());
-        assertEquals(8, modelMain.monster.getDiscoveredMaze().length);
-        assertEquals(8, modelMain.monster.getDiscoveredMaze()[0].length);
+    void testRebuildMaze(){
+        modelMain.rebuildMaze(16, 15, false, 0.0);
+        assertEquals(16, modelMain.getNbRows());
+        assertEquals(15, modelMain.getNbCols());
+        assertFalse(modelMain.generateMaze);
+        assertEquals(0.0, modelMain.getPercent_wall());
+        assertEquals(16, modelMain.hunter.getNbRows());
+        assertEquals(15, modelMain.hunter.getNbCols());
     }
 
-     */
+    @Test
+    void testRebuildPlayer(){
+        modelMain.rebuildPlayers("nathan", "armand", true, true, Main.IA_PACKAGE + "RightWallIAMonster", Main.IA_PACKAGE + "IAHunterRandom");
+        assertEquals("nathan", modelMain.hunter.getName());
+        assertEquals("armand", modelMain.monster.getName());
+        assertTrue(modelMain.monsterIsIA);
+        assertTrue(modelMain.hunterIsIA);
+        assertEquals(Main.IA_PACKAGE + "RightWallIAMonster", modelMain.IAMonster.getClass().getName());
+        assertEquals(Main.IA_PACKAGE + "IAHunterRandom", modelMain.IAHunter.getClass().getName());
+        assertFalse(modelMain.fog);
+    }
+
+    @Test
+    void testRebuildOption(){
+        modelMain.rebuildOption(true, true);
+        assertTrue(modelMain.deplacementDiag);
+        assertTrue(modelMain.fog);
+    }
 }

@@ -4,6 +4,7 @@ import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.model.Cell;
+import fr.univlille.sae.model.Coordinate;
 
 /**
  * Classe RightWallIAMonster - IA du monstre qui se déplace en suivant le mur de droite.
@@ -148,18 +149,7 @@ public class RightWallIAMonster implements IMonsterStrategy {
          * @return  (ICoordinate)    -    La coordonnée suivante
          */
         public ICoordinate next(ICoordinate coord) {
-            return new ICoordinate() {
-                @Override
-                public int getRow() {
-                    return coord.getRow() + row;
-                }
-
-                @Override
-                public int getCol() {
-                    return coord.getCol() + col;
-                }
-
-            };
+            return new Coordinate(coord.getRow() + row, coord.getCol() + col);
         }
 
     }

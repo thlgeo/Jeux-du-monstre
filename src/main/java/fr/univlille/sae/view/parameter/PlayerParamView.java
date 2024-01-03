@@ -2,15 +2,14 @@ package fr.univlille.sae.view.parameter;
 
 import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
-import fr.univlille.sae.controller.parameter.IAHunterParam;
-import fr.univlille.sae.controller.parameter.IAMonsterParam;
-import fr.univlille.sae.controller.parameter.NameParam;
+import fr.univlille.sae.controller.parameter.*;
 import fr.univlille.sae.controller.validation.PlayerValidController;
 import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.view.Spacer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import fr.univlille.sae.Main;
@@ -31,6 +30,10 @@ public class PlayerParamView extends Stage implements Observer {
     private NameParam hunterName;
     private IAMonsterParam IAMonstre;
     private IAHunterParam IAHunter;
+    private MonsterChoiceParam monsterChoice;
+    private HunterChoiceParam hunterChoice;
+    private Label monsterChoiceLabel;
+    private Label hunterChoiceLabel;
     private PlayerValidController validation;
 
     public PlayerParamView(ModelMain modelMain) {
@@ -52,6 +55,8 @@ public class PlayerParamView extends Stage implements Observer {
         root.getChildren().addAll(new Spacer(), nameHunter, hunterName);
         root.getChildren().addAll(new Spacer(), IAMonstre);
         root.getChildren().addAll(new Spacer(), IAHunter);
+        root.getChildren().addAll(new Spacer(), monsterChoiceLabel, monsterChoice);
+        root.getChildren().addAll(new Spacer(), hunterChoiceLabel, hunterChoice);
         root.getChildren().addAll(new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH_VIEW, HEIGHT_VIEW));
@@ -69,7 +74,13 @@ public class PlayerParamView extends Stage implements Observer {
         hunterName = new NameParam(false);
         IAMonstre = new IAMonsterParam();
         IAHunter = new IAHunterParam();
-        validation = new PlayerValidController(monsterName, hunterName, IAMonstre, IAHunter, modelMain);
+        monsterChoice = new MonsterChoiceParam();
+        hunterChoice = new HunterChoiceParam();
+        monsterChoiceLabel = new Label("IA du Monstre");
+        monsterChoiceLabel.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        hunterChoiceLabel = new Label("IA du Chasseur");
+        hunterChoiceLabel.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        validation = new PlayerValidController(monsterName, hunterName, IAMonstre, IAHunter, monsterChoice, hunterChoice, modelMain);
     }
 
     /**

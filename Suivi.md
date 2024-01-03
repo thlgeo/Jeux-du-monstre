@@ -97,3 +97,10 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 
 - Ajout de la personnalisation des couleurs dans la nouvelle structure
 - Corrections des bugs liés au paramétrage
+
+## Semaine du 1/01/2024
+
+### Nathan DESMEE
+
+- Ajout de la possibilité de choisir entre différentes IA pour le monstre et le chasseur
+- Réécriture des tests pour les paramètres

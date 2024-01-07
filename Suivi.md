@@ -91,6 +91,13 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 
 - Correction d'une erreur lier à l'IA du monstre
 
+### Armand SADY
+
+- Ajout de la view des Ressources
+- Deconstruction partielle de ParameterView (séparation en plusieurs classes pour plus de clarté)
+  - Ajout des classes OptionsParameterView, MazeParameterView, MonsterParameterView, HunterParameterView
+  - Ajout des classes OptionsParameterController, MazeParameterController, MonsterParameterController, HunterParameterController
+
 ## Semaine du 25/12/2023
 
 ### Nathan DESMEE

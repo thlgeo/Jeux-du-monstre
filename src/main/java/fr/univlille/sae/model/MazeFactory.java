@@ -36,7 +36,7 @@ public class MazeFactory {
     }
 
     /**
-     * Génère un labyrinthe de taille x et y
+     * Génère un labyrinthe de taille x et de taille y.
      * @return Cell[][] - le labyrinthe généré
      */
     public Cell[][] generateMaze() {
@@ -91,6 +91,9 @@ public class MazeFactory {
         genereNotSet();
     }
 
+    /**
+     * Permet de retirer des murs aléatoirement dans le labyrinthe généré.
+     */
     private void genereNotSet() {
         for(int row = 0; row < this.x; row++) {
             for(int col = 0; col < this.y; col++) {
@@ -102,7 +105,7 @@ public class MazeFactory {
     }
 
     /**
-     * Vérifie si le mur est valide, c'est a dire qu'au moins une case adjacente est vide
+     * Vérifie si le mur est valide, c'est-à-dire qu'au moins une case adjacente au mur de coordonnées row & col est vide.
      * @param row
      * @param col
      * @return
@@ -122,6 +125,12 @@ public class MazeFactory {
         return false;
     }
 
+    /**
+     * Permet de trouver la case qui est la "porte" entre deux cases, sert à générer le labyrinthe avec l'algorithme de Prim
+     * @param start case de départ
+     * @param end case d'arrivée
+     * @return ICoordinate - la case qui est la "porte" entre les deux cases
+     */
     private ICoordinate getGateway(ICoordinate start, ICoordinate end) {
         Coordinate diff = new Coordinate(start.getRow() - end.getRow(), start.getCol() - end.getCol());
         if(diff.getCol() < 0) diff.incrementCol();
@@ -132,23 +141,48 @@ public class MazeFactory {
         return new Coordinate(start.getRow() - diff.getRow(), start.getCol() - diff.getCol());
     }
 
+    /**
+     * Permet de marquer une case comme visitée (polymorphisme de la méthode setVisited)
+     * @param coord
+     */
     private void setVisited(ICoordinate coord) {
         setVisited(coord.getRow(), coord.getCol());
     }
 
+    /**
+     * Permet de marquer une case comme visitée, c'est-à-dire de l'indiquer dans le tableau visited
+     * @param row
+     * @param col
+     */
     private void setVisited(int row, int col) {
         maze[row][col].setInfo(ICellEvent.CellInfo.EMPTY);
         visited[row][col] = true;
     }
 
+    /**
+     * Vérifie si la case a déjà été visitée (polymorphisme de la méthode isVisited)
+     * @param coord coordonnées de la case
+     * @return boolean - true si la case a déjà été visitée, false sinon
+     */
     private boolean isVisited(ICoordinate coord) {
         return isVisited(coord.getRow(), coord.getCol());
     }
 
+    /**
+     * Vérifie si la case a déjà été visitée, c'est-à-dire si elle est dans le tableau visited
+     * @param row
+     * @param col
+     * @return boolean - true si la case a déjà été visitée, false sinon
+     */
     private boolean isVisited(int row, int col) {
         return visited[row][col];
     }
 
+    /**
+     * Permet de trouver la case d'origine d'une case, c'est-à-dire trouver une case déjà visitée adjacente à la case testée, sert à générer le labyrinthe avec l'algorithme de Prim.
+     * @param cord coordonnées de la case
+     * @return ICoordinate - la case d'origine de la case
+     */
     private ICoordinate getOriginCord(ICoordinate cord) {
         List<ICoordinate> cordFrontiers = getFrontierCoords(cord);
         for(ICoordinate cordFrontier : cordFrontiers) {
@@ -159,6 +193,11 @@ public class MazeFactory {
         return null;
     }
 
+    /**
+     * Permet de trouver les cases de la "frontière" à une case. C'est-à-dire les cases a 2 de distance de la case testée, sert à générer le labyrinthe avec l'algorithme de Prim.
+     * @param cord coordonnées de la case
+     * @return List<ICoordinate> - les cases adjacentes à la case
+     */
     private List<ICoordinate> getFrontierCoords(ICoordinate cord) {
         Coordinate c = (Coordinate) cord;
         List<ICoordinate> frontier = new ArrayList<>();
@@ -174,6 +213,11 @@ public class MazeFactory {
         return frontier;
     }
 
+    /**
+     * Permet d'ajouter des cases à la "frontière", sert à générer le labyrinthe avec l'algorithme de Prim.
+     * @param frontier liste de cases
+     * @param toAdd liste de cases à ajouter
+     */
     private void addToFrontier(List<ICoordinate> frontier, List<ICoordinate> toAdd) {
         for(ICoordinate cord : toAdd) {
             if(isPossibility(cord) && !frontier.contains(cord)) {
@@ -209,6 +253,10 @@ public class MazeFactory {
         return maze[cord.getRow()][cord.getCol()].getInfo() == ICellEvent.CellInfo.WALL;
     }
 
+    /**
+     * Permet de récupérer le labyrinthe généré sous forme de String
+     * @return Cell[][] - le labyrinthe généré
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

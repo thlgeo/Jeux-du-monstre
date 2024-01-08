@@ -6,22 +6,32 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import fr.univlille.sae.model.Cell;
 import fr.univlille.sae.model.Coordinate;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
+/**
+ * Classe DFSMonster - Stratégie du monstre utilisant l'algorithme DFS
+ *
+ * @author Valentin THUILLIER, Armand SADY, Nathan DESMEE, Théo LENGLART
+ * @version 1.0
+ */
 public class DFSMonster implements IMonsterStrategy {
 
     Cell[][] maze;
     List<ICoordinate> path;
     Set<PathCoordinate> visited;
+    ICoordinate monster;
 
     public DFSMonster() {
         this.maze = null;
         this.path = null;
+        this.visited = null;
     }
 
+    /**
+     * Permet d'initialiser le labyrinthe
+     *
+     * @param tab (boolean[][])  - le labyrinthe
+     */
     @Override
     public void initialize(boolean[][] tab) {
         this.maze = new Cell[tab.length][tab[0].length];
@@ -37,6 +47,11 @@ public class DFSMonster implements IMonsterStrategy {
         }
     }
 
+    /**
+     * Cette méthode permet de récupérer la position du monstre généré soit par aStarAlgorithm soit par une position aléatoire
+     *
+     * @return (ICoordinate)   - la position du monstre
+     */
     @Override
     public ICoordinate play() {
         if(path == null) {
@@ -45,9 +60,15 @@ public class DFSMonster implements IMonsterStrategy {
         return path.remove(0);
     }
 
+    /**
+     * Permet de récupérer une événement de la cellule
+     *
+     * @param cellEvent (ICellEvent) - l'événement de la cellule
+     */
     @Override
     public void update(ICellEvent cellEvent) {
         if(cellEvent.getState() == ICellEvent.CellInfo.MONSTER) {
+            this.monster = cellEvent.getCoord();
             if(path == null || path.isEmpty()) dfs();
         }
         ICoordinate coord = cellEvent.getCoord();
@@ -57,27 +78,22 @@ public class DFSMonster implements IMonsterStrategy {
         updateCell.visited();
     }
 
-    private PathCoordinate searchMonster() {
-        for(int lig = 0; lig < maze.length; lig++) {
-            for(int col = 0; col < maze[lig].length; col++) {
-                if(maze[lig][col].getInfo() == ICellEvent.CellInfo.MONSTER) {
-                    return new PathCoordinate(new Coordinate(lig, col));
-                }
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Permet de trouver le chemin en utilisant l'algorithme DFS
+     * Le chemin est stocké dans l'attribut path
+     */
     private void dfs() {
-        Stack<PathCoordinate> stack = new Stack<>();
-        stack.push(searchMonster());
+        this.path = new ArrayList<>();
+        this.visited = new HashSet<>();
+        Deque<PathCoordinate> stack = new ArrayDeque<>();
+        stack.push(new PathCoordinate(this.monster));
         boolean found = false;
         while(!stack.isEmpty() && !found) {
             PathCoordinate current = stack.pop();
             if(!visited.contains(current)) {
                 visited.add(current);
                 for(Coordinate neighbor : current.getCoord().around()) {
-                    if(inRange(neighbor) && maze[neighbor.getRow()][neighbor.getCol()].getInfo() != ICellEvent.CellInfo.WALL && !visited.contains(neighbor)) {
+                    if(inRange(neighbor) && maze[neighbor.getRow()][neighbor.getCol()].getInfo() != ICellEvent.CellInfo.WALL && !visited.contains(new PathCoordinate(neighbor))) {
                         stack.push(new PathCoordinate(neighbor, current));
                     }
                 }
@@ -90,6 +106,7 @@ public class DFSMonster implements IMonsterStrategy {
                     tmp = tmp.getParent();
                 }
                 Collections.reverse(path);
+                path.remove(0); // Remove monster coord
             }
         }
     }
@@ -104,9 +121,12 @@ public class DFSMonster implements IMonsterStrategy {
         return (coord.getRow() >= 0 && coord.getRow() < maze.length) && (coord.getCol() >= 0 && coord.getCol() < maze[0].length);
     }
 
+    /**
+     * Classe permettant de stocker une coordonnée et son parent
+     */
     class PathCoordinate {
-        private ICoordinate coord;
-        private PathCoordinate parent;
+        private final ICoordinate coord;
+        private final PathCoordinate parent;
 
         public PathCoordinate(ICoordinate coord, PathCoordinate parent) {
             this.coord = coord;
@@ -117,12 +137,39 @@ public class DFSMonster implements IMonsterStrategy {
             this(coord, null);
         }
 
+        /**
+         * Permet de récupérer la coordonnée
+         *
+         * @return (ICoordinate)   - la coordonnée
+         */
         public Coordinate getCoord() {
             return (Coordinate) coord;
         }
 
+        /**
+         * Permet de récupérer le parent
+         *
+         * @return (PathCoordinate)    - le parent
+         */
         public PathCoordinate getParent() {
             return parent;
+        }
+
+        @Override
+        public String toString() {
+            return coord.toString();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if(this == o) return true;
+            if(!(o instanceof PathCoordinate that)) return false;
+            return Objects.equals(getCoord(), that.getCoord());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getCoord());
         }
     }
 

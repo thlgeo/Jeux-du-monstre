@@ -111,3 +111,7 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 
 - Ajout de la possibilité de choisir entre différentes IA pour le monstre et le chasseur
 - Réécriture des tests pour les paramètres
+
+### Valentin THUILLIER
+
+- Ajout de l'IA Djikstra pour le monstre

@@ -3,6 +3,7 @@ package fr.univlille.sae;
 import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.view.*;
 import fr.univlille.sae.view.parameter.*;
+import fr.univlille.sae.view.parameter.ParameterView;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;

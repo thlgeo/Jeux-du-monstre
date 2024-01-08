@@ -12,7 +12,7 @@ import javafx.scene.control.ChoiceBox;
 public class MonsterChoiceParam extends ChoiceBox<String> {
 
     public MonsterChoiceParam() {
-        this.getItems().addAll("IAMonster", "RightWallIAMonster");
+        this.getItems().addAll("IAMonster", "DFSMonster");
         this.setValue("IAMonster");
         setMinWidth(200);
     }

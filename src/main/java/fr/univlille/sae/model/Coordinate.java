@@ -46,9 +46,7 @@ public class Coordinate implements ICoordinate {
         if(getClass() != obj.getClass())
             return false;
         Coordinate other = (Coordinate) obj;
-        if(row != other.row)
-            return false;
-        return col == other.col;
+        return col == other.col && row == other.row;
     }
 
     /**

@@ -45,6 +45,16 @@ public class MazeFactory {
     }
 
     /**
+     * Cette méthode permet de créer un labyrinthe
+     * @param generate true si il faut créer automatiquement, false sinon
+     * @return Cell[][] labyrinthe généré
+     */
+    public Cell[][] createMaze(boolean generate){
+        if(generate) return generateMaze();
+        return importMaze();
+    }
+
+    /**
      * Import un labyrinthe de la taille mise en paramètre.
      *
      * @return Cell[][] - le labyrinthe importé

@@ -13,6 +13,7 @@ import fr.univlille.sae.model.players.Hunter;
 import fr.univlille.sae.model.players.IAHunter;
 import fr.univlille.sae.model.players.IAMonster;
 import fr.univlille.sae.model.players.Monster;
+import fr.univlille.sae.model.score.ScoreManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class ModelMain extends Subject {
 
     protected String IAMonsterName = "IA Monster";
     protected String IAHunterName = "IA Hunter";
+    protected ScoreManager scoreManager = new ScoreManager();
 
     private ModelMain(int turn, int nbRows, int nbCols) {
         this.turn = turn;
@@ -285,9 +287,19 @@ public class ModelMain extends Subject {
         hunter.notify("endGame");
         reset();
         if(isMonster) {
-            notifyObservers(monsterIsIA ? IAMonsterName : monster.getName());
+            if(monsterIsIA){
+                notifyObservers(IAMonsterName);
+            }else{
+                scoreManager.changeMonsterScore(monster.getName());
+                notifyObservers(monster.getName());
+            }
         } else {
-            notifyObservers(hunterIsIA ? IAHunterName : hunter.getName());
+            if(hunterIsIA){
+                notifyObservers(IAHunterName);
+            }else{
+                scoreManager.changeHunterScore(hunter.getName());
+                notifyObservers(hunter.getName());
+            }
         }
     }
 
@@ -485,5 +497,13 @@ public class ModelMain extends Subject {
 
     public boolean isFullIA() {
         return monsterIsIA && hunterIsIA;
+    }
+
+    /**
+     * attache un observeur au scoreManager
+     * @param o observeur à attacher
+     */
+    public void attachScoreManager(Observer o){
+        scoreManager.attach(o);
     }
 }

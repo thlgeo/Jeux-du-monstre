@@ -4,16 +4,19 @@ import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.maze.MazeController;
+import fr.univlille.sae.controller.validation.RessourceValidController;
 import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.view.Spacer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -24,14 +27,17 @@ import javafx.stage.Stage;
  */
 public class RessourcesView extends Stage implements Observer {
     public static final int WIDTH_VIEW = 500;
-    public static final int HEIGHT_VIEW = 200;
+    public static final int HEIGHT_VIEW = 300;
     private final ModelMain modelMain;
 
     private Label wallLabel;
     private ColorPicker wallColorPicker;
     private Label emptyLabel;
     private ColorPicker emptyColorPicker;
-    private Button getBack;
+
+    private Button fileButton = new Button("Charger une image");
+    private FileChooser fileChooser = new FileChooser();
+    private RessourceValidController validation;
     private Font font = Main.loadFont(Main.ARCADE_FONT, 20);
 
     public RessourcesView(ModelMain modelMain) {
@@ -55,7 +61,7 @@ public class RessourcesView extends Stage implements Observer {
         wallBox.setAlignment(Pos.CENTER);
         emptyBox.getChildren().addAll(emptyLabel, emptyColorPicker);
         emptyBox.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(wallBox, new Spacer(), emptyBox, new Spacer(), getBack);
+        root.getChildren().addAll(wallBox, new Spacer(), emptyBox, new Spacer(), fileButton, new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH_VIEW, HEIGHT_VIEW));
 
@@ -72,16 +78,11 @@ public class RessourcesView extends Stage implements Observer {
         double[] rgbWall = convertHexToRGB(MazeController.wallColor);
         double[] rgbEmpty = convertHexToRGB(MazeController.emptyColor);
         wallColorPicker = new ColorPicker(new Color(rgbWall[0], rgbWall[1], rgbWall[2], 1));
-        wallColorPicker.setOnAction(e-> {
-            MazeController.setWallColor("#" + wallColorPicker.getValue().toString().substring(2, 8));
-        });
         emptyColorPicker = new ColorPicker(new Color(rgbEmpty[0], rgbEmpty[1], rgbEmpty[2], 1));
-        emptyColorPicker.setOnAction(e-> {
-            MazeController.setEmptyColor("#" + emptyColorPicker.getValue().toString().substring(2, 8));
-        });
-        getBack = new Button("Retour");
-        getBack.setFont(font);
-        getBack.setOnAction(e-> modelMain.notify("ResMAJ"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Files", "*.png"));
+        fileButton.setFont(font);
+        fileButton.setOnAction(e -> fileChooser.showOpenDialog(this));
+        validation = new RessourceValidController(wallColorPicker, emptyColorPicker, modelMain);
     }
 
     /**

@@ -43,21 +43,26 @@ public class PlayerScore implements Comparable<PlayerScore>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlayerScore that = (PlayerScore) o;
-        return score == that.score && Objects.equals(name, that.name);
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, score);
+        return Objects.hash(name);
     }
 
     /**
      * Permet de comparer deux PlayerScore selon le score
      * @param playerScore le PlayerScore avec lequel comparer
-     * @return < 0 si score plus petit, 0 si identique et > 0 si score plus grand
+     * @return < 0 si score plus grand, 0 si identique et > 0 si score plus petit
      */
     @Override
     public int compareTo(PlayerScore playerScore) {
-        return getScore() - playerScore.getScore();
+        return playerScore.getScore() - getScore();
+    }
+
+    @Override
+    public String toString(){
+        return name + " -> " + score;
     }
 }

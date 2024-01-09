@@ -287,19 +287,13 @@ public class ModelMain extends Subject {
         hunter.notify("endGame");
         reset();
         if(isMonster) {
-            if(monsterIsIA){
-                notifyObservers(IAMonsterName);
-            }else{
-                scoreManager.changeMonsterScore(monster.getName());
-                notifyObservers(monster.getName());
-            }
+            String name = monsterIsIA ? IAMonsterName : monster.getName();
+            scoreManager.changeMonsterScore(name);
+            notifyObservers(name);
         } else {
-            if(hunterIsIA){
-                notifyObservers(IAHunterName);
-            }else{
-                scoreManager.changeHunterScore(hunter.getName());
-                notifyObservers(hunter.getName());
-            }
+            String name = hunterIsIA ? IAHunterName : hunter.getName();
+            scoreManager.changeHunterScore(name);
+            notifyObservers(name);
         }
     }
 
@@ -504,6 +498,14 @@ public class ModelMain extends Subject {
      * @param o observeur à attacher
      */
     public void attachScoreManager(Observer o){
-        scoreManager.attach(o);
+        scoreManager.attachObserver(o);
+    }
+
+    /**
+     * Indique au scoreManager de notifier la vue
+     * @param s message à notifier
+     */
+    public void notifyScoreManager(String s){
+        scoreManager.notifyView(s);
     }
 }

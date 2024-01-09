@@ -96,6 +96,7 @@ public class Main extends Application {
         new RessourcesView(modelMain);
         new HunterView(modelMain);
         new MonsterView(modelMain);
+        new ScoreView(modelMain);
     }
 
 }

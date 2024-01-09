@@ -5,6 +5,7 @@ import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
 import fr.univlille.sae.controller.RessourcesButton;
+import fr.univlille.sae.controller.ScoreButton;
 import fr.univlille.sae.controller.SettingButton;
 import fr.univlille.sae.model.ModelMain;
 import javafx.geometry.Insets;
@@ -32,6 +33,7 @@ public class MainView extends Stage implements Observer {
     public static final Rectangle2D BOUNDS = Screen.getPrimary().getBounds();
     private final ModelMain modelMain;
     private Label titre;
+    private ScoreButton scoreButton;
     private SettingButton settingButton;
     private LaunchButton launchButton;
     private Button quitButton;
@@ -60,7 +62,7 @@ public class MainView extends Stage implements Observer {
         HBox footer = new HBox();
         footer.getChildren().addAll(noMusicButton, new Spacer(), quitButton);
         footer.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(titre, launchButton, settingButton, new Spacer(), footer);
+        root.getChildren().addAll(titre, launchButton, settingButton, scoreButton, new Spacer(), footer);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
     }
@@ -73,6 +75,7 @@ public class MainView extends Stage implements Observer {
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         settingButton = new SettingButton(modelMain);
         launchButton = new LaunchButton(modelMain);
+        scoreButton = new ScoreButton(modelMain);
 
         quitButton = new Button("Quitter");
         quitButton.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
@@ -129,7 +132,7 @@ public class MainView extends Stage implements Observer {
      */
     @Override
     public void update(Subject subject, Object o) {
-        if(o.equals("ParamMAJ")) {
+        if(o.equals("ParamMAJ") || o.equals("ScoreHIDE")) {
             show();
         } else if(o.equals("close") || paramNotif((String) o)) {
             close();

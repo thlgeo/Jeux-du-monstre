@@ -33,15 +33,13 @@ public class IAHunter implements IHunterStrategy {
         ICoordinate coord;
         if(lastPositionMonster != null) {
             List<ICoordinate> around = around(lastPositionMonster.getCoord());
-            coord = around.remove(rd.nextInt(around.size()));
-            while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL) {
+            do {
                 coord = around.remove(rd.nextInt(around.size()));
-            }
+            } while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL);
         } else {
-            coord = new Coordinate(rd.nextInt(maze.length), rd.nextInt(maze[0].length));
-            while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL) {
+            do {
                 coord = new Coordinate(rd.nextInt(maze.length), rd.nextInt(maze[0].length));
-            }
+            } while(maze[coord.getRow()][coord.getCol()].getInfo() == CellInfo.WALL);
         }
 
         return coord;

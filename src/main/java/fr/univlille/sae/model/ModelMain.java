@@ -114,11 +114,7 @@ public class ModelMain extends Subject {
      * Permet créer un labyrinthe soit importé, soit généré en fonction de la valeur de generateMaze
      */
     private void createMaze() {
-        if(generateMaze) {
-            this.maze = new MazeFactory(this.nbRows, this.nbCols,percent_wall).generateMaze();
-        } else {
-            this.maze = new MazeFactory(this.nbRows, this.nbCols,percent_wall).importMaze();
-        }
+        this.maze = new MazeFactory(nbRows, nbCols, percent_wall).createMaze(generateMaze);
     }
 
 
@@ -489,10 +485,5 @@ public class ModelMain extends Subject {
 
     public boolean isFullIA() {
         return monsterIsIA && hunterIsIA;
-    }
-
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        System.out.println(list.getClass().getName());
     }
 }

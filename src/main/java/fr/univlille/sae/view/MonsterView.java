@@ -138,7 +138,7 @@ public class MonsterView extends Stage implements Observer {
     public void update(Subject subject, Object o) {
         if(o instanceof ICellEvent cell) {
             mc.setRender(cell.getCoord().getRow(), cell.getCoord().getCol(), cell.getState(), cell.getTurn());
-            tour.setText("Tour du chasseur !");
+            tour.setText("Tour de " + modelMain.getHunterName() + " !");
             setWaitScene();
         } else if(o instanceof Cell[][] discoveredMaze) {
             mc.resize();
@@ -149,10 +149,10 @@ public class MonsterView extends Stage implements Observer {
         } else if("endGame".equals(o)) {
             close();
         } else if("changerTour".equals(o)) {
-            tour.setText("Tour du monstre !");
+            tour.setText("Tour de " + modelMain.getMonsterName() + " !");
             setReadyScene();
         } else if ("changerTourIA".equals(o)) {
-            tour.setText("Tour du monstre !");
+            tour.setText("Tour de " + modelMain.getMonsterName() + " !");
             setMonsterScene();
         } else if(o instanceof Integer turn) {
             nbTour.setText("  Tour " + turn);

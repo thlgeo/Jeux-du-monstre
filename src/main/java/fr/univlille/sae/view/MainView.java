@@ -4,7 +4,6 @@ import fr.univlille.iutinfo.utils.Observer;
 import fr.univlille.iutinfo.utils.Subject;
 import fr.univlille.sae.Main;
 import fr.univlille.sae.controller.LaunchButton;
-import fr.univlille.sae.controller.RessourcesButton;
 import fr.univlille.sae.controller.ScoreButton;
 import fr.univlille.sae.controller.SettingButton;
 import fr.univlille.sae.model.ModelMain;
@@ -38,7 +37,8 @@ public class MainView extends Stage implements Observer {
     private LaunchButton launchButton;
     private Button quitButton;
     private Button noMusicButton;
-    private MediaPlayer mp;
+    private MediaPlayer mainMusic;
+    private MediaPlayer victoryMusic;
 
     public MainView(ModelMain modelMain) {
         this.modelMain = modelMain;
@@ -85,16 +85,19 @@ public class MainView extends Stage implements Observer {
 
         quitButton.setOnAction(e -> close());
         noMusicButton.setOnAction(e -> {
-            if(mp.getStatus() == MediaPlayer.Status.PLAYING) {
-                mp.pause();
+            if(mainMusic.getStatus() == MediaPlayer.Status.PLAYING) {
+                mainMusic.pause();
             } else {
-                mp.play();
+                mainMusic.play();
             }
         });
 
-        mp = Main.loadMusic(Main.MUSIC_DIR + "music.mp3", 0.5);
-        mp.setCycleCount(MediaPlayer.INDEFINITE);
-        mp.play();
+        mainMusic = Main.loadMusic(Main.MUSIC_DIR + "music.mp3", 0.5);
+        mainMusic.setCycleCount(MediaPlayer.INDEFINITE);
+        mainMusic.play();
+
+        victoryMusic = Main.loadMusic(Main.MUSIC_DIR + "victory.mp3", 0.5);
+        mainMusic.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     /**
@@ -108,10 +111,16 @@ public class MainView extends Stage implements Observer {
         message.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         Button validation = new Button("OK");
         validation.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
-        validation.setOnAction(e -> setMainScene());
+        validation.setOnAction(e -> {
+            victoryMusic.stop();
+            mainMusic.play();
+            setMainScene();
+        });
         root.getChildren().addAll(message, validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
+        victoryMusic.play();
+        mainMusic.pause();
     }
 
     /**

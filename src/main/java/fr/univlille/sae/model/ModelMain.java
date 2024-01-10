@@ -508,4 +508,12 @@ public class ModelMain extends Subject {
     public void notifyScoreManager(String s){
         scoreManager.notifyView(s);
     }
+
+    public String getHunterName() {
+        return IAHunterName;
+    }
+
+    public String getMonsterName() {
+        return IAMonsterName;
+    }
 }

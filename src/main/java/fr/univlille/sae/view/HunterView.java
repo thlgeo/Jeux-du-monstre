@@ -106,7 +106,7 @@ public class HunterView extends Stage implements Observer {
     public void update(Subject subject) {
         setPosition();
         montrer();
-        tour = new Label("Tour du monstre !");
+        tour = new Label("Tour de " + modelMain.getMonsterName() + " !");
         tour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         nbTour = new Label("  Tour 1");
         nbTour.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
@@ -123,7 +123,7 @@ public class HunterView extends Stage implements Observer {
     public void update(Subject subject, Object o) {
         if(o instanceof ICellEvent cell) {
             mc.setRender(cell.getCoord().getRow(), cell.getCoord().getCol(), cell.getState(), cell.getTurn());
-            tour.setText("Tour du monstre !");
+            tour.setText("Tour de " + modelMain.getMonsterName() + " !");
             setWaitScene();
         } else if(o instanceof Cell[][]) {
             mc.resize();
@@ -131,10 +131,10 @@ public class HunterView extends Stage implements Observer {
         } else if("endGame".equals(o)) {
             close();
         } else if(o.equals("changerTour")) {
-            tour.setText("Tour du chasseur !");
+            tour.setText("Tour de " + modelMain.getHunterName() + " !");
             setReadyScene();
         } else if(o.equals("changerTourIA")) {
-            tour.setText("Tour du monstre !");
+            tour.setText("Tour de " + modelMain.getHunterName() + " !");
             setHunterScene();
         } else if(o instanceof Integer turn) {
             nbTour.setText("  Tour " + turn);

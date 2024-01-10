@@ -115,3 +115,10 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 ### Valentin THUILLIER
 
 - Ajout de l'IA Djikstra pour le monstre
+
+## Semaine du 8/01/2024
+
+### Nathan DESMEE
+
+- Classement des joueurs
+- Ajout de la musique de victoire

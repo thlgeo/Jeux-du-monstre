@@ -39,6 +39,7 @@ public class MainView extends Stage implements Observer {
     private Button noMusicButton;
     private MediaPlayer mainMusic;
     private MediaPlayer victoryMusic;
+    private boolean playMusic = true;
 
     public MainView(ModelMain modelMain) {
         this.modelMain = modelMain;
@@ -85,10 +86,12 @@ public class MainView extends Stage implements Observer {
 
         quitButton.setOnAction(e -> close());
         noMusicButton.setOnAction(e -> {
-            if(mainMusic.getStatus() == MediaPlayer.Status.PLAYING) {
+            if(playMusic) {
                 mainMusic.pause();
+                playMusic = false;
             } else {
                 mainMusic.play();
+                playMusic = true;
             }
         });
 
@@ -112,14 +115,16 @@ public class MainView extends Stage implements Observer {
         Button validation = new Button("OK");
         validation.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
         validation.setOnAction(e -> {
-            victoryMusic.stop();
-            mainMusic.play();
+            if(playMusic){
+                victoryMusic.stop();
+                mainMusic.play();
+            }
             setMainScene();
         });
         root.getChildren().addAll(message, validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH, HEIGHT));
-        victoryMusic.play();
+        if(playMusic) victoryMusic.play();
         mainMusic.pause();
     }
 

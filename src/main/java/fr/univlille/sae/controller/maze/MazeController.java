@@ -18,10 +18,10 @@ public class MazeController extends GridPane {
     private final ModelMain modelMain;
     private final boolean isMonsterMaze;
     //to change
-    public static String wallColor = "#000000";
+    public static String wallColor = "-fx-background-color: #000000";
     private static String wallComplementary = findComplementaryColor(wallColor);
     //to change
-    public static String emptyColor = "#ffffff";
+    public static String emptyColor = "-fx-background-color: #ffffff";
     private static String emptyComplementary = findComplementaryColor(emptyColor);
     Button[][] mazeTable;
 
@@ -33,14 +33,39 @@ public class MazeController extends GridPane {
         setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Cette méthode permet de changer la couleur des murs
+     * @param wallColor
+     */
     public static void setWallColor(String wallColor) {
         MazeController.wallColor = wallColor;
         MazeController.wallComplementary = findComplementaryColor(wallColor);
     }
 
+    /**
+     * Cette méthode permet de changer la couleur des cases vides
+     * @param emptyColor
+     */
     public static void setEmptyColor(String emptyColor) {
         MazeController.emptyColor = emptyColor;
         MazeController.emptyComplementary = findComplementaryColor(emptyColor);
+    }
+
+    /**
+     * Cette méthode permet de changer l'image des cases vides
+     *
+     * @param emptyImagePath
+     */
+    public static void setEmptyImage(String emptyImagePath) {
+        MazeController.emptyColor = emptyImagePath;
+    }
+
+    /**
+     * Cette méthode permet de changer l'image des murs
+     * @param wallImagePath
+     */
+    public static void setWallImage(String wallImagePath) {
+        MazeController.wallColor = wallImagePath;
     }
 
     /**
@@ -81,21 +106,26 @@ public class MazeController extends GridPane {
             b.setStyle("-fx-background-color: #9B9B9B; -fx-border-color: #000000");
             b.setText(" ");
         } else if (info == ICellEvent.CellInfo.WALL) {
-            b.setStyle("-fx-background-color:" + wallColor + "; -fx-border-color: #000000; -fx-text-fill: " + wallComplementary);
+            b.setStyle(wallColor + "; -fx-border-color: #000000; -fx-text-fill: " + wallComplementary);
             b.setText(" ");
         } else if (!isMonsterMaze && info == ICellEvent.CellInfo.EXIT) {
-            b.setStyle("-fx-background-color:" + emptyColor + "; -fx-border-color: #000000");
+            b.setStyle(emptyColor + "; -fx-border-color: #000000");
             b.setText(" ");
         } else if (info == ICellEvent.CellInfo.MONSTER) {
-            b.setStyle("-fx-background-color:" + emptyColor + "; -fx-border-color: #000000; -fx-text-fill: " + emptyComplementary);
+            b.setStyle(emptyColor + "; -fx-border-color: #000000; -fx-text-fill: " + emptyComplementary);
             b.setText("" + turn);
         } else if (info == ICellEvent.CellInfo.HUNTER) {
             b.setText("h");
         } else if (info == ICellEvent.CellInfo.EXIT) {
-            b.setStyle("-fx-background-image: url('https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png'); -fx-background-size:" + CellController.SIZE + "; -fx-background-position: center center; -fx-border-color: #000000; -fx-background-color:" + emptyColor + ";");
+            if (emptyColor.contains("-fx-background-color")) {
+                b.setStyle("-fx-background-image: url('https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png'); -fx-background-size:" + CellController.SIZE + "; -fx-background-position: center center; -fx-border-color: #000000;" + emptyColor + ";");
+            } else {
+                b.setStyle("-fx-background-image: url('https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png'); -fx-background-size:" + CellController.SIZE + "; -fx-background-position: center center; -fx-border-color: #000000; -fx-background-color: #FFFFFF;");
+            }
+
             b.setText(" ");
         } else {
-            b.setStyle("-fx-background-color:" + emptyColor + "; -fx-border-color: #000000; -fx-text-fill: " + emptyComplementary);
+            b.setStyle(emptyColor + "; -fx-border-color: #000000; -fx-text-fill: " + emptyComplementary);
             b.setText(" ");
         }
     }
@@ -131,6 +161,9 @@ public class MazeController extends GridPane {
         }
     }
     public static String findComplementaryColor(String color) {
+        if (color.length() != 7) {
+            return "#000000";
+        }
         return MazeController.findComplementaryColor(Integer.parseInt(color.substring(1, 3), 16), Integer.parseInt(color.substring(3, 5), 16), Integer.parseInt(color.substring(5, 7), 16));
     }
 }

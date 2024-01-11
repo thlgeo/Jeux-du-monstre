@@ -9,15 +9,14 @@ import fr.univlille.sae.model.ModelMain;
 import fr.univlille.sae.view.Spacer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 /**
  * Cette classe est la fenêtre où l'utilisateur peut changer les paramètres des ressources
@@ -34,8 +33,11 @@ public class RessourcesView extends Stage implements Observer {
     private ColorPicker wallColorPicker;
     private Label emptyLabel;
     private ColorPicker emptyColorPicker;
+    private String emptyImage = "";
+    private String wallImage = "";
 
-    private Button fileButton = new Button("Charger une image");
+    private Button fileButtonEmpty = new Button("Charger une image pour les cases vides");
+    private Button fileButtonWall = new Button("Charger une image pour les murs");
     private FileChooser fileChooser = new FileChooser();
     private RessourceValidController validation;
     private Font font = Main.loadFont(Main.ARCADE_FONT, 20);
@@ -61,7 +63,7 @@ public class RessourcesView extends Stage implements Observer {
         wallBox.setAlignment(Pos.CENTER);
         emptyBox.getChildren().addAll(emptyLabel, emptyColorPicker);
         emptyBox.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(wallBox, new Spacer(), emptyBox, new Spacer(), fileButton, new Spacer(), validation);
+        root.getChildren().addAll(wallBox, new Spacer(), emptyBox, new Spacer(), fileButtonEmpty, new Spacer(), fileButtonWall, new Spacer(), validation);
         root.setAlignment(Pos.CENTER);
         setScene(new Scene(root, WIDTH_VIEW, HEIGHT_VIEW));
 
@@ -75,13 +77,31 @@ public class RessourcesView extends Stage implements Observer {
         wallLabel.setFont(font);
         emptyLabel = new Label("Texture des cases vides ");
         emptyLabel.setFont(font);
-        double[] rgbWall = convertHexToRGB(MazeController.wallColor);
-        double[] rgbEmpty = convertHexToRGB(MazeController.emptyColor);
+        double[] rgbWall = convertHexToRGB(MazeController.wallColor.substring(22));
+        double[] rgbEmpty = convertHexToRGB(MazeController.emptyColor.substring(22));
         wallColorPicker = new ColorPicker(new Color(rgbWall[0], rgbWall[1], rgbWall[2], 1));
         emptyColorPicker = new ColorPicker(new Color(rgbEmpty[0], rgbEmpty[1], rgbEmpty[2], 1));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Files", "*.png"));
-        fileButton.setFont(font);
-        fileButton.setOnAction(e -> fileChooser.showOpenDialog(this));
+        fileButtonWall.setFont(font);
+        fileButtonWall.setTooltip(new Tooltip("Charger une image pour les murs, si vous choisisez une image, la couleur sera ignorée"));
+        fileButtonWall.setOnAction(e -> {
+            File file = fileChooser.showOpenDialog(this);
+            if (file != null) {
+                wallImage = file.getAbsolutePath();
+                wallImage = "file:///" + wallImage.replace(File.separator, "/");
+                validation.setWallImagePath(wallImage);
+            };
+        });
+        fileButtonEmpty.setFont(font);
+        fileButtonEmpty.setTooltip(new Tooltip("Charger une image pour les cases vides, si vous choisisez une image, la couleur sera ignorée"));
+        fileButtonEmpty.setOnAction(e -> {
+            File file = fileChooser.showOpenDialog(this);
+            if (file != null) {
+                emptyImage = file.getAbsolutePath();
+                emptyImage = "file:///" + emptyImage.replace(File.separator, "/");
+                validation.setEmptyImagePath(emptyImage);
+            }
+        });
         validation = new RessourceValidController(wallColorPicker, emptyColorPicker, modelMain);
     }
 

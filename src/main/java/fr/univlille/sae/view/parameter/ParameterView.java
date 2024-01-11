@@ -11,6 +11,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -64,10 +65,15 @@ public class ParameterView extends Stage implements Observer {
      */
     private void setParameterNodes() {
         mazeButton = new MazeButton(modelMain);
+        mazeButton.setTooltip(new Tooltip("Paramètres du labyrinthe"));
         optionButton = new OptionButton(modelMain);
+        optionButton.setTooltip(new Tooltip("Paramètres des options"));
         playerButton = new PlayerButton(modelMain);
+        playerButton.setTooltip(new Tooltip("Paramètres des joueurs"));
         validation = new ValidationController(modelMain);
+        validation.setTooltip(new Tooltip("Valider les paramètres"));
         ressourcesButton = new RessourcesButton(modelMain);
+        ressourcesButton.setTooltip(new Tooltip("Paramètres des ressources"));
     }
 
     /**

@@ -13,6 +13,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
@@ -75,14 +76,19 @@ public class MainView extends Stage implements Observer {
         titre = new Label("Chasse Au Monstre");
         titre.setFont(Main.loadFont(Main.ARCADE_FONT, 30));
         settingButton = new SettingButton(modelMain);
+        settingButton.setTooltip(new Tooltip("Changer les paramètres visuel, de labyrinthe, de monstre et de joueur"));
         launchButton = new LaunchButton(modelMain);
+        launchButton.setTooltip(new Tooltip("Lancer une partie"));
         scoreButton = new ScoreButton(modelMain);
+        scoreButton.setTooltip(new Tooltip("Afficher les scores"));
 
         quitButton = new Button("Quitter");
         quitButton.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        quitButton.setTooltip(new Tooltip("Quitter l'application"));
 
         noMusicButton = new Button("Musique");
         noMusicButton.setFont(Main.loadFont(Main.ARCADE_FONT, 20));
+        noMusicButton.setTooltip(new Tooltip("Activer/Désactiver la musique"));
 
         quitButton.setOnAction(e -> close());
         noMusicButton.setOnAction(e -> {

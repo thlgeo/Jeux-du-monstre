@@ -56,7 +56,7 @@ public class IAHunter implements IHunterStrategy {
     /**
      * Permet de récupérer les coordonnées des cases autour d'une case
      * @param coordonnee (ICoordinate) coordonnées de la case
-     * @return List<ICoordinate> liste des coordonnées des cases autour
+     * @return List ICoordinate liste des coordonnées des cases autour
      */
     private List<ICoordinate> around(ICoordinate coordonnee) {
         List<ICoordinate> l = new ArrayList<>();

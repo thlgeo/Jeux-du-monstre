@@ -54,7 +54,7 @@ public class PlayerScore implements Comparable<PlayerScore>{
     /**
      * Permet de comparer deux PlayerScore selon le score
      * @param playerScore le PlayerScore avec lequel comparer
-     * @return < 0 si score plus grand, 0 si identique et > 0 si score plus petit
+     * @return inferieur à 0 si score plus grand, 0 si identique et supérieur 0 si score plus petit
      */
     @Override
     public int compareTo(PlayerScore playerScore) {

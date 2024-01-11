@@ -25,7 +25,7 @@ public class IAMonster implements IMonsterStrategy {
     /**
      * Permet de récupérer la cellule ayant la distance + heuristique la plus petite
      *
-     * @param set (Set<Cellule>)  - l'ensemble de cellules
+     * @param set (Set Cellule)  - l'ensemble de cellules
      * @return (Cellule)   - la cellule ayant la distance la plus petite
      */
     private static Cellule getMin(Set<Cellule> set) {
@@ -67,7 +67,7 @@ public class IAMonster implements IMonsterStrategy {
     /**
      * Permet de récupérer les coordonnées autour du monstre si elles sont valides
      *
-     * @return (List < ICoordinate >)   - la liste des coordonnées autour de la coordonnée passée en paramètre
+     * @return (List ICoordinate)   - la liste des coordonnées autour de la coordonnée passée en paramètre
      */
     private List<ICoordinate> possibilities() {
         List<ICoordinate> l = new ArrayList<>();
@@ -82,7 +82,7 @@ public class IAMonster implements IMonsterStrategy {
     /**
      * Permet de récupérer les coordonnées autour du monstre
      *
-     * @return (List < ICoordinate >)   - la liste des coordonnées autour de la coordonnée passée en paramètre
+     * @return (List ICoordinate)   - la liste des coordonnées autour de la coordonnée passée en paramètre
      */
     private List<ICoordinate> around() {
         List<ICoordinate> l = new ArrayList<>();

@@ -115,7 +115,7 @@ public class MazeFactory {
     }
 
     /**
-     * Vérifie si le mur est valide, c'est-à-dire qu'au moins une case adjacente au mur de coordonnées row & col est vide.
+     * Vérifie si le mur est valide, c'est-à-dire qu'au moins une case adjacente au mur de coordonnées row et col est vide.
      * @param row
      * @param col
      * @return
@@ -206,7 +206,7 @@ public class MazeFactory {
     /**
      * Permet de trouver les cases de la "frontière" à une case. C'est-à-dire les cases a 2 de distance de la case testée, sert à générer le labyrinthe avec l'algorithme de Prim.
      * @param cord coordonnées de la case
-     * @return List<ICoordinate> - les cases adjacentes à la case
+     * @return List ICoordinate - les cases adjacentes à la case
      */
     private List<ICoordinate> getFrontierCoords(ICoordinate cord) {
         Coordinate c = (Coordinate) cord;

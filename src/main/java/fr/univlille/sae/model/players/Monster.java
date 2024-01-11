@@ -176,7 +176,7 @@ public class Monster extends Subject implements IMonsterStrategy {
     /**
      * Renvoie les coordonnées autour du monstre.
      *
-     * @return (List < ICoordinate >) liste des coordonnées atteignables.
+     * @return (List ICoordinate) liste des coordonnées atteignables.
      */
     private List<ICoordinate> around() {
         List<ICoordinate> l = new ArrayList<>();

@@ -54,8 +54,8 @@ public class ModelMain extends Subject {
     protected boolean hunterIsIA = false;
     protected double percent_wall;
 
-    protected String IAMonsterName = "IA Monster";
-    protected String IAHunterName = "IA Hunter";
+    protected String IAMonsterName = "Monster";
+    protected String IAHunterName = "Hunter";
     protected ScoreManager scoreManager = new ScoreManager();
 
     private ModelMain(int turn, int nbRows, int nbCols) {

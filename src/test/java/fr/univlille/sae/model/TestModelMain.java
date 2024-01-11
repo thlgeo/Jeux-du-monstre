@@ -113,12 +113,12 @@ class TestModelMain {
 
     @Test
     void testRebuildPlayer(){
-        modelMain.rebuildPlayers("nathan", "armand", true, true, Main.IA_PACKAGE + "RightWallIAMonster", Main.IA_PACKAGE + "IAHunterRandom");
+        modelMain.rebuildPlayers("nathan", "armand", true, true, Main.IA_PACKAGE + "DFSMonster", Main.IA_PACKAGE + "IAHunterRandom");
         assertEquals("nathan", modelMain.hunter.getName());
         assertEquals("armand", modelMain.monster.getName());
         assertTrue(modelMain.monsterIsIA);
         assertTrue(modelMain.hunterIsIA);
-        assertEquals(Main.IA_PACKAGE + "RightWallIAMonster", modelMain.IAMonster.getClass().getName());
+        assertEquals(Main.IA_PACKAGE + "DFSMonster", modelMain.IAMonster.getClass().getName());
         assertEquals(Main.IA_PACKAGE + "IAHunterRandom", modelMain.IAHunter.getClass().getName());
         assertFalse(modelMain.fog);
     }

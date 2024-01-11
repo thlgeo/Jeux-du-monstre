@@ -63,6 +63,6 @@ public class PlayerScore implements Comparable<PlayerScore>{
 
     @Override
     public String toString(){
-        return name + " -> " + score;
+        return name + "\t\t\t\t\t\t\t" + score;
     }
 }

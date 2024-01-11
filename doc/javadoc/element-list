@@ -1,7 +1,12 @@
 fr.univlille.sae
 fr.univlille.sae.controller
+fr.univlille.sae.controller.maze
+fr.univlille.sae.controller.parameter
+fr.univlille.sae.controller.validation
 fr.univlille.sae.model
 fr.univlille.sae.model.events
 fr.univlille.sae.model.exceptions
 fr.univlille.sae.model.players
+fr.univlille.sae.model.score
 fr.univlille.sae.view
+fr.univlille.sae.view.parameter

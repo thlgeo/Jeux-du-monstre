@@ -122,3 +122,7 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 
 - Classement des joueurs
 - Ajout de la musique de victoire
+
+### Théo Lenglart
+- Création et remplissage du rapport pour le dév efficace
+- Réécriture de certaines fonctions pour l'ia hunter pour les rendres plus lisibles et efficaces (Clean Code)

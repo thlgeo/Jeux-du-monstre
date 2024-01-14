@@ -47,3 +47,18 @@ La méthode around prend en paramètre une coordonnée et, en fonction de la por
 ### 1. Algorithme A*
 
 ### 2. Algorithme DFS
+
+## Génération du labyrinthe
+
+### 1. Algorithme de Prim
+
+Pour la génération du labyrinthe, nous avons utilisé l'algorithme de Prim.  
+Il réalise un labyrinthe parfait, c'est-à-dire qu'il n'y a qu'un seul chemin entre deux points du labyrinthe.
+Pour cela, il prend un labyrinthe rempli de murs et créé un tableau de boolean de même taille afin de savoir quelles cellules sont déjà explorées, et prend comme cellule initiale une cellule aléatoire.  
+Pour créer le labyrinthe, on calcule la "frontière" de la cellule actuelle, autrement dit, les cellules adjacentes à deux de distances qui ne sont pas encore explorées.  
+On choisit ensuite une cellule de la "frontière" aléatoirement, on la marque comme explorée et on la relie à la cellule actuelle. En supprimant les murs entre les deux cellules (et sur les cellules).
+On répète ensuite l'opération avec une nouvelle cellule de la frontière jusqu'à ce que la frontière soit vide, et donc qu'on ait exploré toutes les cellules du labyrinthe.  
+Pour rendre le labyrinthe plus jouable, après la génération d'un labyrinthe aléatoire, on supprime des murs aléatoires en vérifiant qu'ils ne génèrent pas de chemin isolé.  
+De cette manière, les labyrinthes générés sont toujours jouables, et les algorithmes de recherche de chemin marchent dans tous les cas.
+
+Cet algorithme est implémenté dans la classe **MazeFactory.java**, avec cette manière de faire, nous pouvons créer un labyrinthe de n'importe quel taille, qu'il soit carré ou rectangulaire, même si nous avons limité la génération à un labyrinthe de taille 16*16 car au-delà, le labyrinthe est trop grand pour être affiché sur l'écran.

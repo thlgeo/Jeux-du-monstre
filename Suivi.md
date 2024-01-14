@@ -126,3 +126,8 @@ n'avons pas eu besoin de travailler sur le projet entre deux
 ### Théo Lenglart
 - Création et remplissage du rapport pour le dév efficace
 - Réécriture de certaines fonctions pour l'ia hunter pour les rendres plus lisibles et efficaces (Clean Code)
+
+### Armand SADY
+- Ajout de confirmation du bouton de confirmation des changements pour changer la couleur des cases
+- Ajout de la possibilité de charger une image pour les cases du labyrinthe (mur, vide).
+- Recréation de la javadoc et du .jar

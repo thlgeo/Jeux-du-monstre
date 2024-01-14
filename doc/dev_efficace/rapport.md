@@ -50,7 +50,7 @@ La méthode around prend en paramètre une coordonnée et, en fonction de la por
 
 ## Génération du labyrinthe
 
-### 1. Algorithme de Prim
+### Algorithme de Prim
 
 Pour la génération du labyrinthe, nous avons utilisé l'algorithme de Prim.  
 Il réalise un labyrinthe parfait, c'est-à-dire qu'il n'y a qu'un seul chemin entre deux points du labyrinthe.

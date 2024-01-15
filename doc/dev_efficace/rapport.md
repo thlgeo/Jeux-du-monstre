@@ -46,7 +46,24 @@ La méthode around prend en paramètre une coordonnée et, en fonction de la por
 
 ### 1. Algorithme A*
 
+L'algorithme utilisé est l'algo A*. Il se trouve dans la classe **IAMonster.java** et il a été implémenté uniquement pour le Monstre.  
+Pour l'implémentation, nous avons utilisé deux ensembles de **IAMonster.Celulle**.  
+Ces **cellules** sont différentes de celles utilisées pour le labyrinthe, elles sont spécifiques à l'implémentation de l'algorithme A*. Elles stockent en plus la distance entre la cellule et la cellule de départ, l'heuristique, et la cellule parente.
+Nous avons aussi utilisé une liste de **ICoordinate** pour stocker le chemin à suivre.  
+Nous avons fait le choix d'utilisé ces types de Cellule pour la raison que nous avons besoin de stocker des informations supplémentaires sur les cellules, et que l'utilisation d'une classe interne nous paraissait plus logique que l'utilisation d'une classe externe.  
+De plus, notre classe a besoin d'avoir un accès au labyrinthe du monstre, donc de l'attribut **maze** de la classe **IAMonster**.  
+Nous avons aussi utilisé un ensemble de cellule déjà visité, cela nous permet d'être sur que nous ne visitons pas deux fois la même cellule, et donc de ne pas avoir de boucle infinie.  
+La méthode peut provoqué des **RuntimeException**, si aucun chemin n'est trouvé dans le labyrinthe ou si le monstre n'est pas correctement initialisé dans le labyrinthe.  
+L'utilisation d'une liste de **ICoordinate** pour stocker le chemin à suivre nous a paru plus logique que l'utilisation d'une liste de **Cell**, car nous n'avons besoin que des coordonnées pour déplacer le monstre, et non des informations de la cellule entière vu que le chemin est déjà calculé.
+
 ### 2. Algorithme DFS
+
+L'algorithme utilisé est l'algo DFS. Il se trouve dans la classe **DFSMonster.java** et il a été implémenté uniquement pour le Monstre.
+Pour l'implémentation, nous avons utilisé une pile de **ICoordinate** pour stocker le chemin à suivre.  
+Mais aussi une liste de **ICoordinate** pour stocker la liste des cellules jusqu'à la cellule de sortie.  
+Et enfin, un ensemble de **DFSMonster.PathCoordinate** pour stocker les cellules déjà visitées.  
+**DFSMonster.PathCoordinate** est une classe interne à **DFSMonster** qui stocke une **ICoordinate** et son parent. Cela nous aide pour retrouver le chemin à suivre.  
+Pour retrouver le parent, nous aurions pu utilisé une Map, mais nous avons préféré utilisé une classe interne pour que le code soit le moins complexe à comprendre.
 
 ## Génération du labyrinthe
 

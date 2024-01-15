@@ -8,21 +8,29 @@ Nous avons utilisé cette structure de données pour les classes **IAHunterRando
 
 ## IA Hunter
 
-### 1. Aléatoire
+Les IA du Hunter sont des IA simples qui se basent sur le peu d'informations auxquelles peut accéder le Hunter ce qui rend le jeu difficile pour elles.  
+Le développement des IA Hunter est assez limité et le nombre d'informations utilisables est faible et l'accès à ces informations repose sur la chance au début.  
+
+### Aléatoire
 L'algorithme utilisé est personnel. Il se trouve dans la classe **IAHunterRandom.java** et voici le pseudo-code associé :
 
 ```
 Initialisation de la variable coord (ICoordinate) qui sera retournée à la fin
 Initialisation des variables row et col (int)
 faire
-    row = une valeur aléatoire compris entre 0 et la taille maximale d'une ligne du tableau
-    col = une valeur aléatoire compris entre 0 et la taille maximale d'une colonne du tableau
+    row = valeur aléatoire compris 0 et la taille maximale d'une ligne du tableau
+    col = valeur aléatoire compris 0 et la taille maximale d'une colonne du tableau
     coord = instanciation d'une nouvelle Coordinate de paramètre row et col
-tant que coord est dans le tableau, et que la cellule à la coordonnée de coord est un mur, donc déjà découverte
+tant que coord est dans le tableau et que la cellule à la coordonnée de coord est un mur
 retourne coord
 ```
 
-### 2. Aléatoire amélioré
+Cet algorithme est très simple et tire aléatoirement sur une case, il permet de jouer contre une IA facile à battre bien que cela rend la tâche facile.  
+Les choix algorithmiques sont simples, car ils prennent en compte quasiment aucune information et tire au hasard.  
+La seule information utilisée ets que l'algorithme ne tire pas deux fois sur une même mur.  
+L'éxecution de cet algorithme est donc très rapide et ne demande pas beaucoup de calculs.  
+
+### Aléatoire amélioré
 
 L'algorithme utilisé est personnel. Il se trouve dans la classe **IAHunter.java** et voici le pseudo-code associé :
 
@@ -36,15 +44,21 @@ si lastPositionMonster n'est pas null
     tant que la cellule à la coordonnée de coord est un mur, donc déjà découverte
 sinon
     faire
-        coord = nouvelle instance de Coordinate de paramètre, entier aléatoire compris entre 0 et taille maximale d'une ligne, et entier aléatoire compris entre 0 et taille maximale d'une colonne
+        coord = nouvelle instance de Coordinate de paramètre, 
+                entier aléatoire compris entre 0 et taille maximale d'une ligne, 
+                et entier aléatoire compris entre 0 et taille maximale d'une colonne
     tant que la cellule à la coordonnée de coord est un mur, donc déjà découverte
 retourne coord
 ```
 La méthode around prend en paramètre une coordonnée et, en fonction de la portée qui est égale au tour actuel - le dernier tour où le monstre a été trouvé (= toutes les cellules où le monstre pourrait se trouver), retourne une liste de **Cell** autour de la coordonnée d'une portée définie précédemment.
 
+Cet algorithme est plus complexe que le précédent, car il prend en compte les informations des cases où le montre est passé.  
+Il permet une difficulté un peu plus élevée, mais il est très semblable à de l'aléatoire si le hunter ne tire jamais sur une case où est passé le monstre.  
+L'éxecution de cet algorithme est donc assez rapide et demande un nombre de calculs assez faible.  
+
 ## IA Monster
 
-### 1. Algorithme A*
+### Algorithme A*
 
 L'algorithme utilisé est l'algorithme A*. Il se trouve dans la classe **IAMonster.java** et a été implémenté uniquement pour le Monstre.  
 Pour son implémentation, nous avons utilisé deux ensembles de **IAMonster.Cellule**.  
@@ -56,8 +70,11 @@ Nous avons aussi utilisé un ensemble de cellules déjà visitées, cela nous pe
 La méthode peut provoquer des **RuntimeExceptions**, si aucun chemin n'est trouvé dans le labyrinthe ou si le monstre n'est pas correctement initialisé dans le labyrinthe.  
 L'utilisation d'une liste de **ICoordinate** pour stocker le chemin à suivre nous a paru plus logique que l'utilisation d'une liste de **Cell**, car nous n'avons besoin que des coordonnées.  
 
+Cet algorithm est assez complexe et demande un certain nombre de calculs, mais il permet de trouver un chemin optimal rapidement pour jouer avec une difficulté maximale.  
+C'est l'algorithme idéal, car il trouve le meilleur chemin vers la sortie plus rapidement que l'algorithme de Dijkstra ou aussi vite dans les pires cas.  
 
-### 2. Algorithme DFS
+
+### Algorithme DFS
 
 L'algorithme utilisé est l'algorithme DFS. Il se trouve dans la classe **DFSMonster.java** et a été implémenté uniquement pour le Monstre.  
 Pour l'implémentation, nous avons utilisé une pile de **ICoordinate** pour stocker le chemin à suivre.  
@@ -65,6 +82,10 @@ Nous avons également utilisé une liste de **ICoordinate** pour stocker la list
 Enfin, un ensemble de **DFSMonster.PathCoordinate** a été utilisé pour stocker les cellules déjà visitées.  
 **DFSMonster.PathCoordinate** est une classe interne à **DFSMonster** qui stocke une **ICoordinate** et son parent. Cela nous aide à retrouver le chemin à suivre.  
 Plutôt que d'utiliser une Map pour retrouver le parent, nous avons préféré utiliser une classe interne afin que le code soit moins complexe à comprendre.  
+
+Cet algorithme est plus simple et moins efficace que A*, mais demande beaucoup de calculs. 
+Il permet de trouver un chemin pas forcément optimal ce qui permet de laisser plus de chance à l'adversaire.  
+Cependant, les chemins parfois complexes peuvent donner du fil à retordre au Hunter.  
 
 ## Génération du labyrinthe
 

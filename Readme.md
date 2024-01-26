@@ -30,7 +30,7 @@ Le but du jeu pour les deux joueurs est de gagner, mais ils gagnent tout-deux de
 Développé par :
 
 - Nathan DESMEE
-- Théo LENGART
+- Théo LENGLART
 - Armand SADY
 - Valentin THUILLIER
 
